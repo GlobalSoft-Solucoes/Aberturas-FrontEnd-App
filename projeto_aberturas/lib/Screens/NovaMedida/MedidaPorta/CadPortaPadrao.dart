@@ -15,7 +15,6 @@ class CadPortaPadrao extends StatefulWidget {
 }
 
 class _CadPortaPadraoState extends State<CadPortaPadrao> {
-  TextEditingController controllerAltura = TextEditingController();
   TextEditingController controllerComodo = TextEditingController();
   var alturaPadrao = false;
   var lagura094 = false;

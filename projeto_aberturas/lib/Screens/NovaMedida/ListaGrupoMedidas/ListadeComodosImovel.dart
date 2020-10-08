@@ -59,7 +59,7 @@ class _ListaComodoImoveisState extends State<ListaComodoImoveis> {
   Future<dynamic> alterarStatus() async {
     int idRegistro = GrupoMediddas.idGrupoMedidas;
     http.put(
-      UrlServidor + AlterarStatusProcesso + idRegistro.toString(),
+      UrlServidor + AlterarStatusParaFinalizado + idRegistro.toString(),
       headers: {"Content-Type": "application/json"},
     );
   }
@@ -82,7 +82,6 @@ class _ListaComodoImoveisState extends State<ListaComodoImoveis> {
   _ListaComodoImoveisState({@required this.idGrupoMedidas}) {
     fetchPost(idGrupoMedidas);
   }
-//ALERT DIALOGUE DE DELETAR COMODO
 
   @override
   Widget build(BuildContext context) {
@@ -173,6 +172,7 @@ class _ListaComodoImoveisState extends State<ListaComodoImoveis> {
               verticalDirection: VerticalDirection.down,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                // ============== BOTÃO FINALIZAR PROCESSO ================
                 new Container(
                   alignment: Alignment.bottomCenter,
                   child: new FloatingActionButton.extended(
@@ -191,7 +191,7 @@ class _ListaComodoImoveisState extends State<ListaComodoImoveis> {
                   ),
                 ),
 
-                // ============ BOTÃO PARA ADICIONAR NOVA MEDIDA ============
+                // ======== BOTÃO PARA CADASTRAR MAIS MEDIDAS ========
 
                 new Container(
                   alignment: Alignment.bottomCenter,

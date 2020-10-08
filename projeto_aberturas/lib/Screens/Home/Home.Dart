@@ -1,4 +1,5 @@
 import 'package:projeto_aberturas/Screens/HistoricoMedidas/RelatorioGrupoMedidas/ListaGrupoFinalizados.dart';
+import 'package:projeto_aberturas/Screens/NovaMedida/ListaGrupoMedidas/ListaGrupoMedidas.dart';
 import 'package:projeto_aberturas/Screens/NovaMedida/TelaMenuMedidas.dart';
 import 'package:projeto_aberturas/Screens/Home/MenuPrincipal.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ class _HomeState extends State<Home> {
       MenuPrincipal(),
       MenuMedidas(),
       Relatorio(),
+      // ListaGrupoMedidas(),
       Configuracoes()
     ];
     return Scaffold(

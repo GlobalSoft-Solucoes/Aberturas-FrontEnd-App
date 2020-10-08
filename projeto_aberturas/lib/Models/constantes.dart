@@ -8,8 +8,10 @@ const ListarTodosGrupoMedidas = 'GrupoMedidas/listarTodos/';
 const DeletarGrupoMedidas = 'GrupoMedidas/deletar/';
 const EditarGrupoMedidas = 'GrupoMedidas/editar/';
 const ListarGruposFinalizados = 'GrupoMedidas/ListaGruposFinalizados/';
-const AlterarStatusProcesso = 'GrupoMedidas/AlteraStatusProcesso/';
 const ListarUltimoIdGrupoCadastrado = 'GrupoMedidas/ListaUltimoGrupoCadastrado';
+const AlterarStatusParaFinalizado = 'GrupoMedidas/AlteraStatusParaFinalizado/';
+const AlterarStatusParaEnviado = 'GrupoMedidas/AlteraStatusParaEnviado/';
+const AlterarStatusParaNull = 'GrupoMedidas/AlteraStatusParaNull/';
 
 // API'S PARA A TABELA MEDIDA_UNT
 const CadastrarMedidaUnt = 'MedidaUnt/cadastrar/';

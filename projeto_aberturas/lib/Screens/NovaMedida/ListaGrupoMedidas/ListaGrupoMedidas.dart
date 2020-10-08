@@ -148,12 +148,7 @@ class _ListaGrupoMedidasState extends State<ListaGrupoMedidas> {
                                         color: Colors.green, size: 30)
                                     : Padding(
                                         padding: EdgeInsets.only(left: 0)),
-                              ])
-                              //   '${index + 1}',
-                              //   style: TextStyle(
-                              //     fontSize: 20,
-                              //   ),
-                              ,
+                              ]),
                               title: Text(
                                 'Proprietario: ${end[index].proprietario}',
                                 style: TextStyle(
