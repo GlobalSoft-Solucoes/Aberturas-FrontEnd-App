@@ -5,34 +5,40 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
-import 'package:projeto_aberturas/Models/Models_Usuario.dart';
+import 'package:projeto_aberturas/Models/Models_GrupoMedidas.dart';
 import 'package:projeto_aberturas/Models/constantes.dart';
 
 class GrupoMediddas {
   static int idGrupoMedidas;
+  static String endereco;
+  static String proprietario;
+  static int numEndereco;
+  static String cidade;
+  static String bairro;
 }
 
 class DadosUserLogado {
-  var listaUsuarios = new List<ModelsUsuarios>();
+  var listaDadosGrupo = new List<ModelGrupoMedidas>();
 
-  Future<BuildContext> capturaDadosUsuarioLogado() async {
+  Future<BuildContext> capturaDadosGrupoSelecionado() async {
     var result = await http.get(
       Uri.encodeFull(
         UrlServidor.toString() +
             BuscarUsuarioPorId +
-            Usuario.idUsuario.toString(),
+            GrupoMediddas.idGrupoMedidas.toString(),
         // Usuario.idUsuario.toString(),
       ),
       headers: {"Content-Type": "application/json"},
     );
 
     Iterable lista = json.decode(result.body);
-    listaUsuarios =
-        lista.map((model) => ModelsUsuarios.fromJson(model)).toList();
+    listaDadosGrupo =
+        lista.map((model) => ModelGrupoMedidas.fromJson(model)).toList();
     // Usuario.nome = 'testeusuario';
-    Usuario.nome = listaUsuarios[0].name;
-    Usuario.email = listaUsuarios[0].email;
-    Usuario.senha = listaUsuarios[0].senha;
-    Usuario.adm = listaUsuarios[0].adm;
+    GrupoMediddas.endereco = listaDadosGrupo[0].endereco;
+    GrupoMediddas.proprietario = listaDadosGrupo[0].proprietario;
+    GrupoMediddas.numEndereco = listaDadosGrupo[0].numEndereco;
+    GrupoMediddas.cidade = listaDadosGrupo[0].cidade;
+    GrupoMediddas.bairro = listaDadosGrupo[0].bairro;
   }
 }

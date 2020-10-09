@@ -19,7 +19,6 @@ class CampoText {
         padding: confPadding ??
             EdgeInsets.only(top: 5, left: 10, right: 10, bottom: 5),
         child: TextFormField(
-          inputFormatters: [mascara],
           initialValue: valorInicial ?? null,
           enabled: enabled ?? true,
           keyboardType: tipoTexto ?? TextInputType.text,

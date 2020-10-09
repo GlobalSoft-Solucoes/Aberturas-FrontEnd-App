@@ -7,7 +7,8 @@ class FormController {
   final void Function(String) callback;
 
 //aki vai a url do script do google
-  static const String URL = "";
+  static const String URL =
+      "https://script.google.com/macros/s/AKfycbzZ20toYxxxDbcpqYoPd0Fz-7TwcMMdF1OmZJQeqcJ5IMNtSJU/exec";
 
   static const STATUS_SUCCESS = "SUCCESS";
 

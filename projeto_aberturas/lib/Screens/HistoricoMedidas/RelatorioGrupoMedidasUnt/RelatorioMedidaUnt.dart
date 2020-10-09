@@ -1,9 +1,12 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:projeto_aberturas/Models/Excel.dart';
 import 'package:projeto_aberturas/Models/Models_GrupoMedidas.dart';
 import 'package:projeto_aberturas/Models/Models_MedidaUnt.dart';
+import 'package:projeto_aberturas/Models/Models_Portas.dart';
 import 'package:projeto_aberturas/Models/constantes.dart';
+import 'package:projeto_aberturas/Screens/Excel/Controller.dart';
 import 'package:projeto_aberturas/Widget/MsgPopup.dart';
 
 // NESTA TELA, E MOSTRADO TODOS OS DADOS DO IMOVEL SELECIONADO NA TELA ANTERIOR
@@ -17,7 +20,9 @@ class RelatorioMedidaUnt extends StatefulWidget {
 }
 
 class _RelatorioMedidaUntState extends State<RelatorioMedidaUnt> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   var medidasComodo = new List<ModelsMedidasUnt>();
+  var medidasComodo2 = new List<ModelsMedidasUnt>();
   var end = new List<ModelGrupoMedidas>();
   final int idGrupoMedidas;
   //BUSCA OS DADOS NO BANCO
@@ -35,10 +40,55 @@ class _RelatorioMedidaUntState extends State<RelatorioMedidaUnt> {
       });
   }
 
+  var dataCadastro;
+  var proprietario;
+  var cidade;
+  var comodo;
+  var altura;
+  var largura;
+  var marco;
+  var ladoabertura;
+  var localizacao;
+  var cor;
+  var tipo;
+  var estruturaPorta;
+  var observacoes;
+  var dobradica;
+  var fechadura;
+  var pivotante;
+  var codReferencia;
+  pegarIndice() {
+    for (var i = 0; i < medidasComodo.length; i++) {
+      passarDados(i);
+    }
+  }
+
+  passarDados(index) {
+    dataCadastro = medidasComodo[index].dataCadastro;
+    proprietario = DadosExcel.proprietario;
+    cidade = DadosExcel.cidade;
+    comodo = medidasComodo[index].comodo;
+    altura = medidasComodo[index].altura;
+    largura = medidasComodo[index].largura;
+    marco = medidasComodo[index].marco;
+    ladoabertura = medidasComodo[index].ladoAbertura;
+    localizacao = medidasComodo[index].localizacao;
+    cor = medidasComodo[index].cor;
+    tipo = medidasComodo[index].tipoPorta;
+    estruturaPorta = medidasComodo[index].estruturaPorta;
+    observacoes = medidasComodo[index].observacoes;
+    dobradica = medidasComodo[index].nomeDobradica;
+    fechadura = medidasComodo[index].nomeFechadura;
+    pivotante = medidasComodo[index].nomePivotante;
+    codReferencia = medidasComodo[index].codigoReferenciaNum;
+    _submitForm();
+  }
+
+  var teste;
+
   _RelatorioMedidaUntState({@required this.idGrupoMedidas}) {
     fetchPost(idGrupoMedidas);
   }
-
   _popopConfirmarEnvio() {
     MsgPopup().msgComDoisBotoes(
       context,
@@ -55,14 +105,64 @@ class _RelatorioMedidaUntState extends State<RelatorioMedidaUnt> {
     );
   }
 
+//função que envia os dados para uma planilha
+  _submitForm() {
+    FeedbackForm feedbackForm = FeedbackForm(
+        dataCadastro,
+        proprietario,
+        cidade,
+        comodo,
+        altura,
+        largura,
+        marco,
+        ladoabertura,
+        localizacao,
+        cor,
+        tipo,
+        estruturaPorta,
+        observacoes,
+        dobradica,
+        fechadura,
+        pivotante,
+        codReferencia);
+
+    FormController formController = FormController((String response) {
+      print("Response: $response");
+      if (response == FormController.STATUS_SUCCESS) {
+        //
+        showSnackbar("Feedback Submitted");
+      } else {
+        showSnackbar("Error Occurred!");
+      }
+    });
+
+    showSnackbar("Submitting Feedback");
+
+    formController.submitForm(feedbackForm);
+  }
+
+  showSnackbar(String message) {
+    final snackBar = SnackBar(content: Text(message));
+    _scaffoldKey.currentState.showSnackBar(snackBar);
+  }
+
   @override
   Widget build(BuildContext context) {
     MediaQueryData mediaQuery = MediaQuery.of(context);
     Size size = mediaQuery.size;
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text('Relatório dos Comodos'),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.file_upload),
+            onPressed: () => pegarIndice(),
+            iconSize: 35,
+            color: Colors.white,
+          )
+        ],
       ),
       body: Column(
         children: [
@@ -298,11 +398,12 @@ class _RelatorioMedidaUntState extends State<RelatorioMedidaUnt> {
                                                     fontSize: 25,
                                                     fontWeight:
                                                         FontWeight.bold)),
-                                            Text(
-                                              '${medidasComodo[index].nomeDobradica}',
-                                              style: TextStyle(
-                                                fontSize: 25,
-                                              ),
+                                            Expanded(
+                                              child: Text(
+                                                  '${medidasComodo[index].nomeDobradica}',
+                                                  style: TextStyle(
+                                                    fontSize: 25,
+                                                  )),
                                             )
                                           ],
                                         ),

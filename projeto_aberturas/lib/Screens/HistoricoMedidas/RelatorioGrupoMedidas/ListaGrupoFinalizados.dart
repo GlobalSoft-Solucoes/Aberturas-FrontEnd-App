@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:projeto_aberturas/Models/Models_GrupoMedidas.dart';
+import 'package:projeto_aberturas/Models/Models_MedidaUnt.dart';
+import 'package:projeto_aberturas/Models/Models_Portas.dart';
 import 'package:projeto_aberturas/Models/constantes.dart';
 import 'package:http/http.dart' as http;
 import 'package:projeto_aberturas/Screens/HistoricoMedidas/RelatorioGrupoMedidasUnt/RelatorioMedidaUnt.dart';
@@ -80,7 +82,7 @@ class _RelatorioState extends State<Relatorio> {
                           top: 8,
                         ),
                         child: Container(
-                          height: size.height * 0.175,
+                    height: size.height * 0.20,
                           width: size.width,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(
@@ -101,20 +103,23 @@ class _RelatorioState extends State<Relatorio> {
                                     ),
                                   ),
                                 );
-                              },
-                              child: SingleChildScrollView(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Color(0XFFD1D6DC),
-                                    borderRadius: BorderRadius.circular(
-                                      10,
-                                    ),
-                                  ),
-                                  child: Card(
-                                    color: Colors.grey[200],
-                                    child: Column(
-                                      children: [
-                                        Text(
+                          DadosExcel.cidade = end[index].cidade;
+                          DadosExcel.proprietario = end[index].proprietario;
+                        },
+                        child: SingleChildScrollView(
+                          child: Container(
+                            // alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: Color(0XFFD1D6DC),
+                              borderRadius: BorderRadius.circular(
+                                15,
+                              ),
+                            ),
+                            child: Card(
+                              color: Colors.grey[200],
+                              child: Column(
+                                children: [
+                                  Text(
                                           'data: ${end[index].dataCadastro.substring(0, 10)}',
                                           style: TextStyle(fontSize: 25),
                                         ),

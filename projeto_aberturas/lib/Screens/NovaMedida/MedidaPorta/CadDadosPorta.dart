@@ -1,10 +1,9 @@
 import 'dart:convert';
+import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-
 import 'package:projeto_aberturas/Models/constantes.dart';
 import 'package:projeto_aberturas/Static/Static_GrupoMedidas.dart';
 import 'package:projeto_aberturas/Static/Static_Usuario.dart';
@@ -37,8 +36,9 @@ class _CadDadosPortaState extends State<CadDadosPorta> {
   }
 
   //Mascara dos campos
-  var maskFormatter = new MaskTextInputFormatter(
-      mask: '#.###', filter: {"#": RegExp(r'[0-9]')});
+  var mascaraDecimalAltura = new MoneyMaskedTextController();
+  var mascaraDecimalLargura = new MoneyMaskedTextController();
+  var mascaraDecimalMarco = new MoneyMaskedTextController();
 //ESTA FUNÇÃO BUSCA A LISTA DOS TIPOS DE IMOVEIS
   Future buscardados() async {
     final response = await http.get(
@@ -347,11 +347,9 @@ class _CadDadosPortaState extends State<CadDadosPorta> {
 
 //FUNÇÃO QUE ENVIA OS DADOS DE ENDEREÇO PARA NO BANCOs
   Future<dynamic> salvarDadosBanco() async {
-    var altura = double.parse(controllerAltura.text);
-
-    largura = double.parse(controllerLargura.text);
-    marco = double.parse(controllerMarco.text);
-    marco.toStringAsFixed(3);
+    var altura = double.parse(mascaraDecimalAltura.text);
+    largura = double.parse(mascaraDecimalLargura.text);
+    marco = double.parse(mascaraDecimalMarco.text);
     var obervacoes = controllerObservacoes.text;
 
     cor = controllerCor.text;
@@ -402,21 +400,24 @@ class _CadDadosPortaState extends State<CadDadosPorta> {
                 confPadding:
                     EdgeInsets.only(top: 15, left: 10, right: 10, bottom: 5),
               ),
-              CampoText().textField(controllerAltura, 'Altura:',
-                  tipoTexto: TextInputType.number,
-                  icone: Icons.format_line_spacing,
-                  mascara: maskFormatter),
               CampoText().textField(
-                controllerLargura,
+                mascaraDecimalAltura,
+                'Altura:',
+                tipoTexto: TextInputType.number,
+                icone: Icons.format_line_spacing,
+              ),
+              CampoText().textField(
+                mascaraDecimalLargura,
                 'Largura:',
                 tipoTexto: TextInputType.number,
                 icone: Icons.format_line_spacing,
-                mascara: maskFormatter,
               ),
-              CampoText().textField(controllerMarco, 'Espessura do Marco:',
-                  tipoTexto: TextInputType.number,
-                  icone: Icons.format_line_spacing,
-                  mascara: maskFormatter),
+              CampoText().textField(
+                mascaraDecimalMarco,
+                'Espessura do Marco:',
+                tipoTexto: TextInputType.number,
+                icone: Icons.format_line_spacing,
+              ),
               Padding(
                 padding: EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 5),
                 child: Container(

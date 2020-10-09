@@ -38,5 +38,5 @@ class FeedbackForm {
 
   // Method to make GET parameters.
   String toParams() =>
-      "?altura=$altura&cidade=$cidade&codReferencia=$codReferencia&comodo=$comodo&cor=$cor&dataCadastro=$dataCadastro&estruturaPorta=$estruturaPorta&fechadura=$fechadura&ladoAbertura=$ladoabertura&largura=$largura&localizacao=$localizacao&marco=$marco&observacoes=$observacoes&pivotante=$pivotante&proprietario=$proprietario&tipo=$tipo&dobradica=$dobradica";
+      "?dataCadastro=$dataCadastro&cidade=$cidade&proprietario=$proprietario&comodo=$comodo&altura=$altura&largura=$largura&codReferencia=$codReferencia&cor=$cor&estruturaPorta=$estruturaPorta&fechadura=$fechadura&ladoAbertura=$ladoabertura&localizacao=$localizacao&marco=$marco&observacoes=$observacoes&pivotante=$pivotante&tipo=$tipo&dobradica=$dobradica";
 }

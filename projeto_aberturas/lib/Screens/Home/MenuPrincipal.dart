@@ -122,6 +122,17 @@ class _MenuPrincipalState extends State<MenuPrincipal> {
               onTap: () {
                 Navigator.pushNamed(context, '/CadPivotante');
               },
+            ),
+            ListTile(
+              title: Text(
+                'Lixeira',
+                style: TextStyle(fontSize: 18),
+              ),
+              contentPadding: EdgeInsets.only(top: 20, left: 20),
+              dense: true,
+              onTap: () {
+                Navigator.pushNamed(context, '/Lixeira');
+              },
             )
           ],
         ),
