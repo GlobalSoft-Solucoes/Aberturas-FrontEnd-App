@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 
 class CampoText {
-  textField(
-    nomeController,
-    textoCampo, {
-    double largura,
-    double altura,
-    confPadding,
-    tipoTexto,
-    bool campoSenha,
-    icone,
-    double raioBorda,
-    bool enabled,
-    valorInicial,
+  textField(nomeController, textoCampo,
+      {double largura,
+      double altura,
+      confPadding,
+      tipoTexto,
+      bool campoSenha,
+      icone,
+      double raioBorda,
+      bool enabled,
+      valorInicial,
       mascara}) {
     return Center(
       child: Container(

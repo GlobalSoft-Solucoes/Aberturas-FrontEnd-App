@@ -67,7 +67,7 @@ class _RelatorioMedidaUntState extends State<RelatorioMedidaUnt> {
       body: Column(
         children: [
           Container(
-            height: size.height * 0.780,
+            height: size.height * 0.790,
             width: size.width,
             child: Stack(
               children: [
@@ -364,7 +364,7 @@ class _RelatorioMedidaUntState extends State<RelatorioMedidaUnt> {
             width: size.width,
             height: size.height * 0.095,
             padding: EdgeInsets.only(top: 0, left: 4, right: 4),
-            color: Colors.transparent, //white.withOpacity(1.0),
+            color: Colors.transparent, //.withOpacity(1.0),
             child: Column(
               verticalDirection: VerticalDirection.down,
               mainAxisAlignment: MainAxisAlignment.center,

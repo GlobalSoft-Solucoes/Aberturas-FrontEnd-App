@@ -110,7 +110,7 @@ class _ListaGrupoMedidasState extends State<ListaGrupoMedidas> {
                     width: size.width,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(
-                        10,
+                        15,
                       ),
                       color: Color(0XFFD1D6DC),
                     ),
@@ -138,17 +138,19 @@ class _ListaGrupoMedidasState extends State<ListaGrupoMedidas> {
                               ),
                             ),
                             child: ListTile(
-                              // contentPadding: EdgeInsets.only(top: 40),
-                              leading: Column(children: <Widget>[
-                                // Padding(padding: EdgeInsets.only(top: 30)),
-                                Icon(Icons.more_vert),
-                                // Padding(padding: EdgeInsets.only(bottom: 10)),
-                                end[index].statusProcesso == "Finalizado"
-                                    ? Icon(Icons.check_circle,
-                                        color: Colors.green, size: 30)
-                                    : Padding(
-                                        padding: EdgeInsets.only(left: 0)),
-                              ]),
+                              leading: Column(
+                                children: <Widget>[
+                                  Padding(padding: EdgeInsets.only(top: 26)),
+                                  // se o registro estiver com status "Finalizado", um icone de confirmação
+                                  // é mostrado para o registro
+                                  end[index].statusProcesso == "Finalizado"
+                                      ? Icon(Icons.check_circle,
+                                          color: Colors.green, size: 30)
+                                      : Padding(
+                                          padding: EdgeInsets.only(left: 0),
+                                        ),
+                                ],
+                              ),
                               title: Text(
                                 'Proprietario: ${end[index].proprietario}',
                                 style: TextStyle(
@@ -166,7 +168,7 @@ class _ListaGrupoMedidasState extends State<ListaGrupoMedidas> {
                                     '\n'
                                         'Endereço: ${end[index].endereco}' +
                                     '\n' +
-                                    'Num:${end[index].numEndereco}',
+                                    'N°: ${end[index].numEndereco}',
                                 style: TextStyle(
                                   fontSize: 20,
                                   color:
@@ -181,7 +183,11 @@ class _ListaGrupoMedidasState extends State<ListaGrupoMedidas> {
                                   color: Colors.red,
                                   size: 30,
                                 ),
-                                alignment: Alignment.centerRight,
+                                padding: EdgeInsets.only(
+                                  left: 25,
+                                  top: 30,
+                                ),
+                                // alignment: Alignment(20, 25), //centerRight,
                                 onPressed: () => {
                                   _deletarReg(end[index].idGrupoMedidas),
                                 },

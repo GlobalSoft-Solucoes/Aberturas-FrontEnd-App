@@ -3,6 +3,7 @@ import 'package:projeto_aberturas/Screens/Home/BarraLateral/CadPivotantes.dart';
 import 'package:projeto_aberturas/Screens/NovaMedida/CadastroGrupoMedidas/CadGrupoMedidas.dart';
 import 'package:projeto_aberturas/Screens/NovaMedida/ListaGrupoMedidas/ListaGrupoMedidas.dart';
 import 'package:projeto_aberturas/Screens/NovaMedida/ListaGrupoMedidas/ListadeComodosImovel.dart';
+import 'package:projeto_aberturas/Screens/NovaMedida/ListaGrupoMedidas/EditaGrupoMedidas.dart';
 import 'package:projeto_aberturas/Screens/NovaMedida/TelaMenuMedidas.dart';
 import 'package:projeto_aberturas/Screens/NovaMedida/MedidaPorta/CadDadosPorta.dart';
 import 'package:projeto_aberturas/Screens/Configuracoes/ControleDeAcesso/ListaUsuariosSistema.dart';
@@ -65,6 +66,7 @@ void main() {
         '/ListaComodosPorImovel': (context) => ListaComodoImoveis(
               idGrupoMedidas: GrupoMediddas.idGrupoMedidas,
             ),
+        '/EditaGrupoMedidas': (context) => EditaGrupoMedidas(),
       },
       home: EntradaApp(),
     ),

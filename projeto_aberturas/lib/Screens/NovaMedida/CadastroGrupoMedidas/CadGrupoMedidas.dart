@@ -79,7 +79,6 @@ class _CadGrupoMedidasState extends State<CadGrupoMedidas> {
               setState(() {
                 mensagemErro = '';
               });
-              // verificarcheck();
               salvarDadosBanco();
             } else {
               setState(() {
@@ -144,7 +143,6 @@ class _CadGrupoMedidasState extends State<CadGrupoMedidas> {
   Future<dynamic> buscarIdGrupoMedidas() async {
     final response = await http.get(
       Uri.encodeFull(UrlServidor + ListarUltimoIdGrupoCadastrado),
-      // 'http://globalsoft-st-com-br.umbler.net/GrupoMedidas/ListaUltimoGrupoCadastrado/'),
       headers: {"accept": "application/json"},
     );
     //IF(MOUNTED) É nescessario para não recarregar a arvore apos retornar das outras listas
@@ -170,53 +168,6 @@ class _CadGrupoMedidasState extends State<CadGrupoMedidas> {
       );
   }
 
-//VALIDA OS CAMPOS PARA ENVIAR E RETORNAR AO MENU
-  validarCampos2() {
-    var endereco = controllerEndereco.text;
-    var cidade = controllerCidade.text;
-    var bairro = controllerBairro.text;
-    var numeroend = controllerNumeroEnd.text;
-    var proprietarioend = controllerPropEnd.text;
-
-    if (endereco.isNotEmpty && endereco is String) {
-      if (numeroend.isNotEmpty && numeroend.length > 1) {
-        if (proprietarioend.isNotEmpty && proprietarioend is String) {
-          if (cidade.isNotEmpty) {
-            if (bairro.isNotEmpty) {
-              setState(() {
-                mensagemErro = '';
-              });
-              // verificarcheck();
-              Navigator.pushNamed(context, '/ListaGrupoMedidas');
-              salvarDadosBanco();
-            } else {
-              setState(() {
-                mensagemErro = 'O Bairro esta vazio!';
-              });
-            }
-          } else {
-            setState(() {
-              mensagemErro = 'a Cidade esta vazia!';
-            });
-          }
-        } else {
-          setState(() {
-            mensagemErro =
-                'o  proprietario não pode conter numeros ou ficar vazio';
-          });
-        }
-      } else {
-        setState(() {
-          mensagemErro = ' O numero da casa/apartamento não pode ficar vazio';
-        });
-      }
-    } else {
-      setState(() {
-        mensagemErro = 'o endereço não pode ficar em branco!';
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -234,219 +185,228 @@ class _CadGrupoMedidasState extends State<CadGrupoMedidas> {
           child: Container(
             alignment: Alignment.center,
             child: Center(
-              child: Column(children: [
-                //--------------------------------------------------
-                Padding(
-                  padding: EdgeInsets.all(10),
-                  child: Container(
-                    alignment: Alignment.topCenter,
-                    child: Text(
-                      'Preencha os campos abaixo com os dados do cliente:',
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              child: Column(
+                children: [
+                  //-----------------------------------------------------------
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Container(
+                      alignment: Alignment.topCenter,
+                      child: Text(
+                        'Preencha os campos abaixo com os dados do cliente:',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ),
-                ),
-                //--------------------------------------------------
-
-                Padding(
-                  padding:
-                      EdgeInsets.only(left: 10, right: 10, top: 25, bottom: 5),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.black),
-                    ),
-                    child: new Column(
-                      children: <Widget>[
-                        // ================== CAMPO ENDEREÇO ====================
-                        Material(
-                          child: Padding(
-                            padding: EdgeInsets.all(10),
-                            child: TextFormField(
-                                controller: controllerCidade,
-                                style: new TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold),
-                                decoration: new InputDecoration(
-                                    prefixIcon: new Icon(Icons.edit_location),
-                                    labelText: 'Cidade:',
-                                    border: new OutlineInputBorder(
-                                        borderRadius: new BorderRadius.circular(
-                                      10,
-                                    )))),
-                          ),
-                        ),
-                        Material(
-                          child: Padding(
-                            padding: EdgeInsets.all(10),
-                            child: TextFormField(
-                                controller: controllerBairro,
-                                style: new TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold),
-                                decoration: new InputDecoration(
-                                    prefixIcon: new Icon(Icons.edit_location),
-                                    labelText: 'Bairro:',
-                                    border: new OutlineInputBorder(
-                                        borderRadius: new BorderRadius.circular(
-                                      10,
-                                    )))),
-                          ),
-                        ),
-                        Material(
-                          child: Padding(
-                            padding: EdgeInsets.all(10),
-                            child: TextFormField(
-                                controller: controllerEndereco,
-                                style: new TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold),
-                                decoration: new InputDecoration(
-                                    prefixIcon: new Icon(Icons.edit_location),
-                                    labelText: 'Endereço:',
-                                    border: new OutlineInputBorder(
-                                        borderRadius: new BorderRadius.circular(
-                                      10,
-                                    )))),
-                          ),
-                        ),
-
-                        // ================= CAMPO NÚMERO ==================
-                        Padding(
-                          padding: EdgeInsets.all(10),
-                          child: TextFormField(
-                              keyboardType: TextInputType.number,
-                              controller: controllerNumeroEnd,
-                              style: new TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold),
-                              decoration: new InputDecoration(
-                                  prefixIcon:
-                                      new Icon(Icons.format_list_numbered),
-                                  labelText: 'Numero:',
-                                  border: new OutlineInputBorder(
-                                      borderRadius: new BorderRadius.circular(
-                                    10,
-                                  )))),
-                        ),
-                        // ============= CAMPO PROPRIETÁRIO ==============
-                        Padding(
-                          padding: EdgeInsets.all(10),
-                          child: TextFormField(
-                              controller: controllerPropEnd,
-                              style: new TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold),
-                              decoration: new InputDecoration(
-                                  prefixIcon: new Icon(Icons.account_circle),
-                                  labelText: 'Proprietário:',
-                                  border: new OutlineInputBorder(
-                                      borderRadius: new BorderRadius.circular(
-                                    10,
-                                  )))),
-                        ),
-                        // =================== TIPO DE IMÓVEL ====================
-                        new Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: new Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Text(
-                              'Tipo de imovel:',
-                              style: TextStyle(fontSize: 18),
+                  //------------------------------------------------------------
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: 10, right: 10, top: 25, bottom: 5),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: Colors.black),
+                      ),
+                      child: new Column(
+                        children: <Widget>[
+                          // ================== CAMPO CIDADE ====================
+                          Material(
+                            child: Padding(
+                              padding: EdgeInsets.all(10),
+                              child: TextFormField(
+                                  controller: controllerCidade,
+                                  style: new TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
+                                  decoration: new InputDecoration(
+                                      prefixIcon: new Icon(Icons.edit_location),
+                                      labelText: 'Cidade:',
+                                      border: new OutlineInputBorder(
+                                          borderRadius:
+                                              new BorderRadius.circular(
+                                        10,
+                                      )))),
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                border:
-                                    Border.all(color: Colors.black, width: 1)),
-                            child: DropdownButton(
-                                hint: Text(
-                                  'Tipo de Imovel',
-                                  style: TextStyle(fontSize: 18),
-                                ),
-                                value: _selectedField,
-                                items: itensLista.map((categoria) {
-                                  return DropdownMenuItem(
-                                      value: (categoria['IdImovel']),
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            categoria['IdImovel'].toString(),
-                                            style: TextStyle(fontSize: 18),
-                                          ),
-                                          Text(
-                                            ' - ',
-                                            style: TextStyle(fontSize: 18),
-                                          ),
-                                          Text(
-                                            categoria['Nome'],
-                                            style: TextStyle(fontSize: 18),
-                                          )
-                                        ],
-                                      ));
-                                }).toList(),
-                                onChanged: (value) {
-                                  setState(() {
-                                    _selectedField = value;
-                                  });
-                                }),
-                          ),
-                        ),
-                        //--------------------------------------------------
-                        new Container(
-                          padding: EdgeInsets.all(10),
-                          child: Center(
-                            child: Text(
-                              mensagemErro,
-                              style: TextStyle(color: Colors.red, fontSize: 20),
+                          // ================= CAMPO BAIRRO ==================
+                          Material(
+                            child: Padding(
+                              padding: EdgeInsets.all(10),
+                              child: TextFormField(
+                                  controller: controllerBairro,
+                                  style: new TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
+                                  decoration: new InputDecoration(
+                                      prefixIcon: new Icon(Icons.edit_location),
+                                      labelText: 'Bairro:',
+                                      border: new OutlineInputBorder(
+                                          borderRadius:
+                                              new BorderRadius.circular(
+                                        10,
+                                      )))),
                             ),
                           ),
-                        ),
-                        //--------------------------------------------------
-
-                        Padding(
-                          padding: EdgeInsets.only(top: 5, bottom: 5),
-                          child: Botao().botaoPadrao(
-                            'Iniciar Medição',
-                            () => {
-                              Navigator.of(context)
-                                  .pop(), // Fecha a tela de cadastro do grupo ao iniciar medição
-                              validarCampos2(),
-                            },
-                            Color(0XFFD1D6DC),
+                          // ================= CAMPO ENDEREÇO ==================
+                          Material(
+                            child: Padding(
+                              padding: EdgeInsets.all(10),
+                              child: TextFormField(
+                                  controller: controllerEndereco,
+                                  style: new TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
+                                  decoration: new InputDecoration(
+                                      prefixIcon: new Icon(Icons.edit_location),
+                                      labelText: 'Endereço:',
+                                      border: new OutlineInputBorder(
+                                          borderRadius:
+                                              new BorderRadius.circular(
+                                        10,
+                                      )))),
+                            ),
                           ),
-                        ),
 
-                        Padding(
-                          padding: EdgeInsets.only(top: 5, bottom: 5),
-                          child: Botao().botaoPadrao(
-                            'Salvar endereço',
-                            () => {
-                              Navigator.of(context)
-                                  .pop(), // Fecha a tela de cadastro do grupo ao iniciar medição
-                              validarCampos(),
-                            },
-                            Color(0XFFD1D6DC),
+                          // ================= CAMPO NÚMERO ==================
+                          Padding(
+                            padding: EdgeInsets.all(10),
+                            child: TextFormField(
+                                keyboardType: TextInputType.number,
+                                controller: controllerNumeroEnd,
+                                style: new TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
+                                decoration: new InputDecoration(
+                                    prefixIcon:
+                                        new Icon(Icons.format_list_numbered),
+                                    labelText: 'Numero:',
+                                    border: new OutlineInputBorder(
+                                        borderRadius: new BorderRadius.circular(
+                                      10,
+                                    )))),
                           ),
-                        )
-                      ],
+                          // ============= CAMPO PROPRIETÁRIO ==============
+                          Padding(
+                            padding: EdgeInsets.all(10),
+                            child: TextFormField(
+                                controller: controllerPropEnd,
+                                style: new TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
+                                decoration: new InputDecoration(
+                                    prefixIcon: new Icon(Icons.account_circle),
+                                    labelText: 'Proprietário:',
+                                    border: new OutlineInputBorder(
+                                        borderRadius: new BorderRadius.circular(
+                                      10,
+                                    )))),
+                          ),
+                          // =================== TIPO DE IMÓVEL ====================
+                          new Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: new Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Text(
+                                'Tipo de imovel:',
+                                style: TextStyle(fontSize: 18),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                      color: Colors.black, width: 1)),
+                              child: DropdownButton(
+                                  hint: Text(
+                                    'Tipo de Imovel',
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                                  value: _selectedField,
+                                  items: itensLista.map((categoria) {
+                                    return DropdownMenuItem(
+                                        value: (categoria['IdImovel']),
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              categoria['IdImovel'].toString(),
+                                              style: TextStyle(fontSize: 18),
+                                            ),
+                                            Text(
+                                              ' - ',
+                                              style: TextStyle(fontSize: 18),
+                                            ),
+                                            Text(
+                                              categoria['Nome'],
+                                              style: TextStyle(fontSize: 18),
+                                            )
+                                          ],
+                                        ));
+                                  }).toList(),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _selectedField = value;
+                                    });
+                                  }),
+                            ),
+                          ),
+                          //--------------------------------------------------
+                          new Container(
+                            padding: EdgeInsets.all(10),
+                            child: Center(
+                              child: Text(
+                                mensagemErro,
+                                style:
+                                    TextStyle(color: Colors.red, fontSize: 20),
+                              ),
+                            ),
+                          ),
+                          //--------------------------------------------------
+
+                          Padding(
+                            padding: EdgeInsets.only(top: 5, bottom: 5),
+                            child: Botao().botaoPadrao(
+                              'Iniciar Medição',
+                              () => {
+                                Navigator.of(context)
+                                    .pop(), // Fecha a tela de cadastro do grupo ao iniciar medição
+                                validarCampos(),
+                                Navigator.pushNamed(
+                                    context, '/ListaGrupoMedidas'),
+                              },
+                              Color(0XFFD1D6DC),
+                            ),
+                          ),
+
+                          Padding(
+                            padding: EdgeInsets.only(top: 5, bottom: 5),
+                            child: Botao().botaoPadrao(
+                              'Salvar endereço',
+                              () => {
+                                Navigator.of(context)
+                                    .pop(), // Fecha a tela de cadastro do grupo ao iniciar medição
+                                validarCampos(),
+                              },
+                              Color(0XFFD1D6DC),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ]),
+                ],
+              ),
             ),
           ),
         ),

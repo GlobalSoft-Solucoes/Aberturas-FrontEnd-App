@@ -116,10 +116,26 @@ class _EntradaAppState extends State<EntradaApp> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              // ========================== NOME DO PROJETO ==========================
+              Container(
+                padding: EdgeInsets.only(
+                  left: size.width * 0.37,
+                  top: 50,
+                ),
+                child: Text(
+                  'Aberturas',
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.w400,
+                    // fontFamily: 'Raleway',
+                  ),
+                ),
+              ),
+
               // ========================== RETANGULO ==========================
               Padding(
                 padding: EdgeInsets.only(
-                  top: 70,
+                  top: 30,
                   left: 20,
                   right: 20,
                 ),
@@ -141,7 +157,7 @@ class _EntradaAppState extends State<EntradaApp> {
 
               Padding(
                 padding: EdgeInsets.only(
-                  top: 150,
+                  top: 110,
                   left: 20,
                   right: 20,
                 ),
@@ -197,7 +213,31 @@ class _EntradaAppState extends State<EntradaApp> {
                   ),
                 ),
               ),
-              //----------------------------------------------------
+
+              //=================== NOME DO USUÁRIO ======================
+              Container(
+                padding: EdgeInsets.only(top: 40),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(right: size.width * 0.0),
+                      child: Text(
+                        'GlobalSoft',
+                        style: TextStyle(
+                            fontSize: 22, fontWeight: FontWeight.w300),
+                        // textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Text(
+                      'Soluções Tecnologicas',
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w300),
+                    )
+                  ],
+                ),
+              ),
             ],
           ),
         ),

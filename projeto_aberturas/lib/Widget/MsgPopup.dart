@@ -36,7 +36,7 @@ class MsgPopup {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
             ),
             onPressed: () {
-              onPressed() ?? Navigator.of(context).pop();
+              Navigator.of(context).pop();
             },
           )
         ],

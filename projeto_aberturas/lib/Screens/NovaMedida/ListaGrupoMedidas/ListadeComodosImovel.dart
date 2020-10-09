@@ -79,6 +79,25 @@ class _ListaComodoImoveisState extends State<ListaComodoImoveis> {
       });
   }
 
+  popupEdicaoGrupoMedidas() {
+    MsgPopup().msgComDoisBotoes(
+      context,
+      'Deseja Editar o Grupo selecionado?',
+      'Não',
+      'Sim',
+      () {
+        Navigator.of(context).pop();
+      },
+      () {
+        Navigator.of(context).pop(); // fecha o popup
+        Navigator.pushNamed(context, '/EditaGrupoMedidas');
+      },
+      sairAoPressionar: true,
+      corBotaoDir: Color(0XFF0099FF),
+      corBotaoEsq: Color(0XFFF4485C),
+    );
+  }
+
   _ListaComodoImoveisState({@required this.idGrupoMedidas}) {
     fetchPost(idGrupoMedidas);
   }
@@ -89,8 +108,20 @@ class _ListaComodoImoveisState extends State<ListaComodoImoveis> {
     Size size = mediaQuery.size;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Comodos cadastrados do imovel'),
+        title: Text('Comodos do imovel'),
         centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.more_vert,
+              color: Colors.black,
+              size: 32,
+            ),
+            onPressed: () => {
+              popupEdicaoGrupoMedidas(),
+            },
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -98,70 +129,71 @@ class _ListaComodoImoveisState extends State<ListaComodoImoveis> {
             height: size.height * 0.750,
             width: size.width,
             child: FutureBuilder(
-                future: fetchPost(GrupoMediddas.idGrupoMedidas),
-                builder: (BuildContext context, snapshot) {
-                  return ListView.builder(
-                    itemCount: medidasComodo.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                          padding: const EdgeInsets.only(
-                            bottom: 2.0,
+              future: fetchPost(GrupoMediddas.idGrupoMedidas),
+              builder: (BuildContext context, snapshot) {
+                return ListView.builder(
+                  itemCount: medidasComodo.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.only(
+                        bottom: 2.0,
+                      ),
+                      child: Padding(
+                        padding:
+                            const EdgeInsets.only(top: 4.0, left: 4, right: 4),
+                        child: Container(
+                          height: 130,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(
+                              10,
+                            ),
+                            color: Color(0XFFD1D6DC),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.only(top: 4.0),
-                            child: Container(
-                              height: 130,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(
-                                  10,
+                            padding: const EdgeInsets.only(left: 15, right: 15),
+                            child: GestureDetector(
+                              onDoubleTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ListaDadosComodo(
+                                      idMedidaUnt:
+                                          medidasComodo[index].idMedidaUnt,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: Color(0XFFD1D6DC),
+                                  borderRadius: BorderRadius.circular(
+                                    15,
+                                  ),
                                 ),
-                                color: Color(0XFFD1D6DC),
-                              ),
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 15, right: 15),
-                                child: GestureDetector(
-                                  onDoubleTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => ListaDadosComodo(
-                                          idMedidaUnt:
-                                              medidasComodo[index].idMedidaUnt,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                      color: Color(0XFFD1D6DC),
-                                      borderRadius: BorderRadius.circular(
-                                        15,
-                                      ),
+                                child: ListTile(
+                                  leading: Text(
+                                    '${index + 1}',
+                                    style: TextStyle(
+                                      fontSize: 20,
                                     ),
-                                    child: ListTile(
-                                      leading: Text(
-                                        '${index + 1}',
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                        ),
-                                      ),
-                                      subtitle: Text(
-                                        'Comodo: ${medidasComodo[index].comodo}',
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            color: Colors.blue[600]),
-                                      ),
-                                    ),
+                                  ),
+                                  subtitle: Text(
+                                    'Comodo: ${medidasComodo[index].comodo}',
+                                    style: TextStyle(
+                                        fontSize: 20, color: Colors.blue[600]),
                                   ),
                                 ),
                               ),
                             ),
-                          ));
-                    },
-                  );
-                }),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
           ),
           Container(
             width: size.width,
