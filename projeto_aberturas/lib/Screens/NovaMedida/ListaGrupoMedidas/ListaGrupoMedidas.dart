@@ -31,28 +31,19 @@ class _ListaGrupoMedidasState extends State<ListaGrupoMedidas> {
   // ========= POPUP QUE DELETAR O REGISTRO DO GRUPO DE MEDIDAS ============
   _deletarReg(int index) {
     controllerExcluirGrupo.text = '';
-    MsgPopup().campoTextoComDoisBotoes(
+    MsgPopup().msgComDoisBotoes(
       context,
-      'Digite "Excluir" para apagar o grupo de medidas selecionado.',
-      'Digite aqui',
+      'Deseja excluir o grupo de medidas selecionado.',
       'Cancelar',
       'Confirmar',
       () => {
         Navigator.of(context).pop(),
       },
       () => {
-        if (controllerExcluirGrupo.text.toUpperCase() == 'EXCLUIR')
-          {
-            delete(index),
-            Navigator.of(context).pop(),
-            listarDados(),
-            controllerExcluirGrupo.text = '',
-          }
-        else
-          {_palavraIncorreta()}
+        delete(index),
+        Navigator.of(context).pop(),
+        listarDados(),
       },
-      controller: controllerExcluirGrupo,
-      iconeText: Icons.textsms,
     );
   }
 
@@ -66,10 +57,13 @@ class _ListaGrupoMedidasState extends State<ListaGrupoMedidas> {
     );
     //IF(MOUNTED) É nescessario para não recarregar a arvore apos retornar das outras listas
     if (mounted)
-      setState(() {
-        Iterable lista = json.decode(response.body);
-        end = lista.map((model) => ModelGrupoMedidas.fromJson(model)).toList();
-      });
+      setState(
+        () {
+          Iterable lista = json.decode(response.body);
+          end =
+              lista.map((model) => ModelGrupoMedidas.fromJson(model)).toList();
+        },
+      );
   }
 
 //FUNÇÃO PARA DELETAR OS DADOS DA DATABASE
@@ -118,7 +112,7 @@ class _ListaGrupoMedidasState extends State<ListaGrupoMedidas> {
                       padding: const EdgeInsets.only(left: 0, right: 10),
                       child: GestureDetector(
                         onDoubleTap: () {
-                          GrupoMediddas.idGrupoMedidas =
+                          GrupoMedidas.idGrupoMedidas =
                               end[index].idGrupoMedidas;
                           Navigator.push(
                             context,

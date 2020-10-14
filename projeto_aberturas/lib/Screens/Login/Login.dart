@@ -5,6 +5,8 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:http/http.dart' as http;
 import 'package:projeto_aberturas/Models/constantes.dart';
 import 'package:projeto_aberturas/Models/Email/RecuperarSenha.dart';
+import 'package:projeto_aberturas/Static/Static_Empresa.dart';
+import 'package:projeto_aberturas/Static/Static_GrupoMedidas.dart';
 import 'package:projeto_aberturas/Stores/Login_Store.dart';
 import 'package:projeto_aberturas/Widget/MsgPopup.dart';
 import 'package:projeto_aberturas/Static/Static_Usuario.dart';
@@ -46,6 +48,13 @@ class _LoginState extends State<Login> {
           Navigator.of(context)
               .pop(); // FECHA A TELA DE LOGIN E NÃO PERMITE QUE VOLTE PARA ELA
           Navigator.of(context).pushNamed('/Home');
+
+          // atualiza os dados da empresa
+          setState(
+            () {
+              DadosEmpresa().capturaDadosEmpresa();
+            },
+          );
         } else
           _erroLogin();
       },
@@ -75,8 +84,10 @@ class _LoginState extends State<Login> {
       // caso haja valor na variável, quer dizer que contém um registro
       if (valorRetorno.length > 0) {
         Usuario.idUsuario = int.parse(valorRetorno);
-        DadosUserLogado().capturaDadosUsuarioLogado();
-        // se houver resultado, permite que o cadastro seja feito
+        // carrega os dados do usuário logado
+        await DadosUserLogado().capturaDadosUsuarioLogado();
+        // carrega os dados da empresa do usuário
+        await DadosEmpresa().capturaDadosEmpresa();
       }
     }
   }

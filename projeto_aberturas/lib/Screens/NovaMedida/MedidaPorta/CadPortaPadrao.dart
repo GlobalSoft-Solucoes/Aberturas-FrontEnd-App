@@ -67,7 +67,7 @@ class _CadPortaPadraoState extends State<CadPortaPadrao> {
   Future<dynamic> salvarDadosBanco() async {
     var bodyy = jsonEncode({
       'IdUsuario': Usuario.idUsuario,
-      'IdGrupo_Medidas': GrupoMediddas.idGrupoMedidas,
+      'IdGrupo_Medidas': GrupoMedidas.idGrupoMedidas,
       'IdCod_Referencia': idCodRef,
       'IdDobradica': idDobradica,
       'IdPivotante': idRolPivotante,
@@ -94,7 +94,7 @@ class _CadPortaPadraoState extends State<CadPortaPadrao> {
   var mensagemErro = '';
   validarCampos() {
     if (Usuario.idUsuario != null) {
-      if (GrupoMediddas.idGrupoMedidas != null) {
+      if (GrupoMedidas.idGrupoMedidas != null) {
         if (altura != 0) {
           if (aberturaPorta != '') {
             if (idFechadura != null) {

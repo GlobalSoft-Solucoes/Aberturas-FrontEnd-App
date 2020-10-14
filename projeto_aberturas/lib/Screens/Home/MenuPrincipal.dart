@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_aberturas/Static/Static_Usuario.dart';
 
 class MenuPrincipal extends StatefulWidget {
   @override
@@ -64,6 +65,10 @@ class _MenuPrincipalState extends State<MenuPrincipal> {
               contentPadding: EdgeInsets.only(top: 20, left: 20),
               dense: true,
               onTap: () {
+                setState(() {
+                  // Atualiza os dados do usuario no arquivo static onde eles são pegos
+                  DadosUserLogado().capturaDadosUsuarioLogado();
+                });
                 Navigator.pushNamed(context, '/PerfilUsuario');
               },
             ),

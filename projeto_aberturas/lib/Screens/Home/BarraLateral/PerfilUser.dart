@@ -260,7 +260,6 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
   Future<dynamic> editarDadosUsuario() async {
     _verificaValorAdmUser();
     var bodyy = jsonEncode({
-      // 'IdEmpresa': Empresa.idEmpresa,
       "Nome": controllerNome.text,
       "Email": controllerEmail.text,
       "Senha": controllerSenha.text,
@@ -389,7 +388,9 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
                               title: Text(
                                 'Administrador',
                                 style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.w600),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                               key: Key('check1'),
                               value: checklCodAdm,
@@ -399,6 +400,8 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
                                     checklCodAdm = valorcheck;
                                   },
                                 );
+                                // se o usuario não for adm, abre um popup para informar o codigo da empresa
+                                // e se tornar um adm
                                 await _verificaCodAdmUsuario();
                                 valorAdm == "0" ? _codAdministrador() : null;
                               },

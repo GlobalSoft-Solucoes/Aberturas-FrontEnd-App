@@ -160,7 +160,7 @@ class _CadGrupoMedidasState extends State<CadGrupoMedidas> {
 
             // caso haja valor na variável, quer dizer que contém um registro
             if (valorRetorno.length > 0) {
-              GrupoMediddas.idGrupoMedidas = int.parse(valorRetorno);
+              GrupoMedidas.idGrupoMedidas = int.parse(valorRetorno);
               escolhaTelaNovaMedida();
             }
           }

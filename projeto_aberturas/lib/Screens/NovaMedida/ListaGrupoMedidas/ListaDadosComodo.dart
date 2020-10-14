@@ -78,7 +78,7 @@ class _ListaDadosComodoState extends State<ListaDadosComodo> {
   Future<dynamic> salvarDadosBanco(String field, {String url, int id}) async {
     MedidaUntFixa.idMedidaUnt = idMedidaUnt;
     var bodyy = jsonEncode({
-      'IdGrupo_Medidas': GrupoMediddas.idGrupoMedidas,
+      'IdGrupo_Medidas': GrupoMedidas.idGrupoMedidas,
       'IdMedida_Unt': MedidaUntFixa.idMedidaUnt,
       field: valor,
     });

@@ -7,6 +7,7 @@ import 'package:projeto_aberturas/Models/constantes.dart';
 import 'package:projeto_aberturas/Screens/Configuracoes/ControleDeAcesso/ListaDetalhesUsuarios.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:projeto_aberturas/Static/Static_Empresa.dart';
 
 class ListaUsuCadastrados extends StatefulWidget {
   @override
@@ -17,7 +18,9 @@ class _ListaUsuCadastradosState extends State<ListaUsuCadastrados> {
   var listaUsuarios = new List<ModelsUsuarios>();
   Future<dynamic> fetchPost() async {
     final response = await http.get(
-      Uri.encodeFull(UrlServidor + ListarUsuarios),
+      Uri.encodeFull(
+        UrlServidor + ListarUsuariosPorEmpresa + Empresa.idEmpresa.toString(),
+      ),
       headers: {"accept": "application/json"},
     );
     //IF(MOUNTED) É nescessario para não recarregar a arvore apos retornar das outras listas

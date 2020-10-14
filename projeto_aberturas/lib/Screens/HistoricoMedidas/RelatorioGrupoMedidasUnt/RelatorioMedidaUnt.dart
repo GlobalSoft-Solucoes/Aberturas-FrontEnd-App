@@ -107,6 +107,9 @@ class _RelatorioMedidaUntState extends State<RelatorioMedidaUnt> {
 
 //função que envia os dados para uma planilha
   _submitForm() {
+    for (var i = 0; i <= medidasComodo.length; i++) {
+      passarDados(i);
+    }
     FeedbackForm feedbackForm = FeedbackForm(
         dataCadastro,
         proprietario,

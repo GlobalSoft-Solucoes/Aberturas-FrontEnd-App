@@ -36,6 +36,7 @@ class _RelatorioState extends State<Relatorio> {
       });
   }
 
+  // POPUP QUE PEDE PERMISSÃO PARA QUE OS DADOS SEJAM ENVIADOS PARA A EMPRESA
   _popopConfirmarEnvio() {
     MsgPopup().msgComDoisBotoes(
       context,
@@ -82,7 +83,7 @@ class _RelatorioState extends State<Relatorio> {
                           top: 8,
                         ),
                         child: Container(
-                    height: size.height * 0.20,
+                          height: size.height * 0.20,
                           width: size.width,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(
@@ -103,23 +104,24 @@ class _RelatorioState extends State<Relatorio> {
                                     ),
                                   ),
                                 );
-                          DadosExcel.cidade = end[index].cidade;
-                          DadosExcel.proprietario = end[index].proprietario;
-                        },
-                        child: SingleChildScrollView(
-                          child: Container(
-                            // alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: Color(0XFFD1D6DC),
-                              borderRadius: BorderRadius.circular(
-                                15,
-                              ),
-                            ),
-                            child: Card(
-                              color: Colors.grey[200],
-                              child: Column(
-                                children: [
-                                  Text(
+                                DadosExcel.cidade = end[index].cidade;
+                                DadosExcel.proprietario =
+                                    end[index].proprietario;
+                              },
+                              child: SingleChildScrollView(
+                                child: Container(
+                                  // alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: Color(0XFFD1D6DC),
+                                    borderRadius: BorderRadius.circular(
+                                      15,
+                                    ),
+                                  ),
+                                  child: Card(
+                                    color: Colors.grey[200],
+                                    child: Column(
+                                      children: [
+                                        Text(
                                           'data: ${end[index].dataCadastro.substring(0, 10)}',
                                           style: TextStyle(fontSize: 25),
                                         ),

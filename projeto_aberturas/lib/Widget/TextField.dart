@@ -10,7 +10,7 @@ class CampoText {
       icone,
       double raioBorda,
       bool enabled,
-      valorInicial,
+      double fontSize,
       mascara}) {
     return Center(
       child: Container(
@@ -19,13 +19,12 @@ class CampoText {
         padding: confPadding ??
             EdgeInsets.only(top: 5, left: 10, right: 10, bottom: 5),
         child: TextFormField(
-          initialValue: valorInicial ?? null,
           enabled: enabled ?? true,
           keyboardType: tipoTexto ?? TextInputType.text,
           controller: nomeController,
           obscureText: campoSenha ?? false,
           style: new TextStyle(
-            fontSize: 20,
+            fontSize: fontSize ?? 20,
             color: Colors.black,
             fontWeight: FontWeight.w500,
           ),

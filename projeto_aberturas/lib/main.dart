@@ -64,7 +64,7 @@ void main() {
         '/CadDobradicas': (context) => CadDobradicas(),
         '/CadPivotante': (context) => CadPivotantes(),
         '/ListaComodosPorImovel': (context) => ListaComodoImoveis(
-              idGrupoMedidas: GrupoMediddas.idGrupoMedidas,
+              idGrupoMedidas: GrupoMedidas.idGrupoMedidas,
             ),
         '/EditaGrupoMedidas': (context) => EditaGrupoMedidas(),
       },

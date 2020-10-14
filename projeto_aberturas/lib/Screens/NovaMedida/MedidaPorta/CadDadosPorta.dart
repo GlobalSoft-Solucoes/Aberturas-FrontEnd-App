@@ -355,7 +355,7 @@ class _CadDadosPortaState extends State<CadDadosPorta> {
     cor = controllerCor.text;
     var bodyy = jsonEncode({
       'IdUsuario': Usuario.idUsuario,
-      'IdGrupo_Medidas': GrupoMediddas.idGrupoMedidas,
+      'IdGrupo_Medidas': GrupoMedidas.idGrupoMedidas,
       'IdCod_Referencia': idCodRef,
       'IdPivotante': idRolPivotante,
       'IdDobradica': idDobradica,
