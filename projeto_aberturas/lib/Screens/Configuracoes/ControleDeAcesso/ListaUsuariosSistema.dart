@@ -1,12 +1,11 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:projeto_aberturas/Models/Models_Usuario.dart';
 import 'package:projeto_aberturas/Models/constantes.dart';
 import 'package:projeto_aberturas/Screens/Configuracoes/ControleDeAcesso/ListaDetalhesUsuarios.dart';
-
 import 'package:http/http.dart' as http;
+import 'package:projeto_aberturas/Static/Static_Empresa.dart';
 
 class ListaUsuCadastrados extends StatefulWidget {
   @override
@@ -17,9 +16,10 @@ class _ListaUsuCadastradosState extends State<ListaUsuCadastrados> {
   var listaUsuarios = new List<ModelsUsuarios>();
   Future<dynamic> fetchPost() async {
     final response = await http.get(
-      Uri.encodeFull(UrlServidor + ListarUsuarios),
-      headers: {"accept": "application/json"},
-    );
+        Uri.encodeFull(
+          UrlServidor + ListarUsuariosPorEmpresa + Empresa.idEmpresa.toString(),
+        ),
+        headers: {"authorization": ModelsUsuarios.tokenAuth});
     //IF(MOUNTED) É nescessario para não recarregar a arvore apos retornar das outras listas
     if (mounted)
       setState(() {
@@ -64,7 +64,7 @@ class _ListaUsuCadastradosState extends State<ListaUsuCadastrados> {
                         'Lista de Usuario Cadastrados',
                         style: TextStyle(
                             color: Colors.white,
-                            fontSize: 30,
+                            fontSize: 22,
                             fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -75,7 +75,7 @@ class _ListaUsuCadastradosState extends State<ListaUsuCadastrados> {
             Padding(
               padding: EdgeInsets.all(8.0),
               child: Container(
-                height: size.height * 0.85,
+                height: size.height * 0.84,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.white),
@@ -129,7 +129,7 @@ class _ListaUsuCadastradosState extends State<ListaUsuCadastrados> {
 
                                       child: ListTile(
                                         title: Text(
-                                          'N°: ${listaUsuarios[index].idUsuario}',
+                                          'N°${index + 1}',
                                           style: TextStyle(
                                             fontSize: 20,
                                             fontWeight: FontWeight.bold,

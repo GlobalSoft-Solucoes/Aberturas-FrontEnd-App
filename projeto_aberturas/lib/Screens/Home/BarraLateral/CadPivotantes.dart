@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:projeto_aberturas/Models/Models_Portas.dart';
+import 'package:projeto_aberturas/Models/Models_Usuario.dart';
 import 'package:projeto_aberturas/Models/constantes.dart';
 import 'package:projeto_aberturas/Widget/Botao.dart';
 import 'package:projeto_aberturas/Widget/MsgPopup.dart';
@@ -19,9 +20,8 @@ class _CadPivotantesState extends State<CadPivotantes> {
   var mensagemErro = '';
   Future listarDados() async {
     final response = await http.get(
-      Uri.encodeFull(UrlServidor + ListarTodosPivotante),
-      headers: {"accept": "application/json"},
-    );
+        Uri.encodeFull(UrlServidor + ListarTodosPivotante),
+        headers: {"authorization": ModelsUsuarios.tokenAuth});
     if (mounted) {
       setState(() {
         Iterable lista = json.decode(response.body);
@@ -52,7 +52,7 @@ class _CadPivotantesState extends State<CadPivotantes> {
     print(bodyy);
     http.Response state = await http.post(
       UrlServidor + CadastrarPivotante,
-      headers: {"Content-Type": "application/json"},
+      headers: {"authorization": ModelsUsuarios.tokenAuth},
       body: bodyy,
     );
     if (state.statusCode == 201) {

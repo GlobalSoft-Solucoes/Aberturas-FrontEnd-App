@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:projeto_aberturas/Models/Models_Portas.dart';
+import 'package:projeto_aberturas/Models/Models_Usuario.dart';
 import 'package:projeto_aberturas/Models/constantes.dart';
 import 'package:projeto_aberturas/Widget/Botao.dart';
 import 'package:projeto_aberturas/Widget/MsgPopup.dart';
@@ -21,10 +22,11 @@ class _CadFechadurasState extends State<CadFechaduras> {
   var mensagemErro = '';
 
   Future listaDados() async {
-    final response = await http.get(
-      Uri.encodeFull(UrlServidor + 'Fechadura/ListarTodos'),
-      headers: {"accept": "application/json"},
-    );
+    final response = await http
+        .get(Uri.encodeFull(UrlServidor + 'Fechadura/ListarTodos'), headers: {
+      "authorization": ModelsUsuarios.tokenAuth,
+    });
+
     if (mounted) {
       setState(() {
         Iterable lista = json.decode(response.body);
@@ -51,7 +53,7 @@ class _CadFechadurasState extends State<CadFechaduras> {
     print(bodyy);
     http.Response state = await http.post(
       UrlServidor + 'Fechadura/Cadastrar',
-      headers: {"Content-Type": "application/json"},
+      headers: {"authorization": ModelsUsuarios.tokenAuth},
       body: bodyy,
     );
     if (state.statusCode == 200) {

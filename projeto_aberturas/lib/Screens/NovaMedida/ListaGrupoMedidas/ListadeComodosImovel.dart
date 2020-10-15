@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:projeto_aberturas/Models/Models_Usuario.dart';
 import 'package:projeto_aberturas/Models/constantes.dart';
 import 'package:projeto_aberturas/Static/Static_GrupoMedidas.dart';
 import 'package:projeto_aberturas/Screens/NovaMedida/ListaGrupoMedidas/ListaDadosComodo.dart';
@@ -19,7 +20,7 @@ class ListaComodoImoveis extends StatefulWidget {
 
 class _ListaComodoImoveisState extends State<ListaComodoImoveis> {
   var medidasComodo = new List<ModelsMedidasUnt>();
-  int idGrupoMedidas = GrupoMediddas.idGrupoMedidas;
+  int idGrupoMedidas = GrupoMedidas.idGrupoMedidas;
   // MENSAGEM QUE DISPARA QUANDO CLICA EM FINALIZAR PROCESSO
   _finalizaProcesso() async {
     await MsgPopup().msgFeedback(
@@ -57,10 +58,10 @@ class _ListaComodoImoveisState extends State<ListaComodoImoveis> {
 
   // altera o STATUS do registro para FINALIZADO
   Future<dynamic> alterarStatus() async {
-    int idRegistro = GrupoMediddas.idGrupoMedidas;
+    int idRegistro = GrupoMedidas.idGrupoMedidas;
     http.put(
       UrlServidor + AlterarStatusParaFinalizado + idRegistro.toString(),
-      headers: {"Content-Type": "application/json"},
+      headers: {"authorization": ModelsUsuarios.tokenAuth},
     );
   }
 
@@ -68,7 +69,7 @@ class _ListaComodoImoveisState extends State<ListaComodoImoveis> {
   Future<dynamic> fetchPost(int id) async {
     final response = await http.get(
       Uri.encodeFull(UrlServidor + ListarMedidasPorGrupo + id.toString()),
-      headers: {"accept": "application/json"},
+      headers: {"authorization": ModelsUsuarios.tokenAuth},
     );
     //IF(MOUNTED) É nescessario para não recarregar a arvore apos retornar das outras listas
     if (mounted)
@@ -79,6 +80,7 @@ class _ListaComodoImoveisState extends State<ListaComodoImoveis> {
       });
   }
 
+// ==== MENSAGEM QUE DISPARA PARA EDITAR O GRUPO DE MEDIDAS =====
   popupEdicaoGrupoMedidas() {
     MsgPopup().msgComDoisBotoes(
       context,
@@ -88,8 +90,11 @@ class _ListaComodoImoveisState extends State<ListaComodoImoveis> {
       () {
         Navigator.of(context).pop();
       },
-      () {
+      () async {
+        // captura os cados do grupo e manda para um arquivo static
+        await DadosGrupoSelecionado().capturaDadosGrupoSelecionado();
         Navigator.of(context).pop(); // fecha o popup
+        Navigator.of(context).pop(); // fecha a lista dos comodos
         Navigator.pushNamed(context, '/EditaGrupoMedidas');
       },
       sairAoPressionar: true,
@@ -129,7 +134,7 @@ class _ListaComodoImoveisState extends State<ListaComodoImoveis> {
             height: size.height * 0.750,
             width: size.width,
             child: FutureBuilder(
-              future: fetchPost(GrupoMediddas.idGrupoMedidas),
+              future: fetchPost(GrupoMedidas.idGrupoMedidas),
               builder: (BuildContext context, snapshot) {
                 return ListView.builder(
                   itemCount: medidasComodo.length,

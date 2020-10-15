@@ -47,7 +47,7 @@ class ListaDetUsuState extends State<ListaDetUsu> {
   Future<dynamic> listaDadosUser(int id) async {
     final response = await http.get(
       Uri.encodeFull(UrlServidor + BuscarUsuarioPorId + '1'),
-      headers: {"accept": "application/json"},
+      headers: {"authorization": ModelsUsuarios.tokenAuth},
     );
 
     Iterable lista = json.decode(response.body);
@@ -62,15 +62,14 @@ class ListaDetUsuState extends State<ListaDetUsu> {
       Uri.encodeFull(
         UrlServidor.toString() + BuscarUsuarioPorId + id.toString(),
       ),
-      headers: {"Content-Type": "application/json"},
+      headers: {"authorization": ModelsUsuarios.tokenAuth},
     );
 
     Iterable lista = json.decode(result.body);
     listaUsuarios =
         lista.map((model) => ModelsUsuarios.fromJson(model)).toList();
     // Usuario.nome = 'testeusuario';
-    nomeUser = listaUsuarios[0].name;
-    var teste = listaUsuarios.length;
+
     return nomeUser; //listaUsuarios[id].name;
   }
 

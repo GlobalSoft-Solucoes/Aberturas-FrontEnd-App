@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_aberturas/Screens/Home/BarraLateral/CadPivotantes.dart';
+import 'package:projeto_aberturas/Screens/Home/BarraLateral/Lixeira.dart';
 import 'package:projeto_aberturas/Screens/NovaMedida/CadastroGrupoMedidas/CadGrupoMedidas.dart';
 import 'package:projeto_aberturas/Screens/NovaMedida/ListaGrupoMedidas/ListaGrupoMedidas.dart';
 import 'package:projeto_aberturas/Screens/NovaMedida/ListaGrupoMedidas/ListadeComodosImovel.dart';
@@ -64,8 +65,9 @@ void main() {
         '/CadDobradicas': (context) => CadDobradicas(),
         '/CadPivotante': (context) => CadPivotantes(),
         '/ListaComodosPorImovel': (context) => ListaComodoImoveis(
-              idGrupoMedidas: GrupoMediddas.idGrupoMedidas,
+              idGrupoMedidas: GrupoMedidas.idGrupoMedidas,
             ),
+        '/Lixeira': (context) => Lixeira(),
         '/EditaGrupoMedidas': (context) => EditaGrupoMedidas(),
       },
       home: EntradaApp(),

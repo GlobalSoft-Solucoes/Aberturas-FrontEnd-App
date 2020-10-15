@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:projeto_aberturas/Models/Models_Usuario.dart';
 import 'package:projeto_aberturas/Models/constantes.dart';
 import 'package:projeto_aberturas/Screens/Home/Home.Dart';
 import 'package:projeto_aberturas/Static/Static_Usuario.dart';
@@ -175,7 +176,7 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
             BuscaEmpresaPorUsuario +
             Usuario.idUsuario.toString(),
       ),
-      headers: {"Content-Type": "application/json"},
+      headers: {"authorization": ModelsUsuarios.tokenAuth},
     );
 
     // Captura o valor vindo do body da requisição
@@ -260,7 +261,6 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
   Future<dynamic> editarDadosUsuario() async {
     _verificaValorAdmUser();
     var bodyy = jsonEncode({
-      // 'IdEmpresa': Empresa.idEmpresa,
       "Nome": controllerNome.text,
       "Email": controllerEmail.text,
       "Senha": controllerSenha.text,
@@ -269,7 +269,7 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
 
     http.put(
       UrlServidor + EditarUsuario + Usuario.idUsuario.toString(),
-      headers: {"Content-Type": "application/json"},
+      headers: {"authorization": ModelsUsuarios.tokenAuth},
       body: bodyy,
     );
     print(bodyy);
@@ -282,7 +282,7 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
 
     http.put(
       UrlServidor + EditarUsuario + Usuario.idUsuario.toString(),
-      headers: {"Content-Type": "application/json"},
+      headers: {"authorization": ModelsUsuarios.tokenAuth},
       body: bodyy,
     );
     print(bodyy);
@@ -389,7 +389,9 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
                               title: Text(
                                 'Administrador',
                                 style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.w600),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                               key: Key('check1'),
                               value: checklCodAdm,
@@ -399,6 +401,8 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
                                     checklCodAdm = valorcheck;
                                   },
                                 );
+                                // se o usuario não for adm, abre um popup para informar o codigo da empresa
+                                // e se tornar um adm
                                 await _verificaCodAdmUsuario();
                                 valorAdm == "0" ? _codAdministrador() : null;
                               },

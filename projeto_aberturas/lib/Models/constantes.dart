@@ -2,6 +2,7 @@
 
 final UrlServidor = ('http://globalsoft-st-com-br.umbler.net/');
 
+//
 // API'S PARA A TABELA GRUPO_MEDIDAS
 const CadastrarGrupoMedidas = 'GrupoMedidas/cadastrar/';
 const ListarTodosGrupoMedidas = 'GrupoMedidas/listarTodos/';
@@ -12,6 +13,11 @@ const ListarUltimoIdGrupoCadastrado = 'GrupoMedidas/ListaUltimoGrupoCadastrado';
 const AlterarStatusParaFinalizado = 'GrupoMedidas/AlteraStatusParaFinalizado/';
 const AlterarStatusParaEnviado = 'GrupoMedidas/AlteraStatusParaEnviado/';
 const AlterarStatusParaNull = 'GrupoMedidas/AlteraStatusParaNull/';
+const BuscarGrupoPorId = 'GrupoMedidas/BuscaGrupoPorId/';
+const StatusRemoverGrupo = 'GrupoMedidas/StatusRemoverGrupo/';
+const StatusExcluirGrupo = 'GrupoMedidas/StatusExcluirGrupo/';
+const StatusNullGrupo = 'GrupoMedidas/StatusNullGrupo/';
+const ListarGrupoComStatusRemovido = 'GrupoMedidas/ListarGruposRemovidos/';
 
 // API'S PARA A TABELA MEDIDA_UNT
 const CadastrarMedidaUnt = 'MedidaUnt/cadastrar/';
@@ -33,7 +39,7 @@ const LoginUsuario = 'Usuario/LogarUsuario/';
 const VerficarSeEmailEstaDisponivel = 'Usuario/ValidarEmail/';
 const DeletarUsuario = 'Usuario/Deletar/';
 const RecuperarSenhaUsuario = 'Usuario/RecuperaSenha/AlterarSenha/';
-const ListarUsuarios = 'Usuario/ListarUsuarios/';
+const ListarUsuariosPorEmpresa = 'Usuario/ListarUsuariosPorEmpresa/';
 const BuscaIdUsuarioLogado = 'Usuario/BuscarIdUsuarioLogado/';
 const BuscaEmpresaPorUsuario = 'Usuario/BuscaEmpresaPorUsuario/';
 const EditarUsuario = 'Usuario/Editar/';
@@ -43,13 +49,7 @@ const BuscarUsuarioPorId = 'usuario/BuscaUsuarioPorId/';
 // API'S PARA A TABELA EMPRESA
 const BuscarCodigoAdm = 'Empresa/buscarCodigoAdm/';
 const BuscarCodigoAcessoEmp = 'Empresa/buscarCodigoEmp/';
-
-// API'S PARA A TABELA TIPO_PORTA
-const CadastrarTipoPorta = 'TipoPorta/Cadastrar/';
-const ListarTodosTiposPorta = 'TipoPorta/ListarTodos/';
-const EditarTipoPorta = 'TipoPorta/editar/';
-const DeletartipoPorta = 'TipoPorta/deletar/';
-const BuscaTipoPortaPorNome = 'TipoPorta/BuscarUnicoRegistro/';
+const BuscarEmpresaPorId = 'Empresa/BuscarEmpresaPorId/';
 
 // API'S PARA A DOBRADIÇA
 const CadastrarDobradica = 'Dobradica/Cadastrar/';
@@ -71,9 +71,3 @@ const ListarTodosPivotante = 'Pivotante/ListarTodos';
 const EditarPivotante = 'Pivotante/editar/';
 const DeletarPivotante = 'Pivotante/deletar/';
 const BuscaPivotantePorNome = 'Pivotante/BuscarUnicoRegistro';
-
-// API'S PARA A TABELA PORTA PADRAO
-const CadastrarPortaPadrao = 'PortaPadrao/Cadastrar';
-const ListarTodosPortaPadrao = 'PortaPadrao/ListarTodos';
-const EditarPortaPadrao = 'PortaPadrao/editar/';
-const DeletarPortaPadrao = 'PortaPadrao/deletar/';

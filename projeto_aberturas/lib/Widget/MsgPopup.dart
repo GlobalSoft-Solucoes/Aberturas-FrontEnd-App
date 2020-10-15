@@ -130,7 +130,7 @@ class MsgPopup {
                   // ============= PRIMEIRO BOTÃO ==============
                   Container(
                     child: new FloatingActionButton.extended(
-                      backgroundColor: corBotaoEsq ?? Color(0XFF0099FF),
+                      backgroundColor: corBotaoEsq ?? Color(0XFFF4485C),
                       label: new Text(
                         textoBotaoEsq,
                         style: TextStyle(fontSize: 19),

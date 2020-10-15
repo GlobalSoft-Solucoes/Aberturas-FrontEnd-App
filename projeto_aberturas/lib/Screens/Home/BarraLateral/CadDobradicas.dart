@@ -1,7 +1,7 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:projeto_aberturas/Models/Models_Portas.dart';
+import 'package:projeto_aberturas/Models/Models_Usuario.dart';
 import 'package:projeto_aberturas/Models/constantes.dart';
 
 import 'package:projeto_aberturas/Widget/Botao.dart';
@@ -21,10 +21,11 @@ class _CadDobradicasState extends State<CadDobradicas> {
   var dobradicas = new List<Dobradicas>();
   var mensagemErro = '';
   Future listaDados() async {
-    final response = await http.get(
-      Uri.encodeFull(UrlServidor + 'Dobradica/ListarTodos/'),
-      headers: {"accept": "application/json"},
-    );
+    final response = await http
+        .get(Uri.encodeFull(UrlServidor + 'Dobradica/ListarTodos/'), headers: {
+      "authorization": ModelsUsuarios.tokenAuth,
+    });
+
     if (mounted) {
       setState(() {
         Iterable lista = json.decode(response.body);
@@ -45,7 +46,9 @@ class _CadDobradicasState extends State<CadDobradicas> {
     print(bodyy);
     http.Response state = await http.post(
       UrlServidor + 'Dobradica/Cadastrar/',
-      headers: {"Content-Type": "application/json"},
+      headers: {
+        "authorization": ModelsUsuarios.tokenAuth,
+      },
       body: bodyy,
     );
     if (state.statusCode == 200) {

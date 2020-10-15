@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:projeto_aberturas/Models/Models_GrupoMedidas.dart';
 import 'package:projeto_aberturas/Models/Models_MedidaUnt.dart';
 import 'package:http/http.dart' as http;
+import 'package:projeto_aberturas/Models/Models_Usuario.dart';
 import 'package:projeto_aberturas/Models/constantes.dart';
 import 'package:projeto_aberturas/Static/Static_GrupoMedidas.dart';
 import 'package:projeto_aberturas/Static/Static_MedidaUnt.dart';
@@ -29,7 +30,7 @@ class _ListaDadosComodoState extends State<ListaDadosComodo> {
   Future<dynamic> listaDadosPorComodo(int id) async {
     final response = await http.get(
       Uri.encodeFull(UrlServidor + BuscaUnicoRegistro + id.toString()),
-      headers: {"accept": "application/json"},
+      headers: {"authorization": ModelsUsuarios.tokenAuth},
     );
 
     //IF(MOUNTED) É nescessario para não recarregar a arvore apos retornar das outras listas
@@ -51,7 +52,8 @@ class _ListaDadosComodoState extends State<ListaDadosComodo> {
 
   // ============== DELETA O REGISTRO DO COMODO PELO ID ==============
   Future<dynamic> delete(int id) async =>
-      await http.delete(UrlServidor + DeletarMedidaUnt + id.toString());
+      await http.delete(UrlServidor + DeletarMedidaUnt + id.toString(),
+          headers: {"authorization": ModelsUsuarios.tokenAuth});
 
 // ======== ALERT DIALOGUE PARA DELETAR O COMODO ==========
   _deletarReg(int index) {
@@ -78,7 +80,7 @@ class _ListaDadosComodoState extends State<ListaDadosComodo> {
   Future<dynamic> salvarDadosBanco(String field, {String url, int id}) async {
     MedidaUntFixa.idMedidaUnt = idMedidaUnt;
     var bodyy = jsonEncode({
-      'IdGrupo_Medidas': GrupoMediddas.idGrupoMedidas,
+      'IdGrupo_Medidas': GrupoMedidas.idGrupoMedidas,
       'IdMedida_Unt': MedidaUntFixa.idMedidaUnt,
       field: valor,
     });
@@ -86,7 +88,7 @@ class _ListaDadosComodoState extends State<ListaDadosComodo> {
       UrlServidor +
           (url ?? EditarMedidaUnt) +
           (id.toString() ?? idMedidaUnt.toString()),
-      headers: {"Content-Type": "application/json"},
+      headers: {"authorization": ModelsUsuarios.tokenAuth},
       body: bodyy,
     );
   }

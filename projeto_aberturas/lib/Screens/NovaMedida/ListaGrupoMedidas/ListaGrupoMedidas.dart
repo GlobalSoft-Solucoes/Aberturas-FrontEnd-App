@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:projeto_aberturas/Models/Models_GrupoMedidas.dart';
 import 'package:http/http.dart' as http;
+import 'package:projeto_aberturas/Models/Models_Usuario.dart';
 import 'package:projeto_aberturas/Models/constantes.dart';
 import 'package:projeto_aberturas/Static/Static_GrupoMedidas.dart';
 import 'package:projeto_aberturas/Screens/NovaMedida/ListaGrupoMedidas/ListadeComodosImovel.dart';
@@ -20,39 +21,29 @@ class _ListaGrupoMedidasState extends State<ListaGrupoMedidas> {
   TextEditingController controllerExcluirGrupo = TextEditingController();
   var end = new List<ModelGrupoMedidas>();
 
-// ======== CASO A PALAVRA DIGITADA PARA EXCLUIR O GRUPO ESTIVER ERRADA, O POPUP É DISPARADO ==========
-  _palavraIncorreta() {
-    MsgPopup().msgFeedback(
-        context,
-        'Digite a palavra corretamente, conforme a mensagem informa.',
-        'Palavra incorreta!\n');
-  }
-
-  // ========= POPUP QUE DELETAR O REGISTRO DO GRUPO DE MEDIDAS ============
-  _deletarReg(int index) {
-    controllerExcluirGrupo.text = '';
-    MsgPopup().campoTextoComDoisBotoes(
+//CONFIRMAÇÃO DE EXCLUSAO DO GRUPO
+  confExcluir(id) {
+    MsgPopup().msgComDoisBotoes(
       context,
-      'Digite "Excluir" para apagar o grupo de medidas selecionado.',
-      'Digite aqui',
+      'Deseja excluir o grupo de medidas selecionado?',
       'Cancelar',
       'Confirmar',
       () => {
-        Navigator.of(context).pop(),
+        Navigator.pop(context),
       },
       () => {
-        if (controllerExcluirGrupo.text.toUpperCase() == 'EXCLUIR')
-          {
-            delete(index),
-            Navigator.of(context).pop(),
-            listarDados(),
-            controllerExcluirGrupo.text = '',
-          }
-        else
-          {_palavraIncorreta()}
+        _deletarReg(id),
+        Navigator.pop(context),
       },
-      controller: controllerExcluirGrupo,
-      iconeText: Icons.textsms,
+    );
+  }
+
+//DELETA O GRUPO DE MEDIDAS
+  _deletarReg(id) async {
+    print(id);
+    http.put(
+      (UrlServidor + StatusRemoverGrupo + id.toString()),
+      headers: {"authorization": ModelsUsuarios.tokenAuth},
     );
   }
 
@@ -62,7 +53,7 @@ class _ListaGrupoMedidasState extends State<ListaGrupoMedidas> {
       Uri.encodeFull(UrlServidor.toString() +
           ListarTodosGrupoMedidas +
           Usuario.idUsuario.toString()),
-      headers: {"accept": "application/json"},
+      headers: {"authorization": ModelsUsuarios.tokenAuth},
     );
     //IF(MOUNTED) É nescessario para não recarregar a arvore apos retornar das outras listas
     if (mounted)
@@ -73,8 +64,11 @@ class _ListaGrupoMedidasState extends State<ListaGrupoMedidas> {
   }
 
 //FUNÇÃO PARA DELETAR OS DADOS DA DATABASE
-  Future<dynamic> delete(int id) async => await http
-      .delete(UrlServidor.toString() + DeletarGrupoMedidas + id.toString());
+  Future<dynamic> delete(int id) async {
+    await http.delete(
+        UrlServidor.toString() + DeletarGrupoMedidas + id.toString(),
+        headers: {"authorization": ModelsUsuarios.tokenAuth});
+  }
 
   _ListaGrupoMedidasState() {
     listarDados();
@@ -89,9 +83,12 @@ class _ListaGrupoMedidasState extends State<ListaGrupoMedidas> {
         title: Text(
           'Lista de Grupos cadastrados',
           style: TextStyle(
-            fontSize: 18,
+            fontSize: 25,
           ),
         ),
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () => Navigator.pushNamed(context, '/Home')),
       ),
       body: FutureBuilder(
         future: listarDados(),
@@ -101,10 +98,11 @@ class _ListaGrupoMedidasState extends State<ListaGrupoMedidas> {
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.only(
-                  bottom: 2.0,
+                  // bottom: 2,
+                  top: 8,
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 4.0, left: 4, right: 4),
+                  padding: const EdgeInsets.only(left: 4, right: 4),
                   child: Container(
                     height: size.height * 0.20,
                     width: size.width,
@@ -118,7 +116,7 @@ class _ListaGrupoMedidasState extends State<ListaGrupoMedidas> {
                       padding: const EdgeInsets.only(left: 0, right: 10),
                       child: GestureDetector(
                         onDoubleTap: () {
-                          GrupoMediddas.idGrupoMedidas =
+                          GrupoMedidas.idGrupoMedidas =
                               end[index].idGrupoMedidas;
                           Navigator.push(
                             context,
@@ -181,7 +179,7 @@ class _ListaGrupoMedidasState extends State<ListaGrupoMedidas> {
                                 icon: Icon(
                                   Icons.delete_forever,
                                   color: Colors.red,
-                                  size: 30,
+                                  size: 36,
                                 ),
                                 padding: EdgeInsets.only(
                                   left: 25,
@@ -189,7 +187,7 @@ class _ListaGrupoMedidasState extends State<ListaGrupoMedidas> {
                                 ),
                                 // alignment: Alignment(20, 25), //centerRight,
                                 onPressed: () => {
-                                  _deletarReg(end[index].idGrupoMedidas),
+                                  confExcluir(end[index].idGrupoMedidas),
                                 },
                               ),
                             ),

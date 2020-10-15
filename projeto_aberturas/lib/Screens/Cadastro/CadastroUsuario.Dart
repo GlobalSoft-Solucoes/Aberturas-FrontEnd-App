@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:projeto_aberturas/Models/Models_Usuario.dart';
 import 'package:projeto_aberturas/Models/constantes.dart';
 import 'package:projeto_aberturas/Widget/Botao.dart';
 import 'package:projeto_aberturas/Widget/MsgPopup.dart';
@@ -21,7 +22,7 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
   TextEditingController controllerNome = TextEditingController();
   TextEditingController controllerAdm = TextEditingController();
   TextEditingController controllerIdEmpresa = TextEditingController();
-
+  var respostajson;
   String mensagemErro = "";
 
 // ========= VERIFICAÇÃO DOS VALORES INFORMADOS NOS CAMPOS PARA O CADASTRO ===========
@@ -101,10 +102,13 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
         headers: {"Content-Type": "application/json"},
         body: validaEmail);
 
-    if (result.statusCode == 200)
+    if (result.statusCode == 200) {
+      respostajson = jsonDecode(result.body);
+      ModelsUsuarios.tokenAuth = 'Bearer ' + (respostajson['token']);
       _cadastrarUsuario();
-    else
+    } else {
       emailJaEmUso();
+    }
   }
 
 // ============== CADASTRO DO USUÁRIO NO BANCO DE DADOS ================

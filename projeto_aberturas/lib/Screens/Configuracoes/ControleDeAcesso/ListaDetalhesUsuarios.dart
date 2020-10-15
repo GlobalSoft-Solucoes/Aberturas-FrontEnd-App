@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:projeto_aberturas/Models/Models_Usuario.dart';
 import 'package:projeto_aberturas/Models/constantes.dart';
 import 'package:http/http.dart' as http;
+import 'package:projeto_aberturas/Widget/MsgPopup.dart';
 
 class ListaDetUsu extends StatefulWidget {
   final int id;
@@ -21,7 +22,7 @@ class _ListaDetUsuState extends State<ListaDetUsu> {
   Future<dynamic> listaDadosUser(int id) async {
     final response = await http.get(
       Uri.encodeFull(UrlServidor + BuscarUsuarioPorId + id.toString()),
-      headers: {"accept": "application/json"},
+      headers: {"authorization": ModelsUsuarios.tokenAuth},
     );
 
     //IF(MOUNTED) É nescessario para não recarregar a arvore apos retornar das outras listas
@@ -34,54 +35,18 @@ class _ListaDetUsuState extends State<ListaDetUsu> {
   }
 
 // =========== DELETA O REGISTRO DO BANCO DE DADOS
-  _deletarReg(int index) {
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return new AlertDialog(
-          content: new Padding(
-            padding: EdgeInsets.only(left: 15),
-            child: new Text(
-              'Confirmar exclusão do usuário?',
-              style: new TextStyle(color: Colors.green[300], fontSize: 22),
-            ),
-          ),
-          actions: <Widget>[
-            new Row(
-              children: <Widget>[
-                new FloatingActionButton.extended(
-                  backgroundColor: Colors.green,
-                  label: Text(
-                    'Sim',
-                    style: new TextStyle(fontSize: 17),
-                    textAlign: TextAlign.center,
-                  ),
-                  onPressed: () {
-                    delete(index);
-                    Navigator.of(context).pop();
-                    listaDadosUser(id);
-                  },
-                ),
-                //----------------------------------------
-                new FloatingActionButton.extended(
-                  backgroundColor: Colors.red,
-                  label: Text(
-                    'Não',
-                    style: new TextStyle(fontSize: 17),
-                    textAlign: TextAlign.center,
-                  ),
-                  onPressed: () => Navigator.of(context).pop(),
-                ),
-              ],
-            ),
-          ],
-        );
-      },
-    );
+  deletarReg(index) {
+    MsgPopup().msgComDoisBotoes(
+        context,
+        'Deseja Excluir este usuario?',
+        'NÃO',
+        'SIM',
+        () => {Navigator.pop(context)},
+        () => {delete(index), Navigator.pop(context)});
   }
 
-  Future<dynamic> delete(int id) async => await http
-      .delete(UrlServidor.toString() + DeletarUsuario + id.toString());
+  Future<dynamic> delete(index) async => await http
+      .delete(UrlServidor.toString() + DeletarUsuario + index.toString());
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +64,7 @@ class _ListaDetUsuState extends State<ListaDetUsu> {
               padding: EdgeInsets.only(
                   left: size.width * 0.02,
                   right: size.width * 0.02,
-                  top: size.height * 0.05,
+                  top: size.height * 0.04,
                   bottom: size.height * 0.02),
               child: Container(
                 child: Row(
@@ -113,12 +78,12 @@ class _ListaDetUsuState extends State<ListaDetUsu> {
                       color: Colors.white,
                     ),
                     Padding(
-                      padding: EdgeInsets.only(left: size.width * 0.1),
+                      padding: EdgeInsets.only(left: size.width * 0.15),
                       child: Text(
                         'Dados do usuario',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 30,
+                          fontSize: 28,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -162,8 +127,8 @@ class _ListaDetUsuState extends State<ListaDetUsu> {
                                 color: Color(0XFFD1D6DC),
                               ),
                               child: Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 15, right: 15),
+                                padding: const EdgeInsets.only(
+                                    left: 15, right: 15, top: 40),
                                 child: SingleChildScrollView(
                                   child: Column(
                                     children: [
@@ -178,26 +143,28 @@ class _ListaDetUsuState extends State<ListaDetUsu> {
                                           title: Text(
                                             'ID: ${listaUsuarios[index].idUsuario}',
                                             style: TextStyle(
-                                                fontSize: 40,
+                                                fontSize: 26,
                                                 fontWeight: FontWeight.bold),
                                           ),
                                           subtitle: Text(
-                                            'Nome:${listaUsuarios[index].name}' +
+                                            'Nome: ${listaUsuarios[index].name}' +
                                                 '\n'
-                                                    'email:${listaUsuarios[index].email}'
-                                                    '\n' +
-                                                'Cpf:${listaUsuarios[index].cpf}',
+                                                    'E-mail: ${listaUsuarios[index].email}'
+                                                    '\n',
                                             style: TextStyle(
-                                                fontSize: 40,
+                                                fontSize: 26,
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.black),
                                           ),
                                         ),
                                       ),
                                       IconButton(
-                                        icon: Icon(Icons.delete_forever),
+                                        icon: Icon(
+                                          Icons.delete_forever,
+                                          color: Colors.red,
+                                        ),
                                         onPressed: () => {
-                                          _deletarReg(
+                                          deletarReg(
                                               listaUsuarios[index].idUsuario),
                                         },
                                         iconSize: 40,

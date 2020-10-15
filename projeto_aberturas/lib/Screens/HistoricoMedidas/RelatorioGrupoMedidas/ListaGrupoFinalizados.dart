@@ -2,11 +2,12 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:projeto_aberturas/Models/Models_GrupoMedidas.dart';
+import 'package:projeto_aberturas/Models/Models_Portas.dart';
+import 'package:projeto_aberturas/Models/Models_Usuario.dart';
 import 'package:projeto_aberturas/Models/constantes.dart';
 import 'package:http/http.dart' as http;
 import 'package:projeto_aberturas/Screens/HistoricoMedidas/RelatorioGrupoMedidasUnt/RelatorioMedidaUnt.dart';
 import 'package:projeto_aberturas/Static/Static_Usuario.dart';
-import 'package:projeto_aberturas/Widget/MsgPopup.dart';
 
 //ESTA E A PRIMEIRA TELA DO RELATORIO DE TODOS OS IMOVEIS CADASTRADOS NO BANCO
 class Relatorio extends StatefulWidget {
@@ -24,7 +25,7 @@ class _RelatorioState extends State<Relatorio> {
             ListarGruposFinalizados.toString() +
             Usuario.idUsuario.toString(),
       ), //ListarTodosGrupoMedidas),
-      headers: {"accept": "application/json"},
+      headers: {"authorization": ModelsUsuarios.tokenAuth},
     );
     //IF(MOUNTED) É nescessario para não recarregar a arvore apos retornar das outras listas
     if (mounted)
@@ -32,22 +33,6 @@ class _RelatorioState extends State<Relatorio> {
         Iterable lista = json.decode(response.body);
         end = lista.map((model) => ModelGrupoMedidas.fromJson(model)).toList();
       });
-  }
-
-  _popopConfirmarEnvio() {
-    MsgPopup().msgComDoisBotoes(
-      context,
-      'Você confirma o envio dos grupos cadastrados para a empresa?',
-      'Não',
-      'sim',
-      () => {
-        Navigator.of(context).pop(),
-      },
-      () => {},
-      sairAoPressionar: true,
-      corBotaoDir: Color(0XFF0099FF),
-      corBotaoEsq: Color(0XFFF4485C),
-    );
   }
 
   @override
@@ -80,7 +65,7 @@ class _RelatorioState extends State<Relatorio> {
                           top: 8,
                         ),
                         child: Container(
-                          height: size.height * 0.175,
+                          height: size.height * 0.20,
                           width: size.width,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(
@@ -101,13 +86,17 @@ class _RelatorioState extends State<Relatorio> {
                                     ),
                                   ),
                                 );
+                                DadosExcel.cidade = end[index].cidade;
+                                DadosExcel.proprietario =
+                                    end[index].proprietario;
                               },
                               child: SingleChildScrollView(
                                 child: Container(
+                                  // alignment: Alignment.center,
                                   decoration: BoxDecoration(
                                     color: Color(0XFFD1D6DC),
                                     borderRadius: BorderRadius.circular(
-                                      10,
+                                      15,
                                     ),
                                   ),
                                   child: Card(
@@ -143,34 +132,6 @@ class _RelatorioState extends State<Relatorio> {
                   },
                 );
               },
-            ),
-          ),
-
-          // ============ BOTÃO PARA ENVIAR OS DADOS PARA A EMPRESA ============
-          Container(
-            width: size.width,
-            height: size.height * 0.095,
-            padding: EdgeInsets.only(top: 0, left: 4, right: 4),
-            color: Colors.transparent, //white.withOpacity(1.0),
-            child: Column(
-              verticalDirection: VerticalDirection.down,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                new Container(
-                  child: new FloatingActionButton.extended(
-                    heroTag: "btn1",
-                    onPressed: () async {
-                      _popopConfirmarEnvio();
-                    },
-                    label: new Text(
-                      'Enviar Todos os grupos',
-                      style: new TextStyle(
-                        fontSize: 24,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
             ),
           ),
         ],

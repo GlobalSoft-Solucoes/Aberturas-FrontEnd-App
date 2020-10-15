@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:http/http.dart' as http;
+import 'package:projeto_aberturas/Models/Models_Usuario.dart';
 import 'package:projeto_aberturas/Models/constantes.dart';
 import 'package:projeto_aberturas/Models/Email/RecuperarSenha.dart';
+import 'package:projeto_aberturas/Static/Static_Empresa.dart';
+
 import 'package:projeto_aberturas/Stores/Login_Store.dart';
 import 'package:projeto_aberturas/Widget/MsgPopup.dart';
 import 'package:projeto_aberturas/Static/Static_Usuario.dart';
-import 'package:projeto_aberturas/Screens/Home/BarraLateral/ListaDadosUsuario.dart';
 
 class Login extends StatefulWidget {
   Login({Key key}) : super(key: key);
@@ -22,9 +24,10 @@ class _LoginState extends State<Login> {
   TextEditingController controllerSenha = TextEditingController();
   String mensagemErro = "";
   LoginStore loginStore = LoginStore();
-
+  var dadosUsuarios = new List<ModelsUsuarios>();
+  var respostajson;
 // ========== VERIFICA SE O E-MAIL E SENHA INFORMADOS EXISTEM NO BANCO DE DADOS =============
-
+  var dados;
   validarDadosLogin(String email, senha) async {
     var boddy = jsonEncode(
       {
@@ -42,10 +45,19 @@ class _LoginState extends State<Login> {
     setState(
       () {
         if (state.statusCode == 200) {
+          respostajson = jsonDecode(state.body);
+          ModelsUsuarios.tokenAuth = 'Bearer ' + (respostajson['token']);
+
           _capturaIdUsuarioLogado();
           Navigator.of(context)
               .pop(); // FECHA A TELA DE LOGIN E NÃO PERMITE QUE VOLTE PARA ELA
           Navigator.of(context).pushNamed('/Home');
+          // atualiza os dados da empresa
+          setState(
+            () {
+              DadosEmpresa().capturaDadosEmpresa();
+            },
+          );
         } else
           _erroLogin();
       },
@@ -54,14 +66,14 @@ class _LoginState extends State<Login> {
 
   // =========== CAPTURA O ID DO USUARIO ATRAVÉS DO E-MAIL DELE ===============
   _capturaIdUsuarioLogado() async {
-    // recebe o valor do
     var emailUsuario = controllerEmail.text.trim();
 
     var result = await http.get(
-      Uri.encodeFull(
-          UrlServidor.toString() + BuscaIdUsuarioLogado + emailUsuario),
-      headers: {"Content-Type": "application/json"},
-    );
+        Uri.encodeFull(
+            UrlServidor.toString() + BuscaIdUsuarioLogado + emailUsuario),
+        headers: {
+          "authorization": ModelsUsuarios.tokenAuth,
+        });
 
     // Captura o valor vindo do body da requisição
     String retorno = result.body;
@@ -75,8 +87,10 @@ class _LoginState extends State<Login> {
       // caso haja valor na variável, quer dizer que contém um registro
       if (valorRetorno.length > 0) {
         Usuario.idUsuario = int.parse(valorRetorno);
-        DadosUserLogado().capturaDadosUsuarioLogado();
-        // se houver resultado, permite que o cadastro seja feito
+        // carrega os dados do usuário logado
+        await DadosUserLogado().capturaDadosUsuarioLogado();
+        // carrega os dados da empresa do usuário
+        await DadosEmpresa().capturaDadosEmpresa();
       }
     }
   }
@@ -155,7 +169,7 @@ class _LoginState extends State<Login> {
                         // alignment: Alignment.topLeft,
                         alignment: Alignment(
                           -1,
-                          -16,
+                          -5,
                         ),
                       ),
                       //----------------------Imagem de login--------------------//

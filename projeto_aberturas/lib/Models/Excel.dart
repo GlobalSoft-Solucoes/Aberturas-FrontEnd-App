@@ -1,42 +1,45 @@
 class FeedbackForm {
-  var dataCadastro;
-  var proprietario;
-  var cidade;
-  var comodo;
-  var altura;
-  var largura;
-  var marco;
-  var ladoabertura;
-  var localizacao;
-  var cor;
-  var tipo;
-  var estruturaPorta;
-  var observacoes;
-  var dobradica;
-  var fechadura;
-  var pivotante;
-  var codReferencia;
+  String dataCadastro;
+  String proprietario;
+  String cidade;
+  String comodo;
+  String altura;
+  String largura;
+  String marco;
+  String ladoabertura;
+  String localizacao;
+  String cor;
+  String tipo;
+  String estruturaPorta;
+  String observacoes;
+  String dobradica;
+  String fechadura;
+  String pivotante;
+  String codReferencia;
+  String usuario;
 
   FeedbackForm(
-      this.altura,
-      this.cidade,
-      this.codReferencia,
-      this.comodo,
-      this.cor,
-      this.dataCadastro,
-      this.dobradica,
-      this.estruturaPorta,
-      this.fechadura,
-      this.ladoabertura,
-      this.largura,
-      this.localizacao,
-      this.marco,
-      this.observacoes,
-      this.pivotante,
-      this.proprietario,
-      this.tipo);
-
-  // Method to make GET parameters.
+    this.dataCadastro,
+    this.proprietario,
+    this.cidade,
+    this.comodo,
+    this.altura,
+    this.largura,
+    this.marco,
+    this.ladoabertura,
+    this.localizacao,
+    this.cor,
+    this.tipo,
+    this.estruturaPorta,
+    this.observacoes,
+    this.dobradica,
+    this.fechadura,
+    this.pivotante,
+    this.codReferencia,
+    this.usuario,
+  );
   String toParams() =>
-      "?altura=$altura&cidade=$cidade&codReferencia=$codReferencia&comodo=$comodo&cor=$cor&dataCadastro=$dataCadastro&estruturaPorta=$estruturaPorta&fechadura=$fechadura&ladoAbertura=$ladoabertura&largura=$largura&localizacao=$localizacao&marco=$marco&observacoes=$observacoes&pivotante=$pivotante&proprietario=$proprietario&tipo=$tipo&dobradica=$dobradica";
+      "?dataCadastro=$dataCadastro&proprietario=$proprietario&cidade=$cidade&comodo=$comodo&altura=$altura&largura=$largura&marco=$marco&ladoAbertura=$ladoabertura&localizacao=$localizacao&cor=$cor&tipo=$tipo&estruturaPorta=$estruturaPorta&observacoes=$observacoes&dobradica=$dobradica&fechadura=$fechadura&pivotante=$pivotante&codReferencia=$codReferencia&usuario=$usuario";
 }
+
+//"?dataCadastro=$dataCadastro&proprietario=$proprietario&cidade=$cidade&comodo=$comodo&altura=$altura&largura=$largura&marco=$marco&ladoAbertura=$ladoabertura&localizacao=$localizacao";

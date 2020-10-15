@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:projeto_aberturas/Models/Models_Usuario.dart';
 import 'package:projeto_aberturas/Models/constantes.dart';
 import 'package:projeto_aberturas/Static/Static_GrupoMedidas.dart';
 import 'package:projeto_aberturas/Static/Static_Usuario.dart';
@@ -67,7 +68,7 @@ class _CadPortaPadraoState extends State<CadPortaPadrao> {
   Future<dynamic> salvarDadosBanco() async {
     var bodyy = jsonEncode({
       'IdUsuario': Usuario.idUsuario,
-      'IdGrupo_Medidas': GrupoMediddas.idGrupoMedidas,
+      'IdGrupo_Medidas': GrupoMedidas.idGrupoMedidas,
       'IdCod_Referencia': idCodRef,
       'IdDobradica': idDobradica,
       'IdPivotante': idRolPivotante,
@@ -86,7 +87,7 @@ class _CadPortaPadraoState extends State<CadPortaPadrao> {
 
     http.post(
       UrlServidor + CadastrarMedidaUnt,
-      headers: {"Content-Type": "application/json"},
+      headers: {"authorization": ModelsUsuarios.tokenAuth},
       body: bodyy,
     );
   }
@@ -94,7 +95,7 @@ class _CadPortaPadraoState extends State<CadPortaPadrao> {
   var mensagemErro = '';
   validarCampos() {
     if (Usuario.idUsuario != null) {
-      if (GrupoMediddas.idGrupoMedidas != null) {
+      if (GrupoMedidas.idGrupoMedidas != null) {
         if (altura != 0) {
           if (aberturaPorta != '') {
             if (idFechadura != null) {
@@ -315,7 +316,7 @@ class _CadPortaPadraoState extends State<CadPortaPadrao> {
   Future buscardados() async {
     final response = await http.get(
       Uri.encodeFull(UrlServidor + 'Fechadura/ListarTodos'),
-      headers: {"accept": "application/json"},
+      headers: {"authorization": ModelsUsuarios.tokenAuth},
     );
     if (response.statusCode == 200) {
       var jsonData = json.decode(response.body);
@@ -329,7 +330,7 @@ class _CadPortaPadraoState extends State<CadPortaPadrao> {
   Future buscarDados1() async {
     final response = await http.get(
       Uri.encodeFull(UrlServidor + 'CodReferencia/ListarTodos'),
-      headers: {"accept": "application/json"},
+      headers: {"authorization": ModelsUsuarios.tokenAuth},
     );
     if (response.statusCode == 200) {
       var jsonData = json.decode(response.body);
@@ -343,7 +344,7 @@ class _CadPortaPadraoState extends State<CadPortaPadrao> {
   Future buscarDados2() async {
     final response = await http.get(
       Uri.encodeFull(UrlServidor + 'Dobradica/ListarTodos/'),
-      headers: {"accept": "application/json"},
+      headers: {"authorization": ModelsUsuarios.tokenAuth},
     );
     if (response.statusCode == 200) {
       var jsonData = json.decode(response.body);
@@ -357,7 +358,7 @@ class _CadPortaPadraoState extends State<CadPortaPadrao> {
   Future buscarDados3() async {
     final response = await http.get(
       Uri.encodeFull(UrlServidor + ListarTodosPivotante),
-      headers: {"accept": "application/json"},
+      headers: {"authorization": ModelsUsuarios.tokenAuth},
     );
     if (response.statusCode == 200) {
       var jsonData = json.decode(response.body);

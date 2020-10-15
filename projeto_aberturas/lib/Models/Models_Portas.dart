@@ -43,3 +43,8 @@ class Pivotantes {
     descricao = json['Descricao'];
   }
 }
+
+class DadosExcel {
+  static String cidade;
+  static String proprietario;
+}

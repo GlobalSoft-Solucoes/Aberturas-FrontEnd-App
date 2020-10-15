@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_aberturas/Static/Static_Empresa.dart';
 
 class CodigoAcesso extends StatefulWidget {
   @override
@@ -6,121 +7,127 @@ class CodigoAcesso extends StatefulWidget {
 }
 
 class _CodigoAcessoState extends State<CodigoAcesso> {
-  gerarCode() {
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text(
-                'Senha de acesso da empresa para que usuarios possam se cadastrar no aplicativo'),
-            actions: [
-              Container(
-                  child: Center(
-                      child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'Codigo de acesso gerado:$codAcesso',
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                  ),
-                  FlatButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: Text(
-                        'ok',
-                        style: TextStyle(fontSize: 20),
-                      ))
-                ],
-              )))
-            ],
-          );
-        });
-  }
+  var mensagemErro = '';
+  TextEditingController controllerCampoImovel =
+      TextEditingController(text: Empresa.codAcesso);
 
-  codAdmn() {
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-              title: Text('digite seu codigo de administrador'),
-              actions: [
-                Container(
-                  child: Center(
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                        Container(
-                          width: 300,
-                          child: TextField(
-                            style: new TextStyle(
-                              fontSize: 18,
-                            ),
-                            decoration: new InputDecoration(
-                              prefixIcon: new Icon(Icons.code),
-                              labelText: 'Codigo:',
-                              border: new OutlineInputBorder(
-                                borderRadius: new BorderRadius.circular(
-                                  10,
-                                ),
-                              ),
+  @override
+  Widget build(BuildContext context) {
+    MediaQueryData mediaQuery = MediaQuery.of(context);
+    Size size = mediaQuery.size;
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Container(
+          width: size.width,
+          height: size.height,
+          color: Color(0XFF0099FF),
+          child: Column(
+            children: [
+              //===========================================
+              Padding(
+                padding: EdgeInsets.only(
+                  top: size.height * 0.05,
+                  left: size.width * 0.04,
+                ),
+                child: Container(
+                  alignment: Alignment.topLeft,
+                  child: Row(
+                    children: [
+                      IconButton(
+                          color: Colors.white,
+                          icon: Icon(Icons.arrow_back),
+                          iconSize: 30,
+                          onPressed: () {
+                            Navigator.pop(context);
+                          }),
+                      Padding(
+                        padding: EdgeInsets.only(left: size.width * 0.17),
+                        child: Text(
+                          'Código de acesso',
+                          style: TextStyle(
+                            fontSize: 24,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            decoration: TextDecoration.none,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              //============== WIDGET DO CADASTRO =================
+              Container(
+                // Configura��es do widget do cadastro
+                height: size.height * 0.50,
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    top: size.width * 0.1,
+                    left: size.width * 0.02,
+                    right: size.width * 0.02,
+                    bottom: size.height * 0.01,
+                  ),
+                  child: Container(
+                    alignment: Alignment.topCenter,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                    ),
+                    width: size.width,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        //=======================================
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            top: 30,
+                            left: 8,
+                            right: 8,
+                            bottom: 8,
+                          ),
+                          child: new Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Text(
+                              'Código da empresa para cadastrar novos usuários',
+                              style: TextStyle(fontSize: 20),
+                              textAlign: TextAlign.center,
                             ),
                           ),
                         ),
-                        FlatButton(
-                            onPressed: () {
-                              gerarCode();
-                            },
+                        //=======================================
+                        Padding(
+                          padding: EdgeInsets.only(
+                            right: size.width * 0.02,
+                            left: size.width * 0.02,
+                            top: size.height * 0.08,
+                          ),
+                          child: new Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10)),
                             child: Text(
-                              'ok',
-                              style: TextStyle(fontSize: 20),
-                            )),
-                      ])),
-                ),
-              ]);
-        });
-  }
-
-  var codAcesso = "KJSABFIUYSA";
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        alignment: Alignment.center,
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(bottom: 20),
-                child: new Container(
-                  alignment: Alignment.center,
-                  height: 40,
-                  width: 300,
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(
-                      color: Colors.black,
-                      width: 2,
-                    ),
-                  ),
-                  child: GestureDetector(
-                    onTap: () {
-                      codAdmn();
-                    },
-                    child: Text(
-                      'Gerar Codigo de acesso',
-                      style: TextStyle(
-                          fontSize: 27,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black),
+                              'Código:  ' + Empresa.codAcesso.toString(),
+                              style: TextStyle(
+                                fontSize: 26,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                        //-------------------------------------
+                      ],
                     ),
                   ),
                 ),
               ),
+              //-----------------------------------------
             ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

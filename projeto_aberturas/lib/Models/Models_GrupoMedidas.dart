@@ -10,6 +10,7 @@ class ModelGrupoMedidas {
   int numEndereco;
   String cidade;
   String bairro;
+  String statusGrupo;
   ModelGrupoMedidas(
       {this.statusProcesso,
       this.enviado,
@@ -21,7 +22,8 @@ class ModelGrupoMedidas {
       this.proprietario,
       this.numEndereco,
       this.bairro,
-      this.cidade});
+      this.cidade,
+      this.statusGrupo});
 
   ModelGrupoMedidas.fromJson(Map<String, dynamic> json) {
     idGrupoMedidas = json['IdGrupo_Medidas'];
@@ -34,6 +36,7 @@ class ModelGrupoMedidas {
     statusProcesso = json['Status_Processo'];
     cidade = json['Cidade'];
     bairro = json['Bairro'];
+    statusGrupo = json['Status_Grupo'];
   }
 
   Map<String, dynamic> toJson() {
@@ -48,6 +51,7 @@ class ModelGrupoMedidas {
     data['Status_Processo'] = this.statusProcesso;
     data['Cidade'] = this.cidade;
     data['Bairro'] = this.bairro;
+    data['Status_Grupo'] = this.statusGrupo;
     return data;
   }
 }

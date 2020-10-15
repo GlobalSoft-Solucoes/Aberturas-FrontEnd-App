@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:projeto_aberturas/Models/Models_Usuario.dart';
 import 'package:projeto_aberturas/Models/constantes.dart';
 import 'package:projeto_aberturas/Static/Static_GrupoMedidas.dart';
-import 'package:projeto_aberturas/Stores/Login_Store.dart';
 import 'package:projeto_aberturas/Widget/Botao.dart';
 import 'package:projeto_aberturas/Static/Static_Usuario.dart';
 import 'package:projeto_aberturas/Widget/MsgPopup.dart';
@@ -29,7 +29,7 @@ class _CadGrupoMedidasState extends State<CadGrupoMedidas> {
   Future fetchPost() async {
     final response = await http.get(
       Uri.encodeFull(UrlServidor + ListarTodosImoveis),
-      headers: {"accept": "application/json"},
+      headers: {"authorization": ModelsUsuarios.tokenAuth},
     );
     if (response.statusCode == 200) {
       var jsonData = json.decode(response.body);
@@ -160,7 +160,7 @@ class _CadGrupoMedidasState extends State<CadGrupoMedidas> {
 
             // caso haja valor na variável, quer dizer que contém um registro
             if (valorRetorno.length > 0) {
-              GrupoMediddas.idGrupoMedidas = int.parse(valorRetorno);
+              GrupoMedidas.idGrupoMedidas = int.parse(valorRetorno);
               escolhaTelaNovaMedida();
             }
           }
@@ -187,18 +187,6 @@ class _CadGrupoMedidasState extends State<CadGrupoMedidas> {
             child: Center(
               child: Column(
                 children: [
-                  //-----------------------------------------------------------
-                  Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Container(
-                      alignment: Alignment.topCenter,
-                      child: Text(
-                        'Preencha os campos abaixo com os dados do cliente:',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
                   //------------------------------------------------------------
                   Padding(
                     padding: EdgeInsets.only(
@@ -379,8 +367,8 @@ class _CadGrupoMedidasState extends State<CadGrupoMedidas> {
                             child: Botao().botaoPadrao(
                               'Iniciar Medição',
                               () => {
-                                Navigator.of(context)
-                                    .pop(), // Fecha a tela de cadastro do grupo ao iniciar medição
+                                // Navigator.of(context)
+                                //     .pop(), // Fecha a tela de cadastro do grupo ao iniciar medição
                                 validarCampos(),
                                 Navigator.pushNamed(
                                     context, '/ListaGrupoMedidas'),
