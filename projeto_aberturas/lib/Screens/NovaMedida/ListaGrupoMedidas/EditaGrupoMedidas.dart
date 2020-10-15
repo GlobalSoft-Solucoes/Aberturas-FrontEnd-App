@@ -49,6 +49,8 @@ class _EditaGrupoMedidasState extends State<EditaGrupoMedidas> {
           itensLista = jsonData;
         },
       );
+    } else if (response.statusCode == 401) {
+      Navigator.pushNamed(context, '/Login');
     }
   }
 

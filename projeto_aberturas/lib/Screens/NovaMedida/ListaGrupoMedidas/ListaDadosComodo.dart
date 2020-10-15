@@ -42,6 +42,8 @@ class _ListaDadosComodoState extends State<ListaDadosComodo> {
               lista.map((model) => ModelsMedidasUnt.fromJson(model)).toList();
         },
       );
+    } else if (response.statusCode == 401) {
+      Navigator.pushNamed(context, '/Login');
     }
   }
 
@@ -84,13 +86,16 @@ class _ListaDadosComodoState extends State<ListaDadosComodo> {
       'IdMedida_Unt': MedidaUntFixa.idMedidaUnt,
       field: valor,
     });
-    http.put(
+    var response = await http.put(
       UrlServidor +
           (url ?? EditarMedidaUnt) +
           (id.toString() ?? idMedidaUnt.toString()),
       headers: {"authorization": ModelsUsuarios.tokenAuth},
       body: bodyy,
     );
+    if (response.statusCode == 401) {
+      Navigator.pushNamed(context, '/Login');
+    }
   }
 
 // POPUP QUE É DISPARADO QUANDO UM CAMPO É PRECIONADO PARA A EDIÇÃO

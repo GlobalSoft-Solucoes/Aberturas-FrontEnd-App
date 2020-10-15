@@ -30,6 +30,8 @@ class _LixeiraState extends State<Lixeira> {
         grupoMedidas =
             lista.map((model) => ModelGrupoMedidas.fromJson(model)).toList();
       });
+    } else if (response.statusCode == 401) {
+      Navigator.pushNamed(context, '/Login');
     }
   }
 

@@ -37,6 +37,9 @@ class _CadGrupoMedidasState extends State<CadGrupoMedidas> {
         itensLista = jsonData;
       });
     }
+    if (response.statusCode == 401) {
+      Navigator.pushNamed(context, '/Login');
+    }
   }
 
   escolhaTelaNovaMedida() {
@@ -132,11 +135,14 @@ class _CadGrupoMedidasState extends State<CadGrupoMedidas> {
       'Num_Endereco': numeroend
     });
 
-    await http.post(
+    var response = await http.post(
       UrlServidor + CadastrarGrupoMedidas,
       headers: {"Content-Type": "application/json"},
       body: bodyy,
     );
+    if (response.statusCode == 401) {
+      Navigator.pushNamed(context, '/Login');
+    }
     buscarIdGrupoMedidas();
   }
 
@@ -146,7 +152,7 @@ class _CadGrupoMedidasState extends State<CadGrupoMedidas> {
       headers: {"accept": "application/json"},
     );
     //IF(MOUNTED) É nescessario para não recarregar a arvore apos retornar das outras listas
-    if (mounted)
+    if (mounted) {
       setState(
         () {
           var lista = json.decode(response.body);
@@ -166,6 +172,9 @@ class _CadGrupoMedidasState extends State<CadGrupoMedidas> {
           }
         },
       );
+    } else if (response.statusCode == 401) {
+      Navigator.pushNamed(context, '/Login');
+    }
   }
 
   @override

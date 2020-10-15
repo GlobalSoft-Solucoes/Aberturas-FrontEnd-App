@@ -41,10 +41,13 @@ class _ListaGrupoMedidasState extends State<ListaGrupoMedidas> {
 //DELETA O GRUPO DE MEDIDAS
   _deletarReg(id) async {
     print(id);
-    http.put(
+    var response = await http.put(
       (UrlServidor + StatusRemoverGrupo + id.toString()),
       headers: {"authorization": ModelsUsuarios.tokenAuth},
     );
+    if (response.statusCode == 401) {
+      Navigator.pushNamed(context, '/Login');
+    }
   }
 
   //FUNÇÃO PARA BUSCAR OS DADOS NA DB
@@ -56,18 +59,24 @@ class _ListaGrupoMedidasState extends State<ListaGrupoMedidas> {
       headers: {"authorization": ModelsUsuarios.tokenAuth},
     );
     //IF(MOUNTED) É nescessario para não recarregar a arvore apos retornar das outras listas
-    if (mounted)
+    if (mounted) {
       setState(() {
         Iterable lista = json.decode(response.body);
         end = lista.map((model) => ModelGrupoMedidas.fromJson(model)).toList();
       });
+    } else if (response.statusCode == 401) {
+      Navigator.pushNamed(context, '/Login');
+    }
   }
 
 //FUNÇÃO PARA DELETAR OS DADOS DA DATABASE
   Future<dynamic> delete(int id) async {
-    await http.delete(
+    var response = await http.delete(
         UrlServidor.toString() + DeletarGrupoMedidas + id.toString(),
         headers: {"authorization": ModelsUsuarios.tokenAuth});
+    if (response.statusCode == 401) {
+      Navigator.pushNamed(context, '/Login');
+    }
   }
 
   _ListaGrupoMedidasState() {

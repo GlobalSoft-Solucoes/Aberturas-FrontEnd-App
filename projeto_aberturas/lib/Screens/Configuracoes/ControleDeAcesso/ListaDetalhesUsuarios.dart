@@ -26,12 +26,15 @@ class _ListaDetUsuState extends State<ListaDetUsu> {
     );
 
     //IF(MOUNTED) É nescessario para não recarregar a arvore apos retornar das outras listas
-    if (mounted)
+    if (mounted) {
       setState(() {
         Iterable lista = json.decode(response.body);
         listaUsuarios =
             lista.map((model) => ModelsUsuarios.fromJson(model)).toList();
       });
+    } else if (response.statusCode == 401) {
+      Navigator.pushNamed(context, '/Login');
+    }
   }
 
 // =========== DELETA O REGISTRO DO BANCO DE DADOS
@@ -45,8 +48,13 @@ class _ListaDetUsuState extends State<ListaDetUsu> {
         () => {delete(index), Navigator.pop(context)});
   }
 
-  Future<dynamic> delete(index) async => await http
-      .delete(UrlServidor.toString() + DeletarUsuario + index.toString());
+  Future<dynamic> delete(index) async {
+    var response = await http
+        .delete(UrlServidor.toString() + DeletarUsuario + index.toString());
+    if (response.statusCode == 401) {
+      Navigator.pushNamed(context, '/Login');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

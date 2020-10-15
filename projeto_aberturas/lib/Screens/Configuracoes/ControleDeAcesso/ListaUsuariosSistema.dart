@@ -21,12 +21,15 @@ class _ListaUsuCadastradosState extends State<ListaUsuCadastrados> {
         ),
         headers: {"authorization": ModelsUsuarios.tokenAuth});
     //IF(MOUNTED) É nescessario para não recarregar a arvore apos retornar das outras listas
-    if (mounted)
+    if (mounted) {
       setState(() {
         Iterable lista = json.decode(response.body);
         listaUsuarios =
             lista.map((model) => ModelsUsuarios.fromJson(model)).toList();
       });
+    } else if (response.statusCode == 401) {
+      Navigator.pushNamed(context, '/Login');
+    }
   }
 
   @override

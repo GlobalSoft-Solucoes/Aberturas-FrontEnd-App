@@ -28,11 +28,14 @@ class _RelatorioState extends State<Relatorio> {
       headers: {"authorization": ModelsUsuarios.tokenAuth},
     );
     //IF(MOUNTED) É nescessario para não recarregar a arvore apos retornar das outras listas
-    if (mounted)
+    if (mounted) {
       setState(() {
         Iterable lista = json.decode(response.body);
         end = lista.map((model) => ModelGrupoMedidas.fromJson(model)).toList();
       });
+    } else if (response.statusCode == 401) {
+      Navigator.pushNamed(context, '/Login');
+    }
   }
 
   @override

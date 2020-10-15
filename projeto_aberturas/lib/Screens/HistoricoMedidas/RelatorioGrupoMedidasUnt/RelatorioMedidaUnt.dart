@@ -33,12 +33,15 @@ class _RelatorioMedidaUntState extends State<RelatorioMedidaUnt> {
       headers: {"authorization": ModelsUsuarios.tokenAuth},
     );
     //IF(MOUNTED) É nescessario para não recarregar a arvore apos retornar das outras listas
-    if (mounted)
+    if (mounted) {
       setState(() {
         Iterable lista = json.decode(response.body);
         medidasComodo =
             lista.map((model) => ModelsMedidasUnt.fromJson(model)).toList();
       });
+    } else if (response.statusCode == 401) {
+      Navigator.pushNamed(context, '/Login');
+    }
   }
 
   TextEditingController controllerData = TextEditingController();

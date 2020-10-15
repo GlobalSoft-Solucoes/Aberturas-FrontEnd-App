@@ -32,6 +32,8 @@ class _CadDobradicasState extends State<CadDobradicas> {
 
         dobradicas = lista.map((model) => Dobradicas.fromJson(model)).toList();
       });
+    } else if (response.statusCode == 401) {
+      Navigator.pushNamed(context, '/Login');
     }
   }
 
@@ -53,7 +55,11 @@ class _CadDobradicasState extends State<CadDobradicas> {
     );
     if (state.statusCode == 200) {
       popupconfirmacao();
-    } else if (state.statusCode == 400) popupconfirmacaoerro();
+    } else if (state.statusCode == 400) {
+      popupconfirmacaoerro();
+    } else if (state.statusCode == 401) {
+      Navigator.pushNamed(context, '/Login');
+    }
   }
 
   verificarDados() {

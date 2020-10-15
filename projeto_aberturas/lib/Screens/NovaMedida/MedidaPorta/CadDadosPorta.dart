@@ -51,6 +51,8 @@ class _CadDadosPortaState extends State<CadDadosPorta> {
       setState(() {
         itensLista = jsonData;
       });
+    } else if (response.statusCode == 401) {
+      Navigator.pushNamed(context, '/Login');
     }
   }
 
@@ -64,6 +66,8 @@ class _CadDadosPortaState extends State<CadDadosPorta> {
       setState(() {
         itensLista1 = jsonData;
       });
+    } else if (response.statusCode == 401) {
+      Navigator.pushNamed(context, '/Login');
     }
   }
 
@@ -77,6 +81,8 @@ class _CadDadosPortaState extends State<CadDadosPorta> {
       setState(() {
         itensLista2 = jsonData;
       });
+    } else if (response.statusCode == 401) {
+      Navigator.pushNamed(context, '/Login');
     }
   }
 
@@ -90,6 +96,8 @@ class _CadDadosPortaState extends State<CadDadosPorta> {
       setState(() {
         itensLista3 = jsonData;
       });
+    } else if (response.statusCode == 401) {
+      Navigator.pushNamed(context, '/Login');
     }
   }
 

@@ -33,6 +33,8 @@ class _CadFechadurasState extends State<CadFechaduras> {
 
         fechaduras = lista.map((model) => Fechaduras.fromJson(model)).toList();
       });
+    } else if (response.statusCode == 401) {
+      Navigator.pushNamed(context, '/Login');
     }
   }
 
@@ -58,7 +60,11 @@ class _CadFechadurasState extends State<CadFechaduras> {
     );
     if (state.statusCode == 200) {
       popupConfirmacao();
-    } else if (state.statusCode == 400) popupConfirmacaoErro();
+    } else if (state.statusCode == 400) {
+      popupConfirmacaoErro();
+    } else if (state.statusCode == 401) {
+      Navigator.pushNamed(context, '/Login');
+    }
   }
 
   popupConfirmacaoErro() {

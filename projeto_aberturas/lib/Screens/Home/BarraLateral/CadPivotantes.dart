@@ -28,6 +28,8 @@ class _CadPivotantesState extends State<CadPivotantes> {
 
         pivotantes = lista.map((model) => Pivotantes.fromJson(model)).toList();
       });
+    } else if (response.statusCode == 401) {
+      Navigator.pushNamed(context, '/Login');
     }
   }
 
@@ -60,6 +62,8 @@ class _CadPivotantesState extends State<CadPivotantes> {
     } else if (state.statusCode == 400) {
       mensagemErro = 'Ocorreu um erro ao cadastrar o pivotante.';
       _mensagemErroCadastro();
+    } else if (state.statusCode == 401) {
+      Navigator.pushNamed(context, '/Login');
     }
   }
 
@@ -102,6 +106,8 @@ class _CadPivotantesState extends State<CadPivotantes> {
       mensagemErro =
           'O Pivotante está sendo usado e portanto não pode ser excluído.';
       _erroDeletarPivotante();
+    } else if (state.statusCode == 401) {
+      Navigator.pushNamed(context, '/Login');
     }
   }
 

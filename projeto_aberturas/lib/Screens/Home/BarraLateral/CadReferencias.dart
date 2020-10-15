@@ -30,6 +30,8 @@ class _CadReferenciasState extends State<CadReferencias> {
         referencias =
             lista.map((model) => Referencias.fromJson(model)).toList();
       });
+    } else if (response.statusCode == 401) {
+      Navigator.pushNamed(context, '/Login');
     }
   }
 
@@ -54,7 +56,11 @@ class _CadReferenciasState extends State<CadReferencias> {
     );
     if (state.statusCode == 200) {
       popupconfirmacao();
-    } else if (state.statusCode == 400) popupconfirmacaoerro();
+    } else if (state.statusCode == 400) {
+      popupconfirmacaoerro();
+    } else if (state.statusCode == 401) {
+      Navigator.pushNamed(context, '/Login');
+    }
   }
 
   popupconfirmacaoerro() {
@@ -96,6 +102,8 @@ class _CadReferenciasState extends State<CadReferencias> {
       mensagemErro =
           'A Referência está sendo usado e portanto não pode ser excluída.';
       _erroDeletarPivotante();
+    } else if (state.statusCode == 401) {
+      Navigator.pushNamed(context, '/Login');
     }
   }
 

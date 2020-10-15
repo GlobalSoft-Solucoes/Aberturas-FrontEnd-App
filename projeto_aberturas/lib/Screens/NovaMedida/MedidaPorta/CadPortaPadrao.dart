@@ -85,11 +85,14 @@ class _CadPortaPadraoState extends State<CadPortaPadrao> {
       'Tipo_Medida': 'Padrao',
     });
 
-    http.post(
+    var response = http.post(
       UrlServidor + CadastrarMedidaUnt,
       headers: {"authorization": ModelsUsuarios.tokenAuth},
       body: bodyy,
     );
+    if (response.statusCode == 401) {
+      Navigator.pushNamed(context, '/Login');
+    }
   }
 
   var mensagemErro = '';

@@ -29,6 +29,8 @@ class _CadImoveisState extends State<CadImoveis> {
         Iterable lista = json.decode(response.body);
         imoveis = lista.map((model) => Imoveis.fromJson(model)).toList();
       });
+    } else if (response.statusCode == 401) {
+      Navigator.pushNamed(context, '/Login');
     }
   }
 
@@ -50,6 +52,8 @@ class _CadImoveisState extends State<CadImoveis> {
       popupconfirmacao();
     } else if (state.statusCode == 400) {
       popupConfirmacaoErro();
+    } else if (state.statusCode == 401) {
+      Navigator.pushNamed(context, '/Login');
     }
   }
 
@@ -94,6 +98,8 @@ class _CadImoveisState extends State<CadImoveis> {
       mensagemErro =
           'O Imóvel está sendo usado e portanto não pode ser excluído.';
       _erroDeletarPivotante();
+    } else if (state.statusCode == 401) {
+      Navigator.pushNamed(context, '/Login');
     }
   }
 

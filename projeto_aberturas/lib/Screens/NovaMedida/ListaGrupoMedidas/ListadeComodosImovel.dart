@@ -59,10 +59,13 @@ class _ListaComodoImoveisState extends State<ListaComodoImoveis> {
   // altera o STATUS do registro para FINALIZADO
   Future<dynamic> alterarStatus() async {
     int idRegistro = GrupoMedidas.idGrupoMedidas;
-    http.put(
+    var response = await http.put(
       UrlServidor + AlterarStatusParaFinalizado + idRegistro.toString(),
       headers: {"authorization": ModelsUsuarios.tokenAuth},
     );
+    if (response.statusCode == 401) {
+      Navigator.pushNamed(context, '/Login');
+    }
   }
 
   //FUNÇÃO PARA BUSCAR OS DADOS NA DB
@@ -72,12 +75,15 @@ class _ListaComodoImoveisState extends State<ListaComodoImoveis> {
       headers: {"authorization": ModelsUsuarios.tokenAuth},
     );
     //IF(MOUNTED) É nescessario para não recarregar a arvore apos retornar das outras listas
-    if (mounted)
+    if (mounted) {
       setState(() {
         Iterable lista = json.decode(response.body);
         medidasComodo =
             lista.map((model) => ModelsMedidasUnt.fromJson(model)).toList();
       });
+    } else if (response.statusCode == 401) {
+      Navigator.pushNamed(context, '/Login');
+    }
   }
 
 // ==== MENSAGEM QUE DISPARA PARA EDITAR O GRUPO DE MEDIDAS =====

@@ -178,7 +178,9 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
       ),
       headers: {"authorization": ModelsUsuarios.tokenAuth},
     );
-
+    if (result.statusCode == 401) {
+      Navigator.pushNamed(context, '/Login');
+    }
     // Captura o valor vindo do body da requisição
     String retorno = result.body;
 
@@ -229,6 +231,9 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
       ),
       headers: {"Content-Type": "application/json"},
     );
+    if (result.statusCode == 401) {
+      Navigator.pushNamed(context, '/Login');
+    }
 
     // Captura o valor vindo do body da requisição
     String retorno = result.body;
