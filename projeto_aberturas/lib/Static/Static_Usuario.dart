@@ -2,7 +2,6 @@
 //  =========== ARQUIVO QUE CAPTURA OS DADOS DO USUARIO LOGADO =============
 
 import 'dart:convert';
-import 'dart:html';
 
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';

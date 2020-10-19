@@ -6,7 +6,7 @@ class FormController {
 
 //aki vai a url do script do google
   static const String URL =
-      "https://script.google.com/macros/s/AKfycbwjUlaWsOh5ErUYmtTxVaoZmV69LNmxgOeP5NyskA/exec";
+      "https://script.google.com/macros/s/AKfycbwSnH6VXazQPSHPINJXboiWV5aAE9iuRxY3Bwlc6fCGoU85DiM/exec";
 
   static const STATUS_SUCCESS = "SUCCESS";
 

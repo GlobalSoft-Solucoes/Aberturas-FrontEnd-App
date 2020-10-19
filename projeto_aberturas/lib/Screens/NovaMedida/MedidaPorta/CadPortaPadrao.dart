@@ -85,7 +85,7 @@ class _CadPortaPadraoState extends State<CadPortaPadrao> {
       'Tipo_Medida': 'Padrao',
     });
 
-    var response = http.post(
+    var response = await http.post(
       UrlServidor + CadastrarMedidaUnt,
       headers: {"authorization": ModelsUsuarios.tokenAuth},
       body: bodyy,
