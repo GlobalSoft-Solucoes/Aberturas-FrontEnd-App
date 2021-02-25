@@ -17,24 +17,24 @@ class ModelsEmpresa {
     this.senha,
   });
   ModelsEmpresa.fromJson(Map<String, dynamic> json) {
-    idEmpresa = json['IdEmpresa'];
-    nome = json['Nome'];
-    cnpj = json['Cnpj'];
-    codAcesso = json['Cod_Acesso'];
-    codAdm = json['Cod_Adm'];
-    email = json['Email'];
-    senha = json['Senha'];
+    idEmpresa = json['idempresa'];
+    nome = json['nome'];
+    cnpj = json['cnpj'];
+    codAcesso = json['cnpj'];
+    codAdm = json['cod_adm'];
+    email = json['email'];
+    senha = json['senha'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['IdEmpresa'] = this.idEmpresa;
-    data['Nome'] = this.nome;
-    data['Cnpj'] = this.cnpj;
-    data['Cod_Acesso'] = this.codAcesso;
-    data['Cod_Adm'] = this.codAdm;
-    data['Email'] = this.email;
-    data['Senha'] = this.senha;
+    data['idempresa'] = this.idEmpresa;
+    data['nome'] = this.nome;
+    data['cnpj'] = this.cnpj;
+    data['cnpj'] = this.codAcesso;
+    data['cod_adm'] = this.codAdm;
+    data['email'] = this.email;
+    data['senha'] = this.senha;
     return data;
   }
 }

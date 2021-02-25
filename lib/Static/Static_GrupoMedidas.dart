@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:projeto_aberturas/Models/Models_GrupoMedidas.dart';
+import 'package:projeto_aberturas/Models/Models_Usuario.dart';
 import 'package:projeto_aberturas/Models/constantes.dart';
 
 class GrupoMedidas {
@@ -23,18 +24,20 @@ class DadosGrupoSelecionado {
   Future<BuildContext> capturaDadosGrupoSelecionado() async {
     var result = await http.get(
       Uri.encodeFull(
-        UrlServidor.toString() +
             BuscarGrupoPorId +
             GrupoMedidas.idGrupoMedidas.toString(),
-        // Usuario.idUsuario.toString(),
+        // usuario.idUsuario.toString(),
       ),
-      headers: {"Content-Type": "application/json"},
+      headers: {
+        "authorization": ModelsUsuarios.tokenAuth,
+        "Content-Type": "application/json"
+      },
     );
 
     Iterable lista = json.decode(result.body);
     listaDadosGrupo =
         lista.map((model) => ModelGrupoMedidas.fromJson(model)).toList();
-    // Usuario.nome = 'testeusuario';
+    // usuario.nome = 'testeusuario';
     GrupoMedidas.endereco = listaDadosGrupo[0]?.endereco;
     GrupoMedidas.proprietario = listaDadosGrupo[0]?.proprietario;
     GrupoMedidas.numEndereco = listaDadosGrupo[0]?.numEndereco;

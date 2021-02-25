@@ -4,6 +4,7 @@ import 'package:projeto_aberturas/Models/Models_Portas.dart';
 import 'package:projeto_aberturas/Models/Models_Usuario.dart';
 import 'package:projeto_aberturas/Models/constantes.dart';
 import 'package:projeto_aberturas/Widget/Botao.dart';
+import 'package:projeto_aberturas/Widget/Crud_DataBase.dart';
 import 'package:projeto_aberturas/Widget/MsgPopup.dart';
 import 'package:projeto_aberturas/Widget/TextField.dart';
 import 'package:http/http.dart' as http;
@@ -20,7 +21,7 @@ class _CadReferenciasState extends State<CadReferencias> {
 
   Future listarDados() async {
     final response = await http.get(
-      Uri.encodeFull(UrlServidor + ListarTodosCodReferencias),
+      Uri.encodeFull(ListarTodosCodReferencia),
       headers: {"authorization": ModelsUsuarios.tokenAuth},
     );
     if (mounted) {
@@ -36,34 +37,21 @@ class _CadReferenciasState extends State<CadReferencias> {
     }
   }
 
-  popupconfirmacao() {
-    MsgPopup().msgFeedback(
-        context, 'Referencias cadastrada com Sucesso', 'Referencia',
-        txtButton: 'OK!');
-  }
-
   Future<dynamic> salvarDadosBanco() async {
     var referencias = controlerRefs.text;
 
     var bodyy = jsonEncode({
-      'Codigo': referencias,
+      'codigo': referencias,
     });
 
-    http.Response state = await http.post(
-      UrlServidor + CadastrarCodReferencia,
-      headers: {
-        "Content-Type": "application/json",
-        "authorization": ModelsUsuarios.tokenAuth
-      },
-      body: bodyy,
-    );
+    ReqDataBase().requisicaoPost(CadastrarCodReferencia, bodyy);
 
-    if (state.statusCode == 200) {
-      popupconfirmacao();
-    } else if (state.statusCode == 400) {
+    if (ReqDataBase.responseReq.statusCode == 200) {
+      controlerRefs.text = " ";
+    } else if (ReqDataBase.responseReq.statusCode == 400) {
       popupconfirmacaoerro();
     }
-    if (state.statusCode == 401) {
+    if (ReqDataBase.responseReq.statusCode == 401) {
       Navigator.pushNamed(context, '/Login');
     }
   }
@@ -76,7 +64,7 @@ class _CadReferenciasState extends State<CadReferencias> {
 
   verificarDados() {
     if (controlerRefs.text.isNotEmpty) {
-      if (controlerRefs.text.length >= 3) {
+      if (controlerRefs.text.length > 3) {
         salvarDadosBanco();
         mensagemErro = '';
       } else {
@@ -101,18 +89,13 @@ class _CadReferenciasState extends State<CadReferencias> {
 
 // ======== FUNÇÃO QUE DELETA O PIVOTANTE DO BANCO DE DADOS ==========
   Future<dynamic> deletar(int id) async {
-    http.Response state = await http.delete(
-        UrlServidor.toString() + DeletarCodReferencia + id.toString(),
-        headers: {
-          "Content-Type": "application/json",
-          "authorization": ModelsUsuarios.tokenAuth
-        });
-    if (state.statusCode == 400) {
+    ReqDataBase().requisicaoDelete(DeletarCodReferencia + id.toString());
+    if (ReqDataBase.responseReq.statusCode == 400) {
       mensagemErro =
           'A Referência está sendo usado e portanto não pode ser excluída.';
       _erroDeletarPivotante();
     }
-    if (state.statusCode == 401) {
+    if (ReqDataBase.responseReq.statusCode == 401) {
       Navigator.pushNamed(context, '/Login');
     }
   }
@@ -138,35 +121,40 @@ class _CadReferenciasState extends State<CadReferencias> {
     MediaQueryData mediaQuery = MediaQuery.of(context);
     Size size = mediaQuery.size;
     return Scaffold(
+      backgroundColor: Color(0xFFCCE9F5),
       body: SingleChildScrollView(
         child: Container(
           width: size.width,
           height: size.height,
-          color: Color(0XFF0099FF),
+          color: Color(0xFFBCE0F0),
           child: Column(
             children: [
+              //===============================================
               Padding(
                 padding: EdgeInsets.only(
-                  top: size.height * 0.06,
-                  left: size.width * 0.02,
+                  top: size.height * 0.02,
+                  left: size.width * 0.015,
                 ),
                 child: Container(
                   alignment: Alignment.topLeft,
                   child: Row(
                     children: [
                       IconButton(
-                        iconSize: 30,
-                        color: Colors.white,
-                        icon: Icon(Icons.arrow_back),
-                        onPressed: () => Navigator.pop(context),
-                      ),
-                      Text(
-                        'Cadastrar Codigo Referencia',
-                        style: TextStyle(
-                          fontSize: 28,
                           color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          decoration: TextDecoration.none,
+                          icon: Icon(Icons.arrow_back),
+                          iconSize: 33,
+                          onPressed: () {
+                            Navigator.pop(context);
+                          }),
+                      Padding(
+                        padding: EdgeInsets.only(left: size.width * 0.15),
+                        child: Text(
+                          'Código Referência',
+                          style: TextStyle(
+                              fontSize: 28,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              decoration: TextDecoration.none),
                         ),
                       ),
                     ],
@@ -176,7 +164,7 @@ class _CadReferenciasState extends State<CadReferencias> {
               //================ WIDGET DO CADASTRO ===================
               Container(
                 width: size.width,
-                height: size.height * 0.27,
+                height: size.height * 0.25,
                 child: Padding(
                   padding: EdgeInsets.only(
                     top: size.width * 0.02,
@@ -217,7 +205,7 @@ class _CadReferenciasState extends State<CadReferencias> {
                             padding: EdgeInsets.only(
                               right: size.width * 0.02,
                               left: size.width * 0.02,
-                              top: size.width * 0.02,
+                              top: size.width * 0.03,
                             ),
                             child: Botao().botaoPadrao(
                                 'Salvar',
@@ -238,7 +226,7 @@ class _CadReferenciasState extends State<CadReferencias> {
                     left: size.width * 0.02, right: size.width * 0.02),
                 child: Container(
                   width: size.width,
-                  height: size.height * 0.60,
+                  height: size.height * 0.63,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.white,
@@ -263,6 +251,7 @@ class _CadReferenciasState extends State<CadReferencias> {
                               },
                               child: Icon(
                                 Icons.delete_forever,
+                                size: 27,
                               ),
                             ),
                           );

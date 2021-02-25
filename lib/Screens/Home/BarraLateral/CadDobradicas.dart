@@ -5,6 +5,7 @@ import 'package:projeto_aberturas/Models/Models_Usuario.dart';
 import 'package:projeto_aberturas/Models/constantes.dart';
 
 import 'package:projeto_aberturas/Widget/Botao.dart';
+import 'package:projeto_aberturas/Widget/Crud_DataBase.dart';
 import 'package:projeto_aberturas/Widget/MsgPopup.dart';
 import 'package:projeto_aberturas/Widget/TextField.dart';
 import 'package:http/http.dart' as http;
@@ -20,9 +21,10 @@ class _CadDobradicasState extends State<CadDobradicas> {
 
   var dobradicas = new List<Dobradicas>();
   var mensagemErro = '';
+
   Future listaDados() async {
     final response = await http
-        .get(Uri.encodeFull(UrlServidor + 'Dobradica/ListarTodos/'), headers: {
+        .get(Uri.encodeFull(ListarTodosDobradica), headers: {
       "authorization": ModelsUsuarios.tokenAuth,
     });
 
@@ -42,25 +44,18 @@ class _CadDobradicasState extends State<CadDobradicas> {
     var nomedobradica = controllDobradicas.text;
     var descricao = controllDescricao.text;
     var bodyy = jsonEncode({
-      'Nome': nomedobradica,
-      'Descricao': descricao,
+      'nome': nomedobradica,
+      'descricao': descricao,
     });
 
-    print(bodyy);
-    http.Response state = await http.post(
-      UrlServidor + CadastrarDobradica,
-      headers: {
-        "Content-Type": "application/json",
-        "authorization": ModelsUsuarios.tokenAuth,
-      },
-      body: bodyy,
-    );
-    if (state.statusCode == 201) {
+    ReqDataBase().requisicaoPost(CadastrarDobradica, bodyy);
+    if (ReqDataBase.responseReq.statusCode == 200) {
       popupconfirmacao();
-      controllDobradicas.text = "";
-    } else if (state.statusCode == 400) {
+      controllDobradicas.text = " ";
+      controllDescricao.text = " ";
+    } else if (ReqDataBase.responseReq.statusCode == 400) {
       popupconfirmacaoerro();
-    } else if (state.statusCode == 401) {
+    } else if (ReqDataBase.responseReq.statusCode == 401) {
       Navigator.pushNamed(context, '/Login');
     }
   }
@@ -103,18 +98,13 @@ class _CadDobradicasState extends State<CadDobradicas> {
 
 // ======== FUNÇÃO QUE DELETA O PIVOTANTE DO BANCO DE DADOS ==========
   Future<dynamic> deletar(int id) async {
-    http.Response state = await http.delete(
-      UrlServidor.toString() + DeletarDobradica + id.toString(),
-      headers: {
-        "authorization": ModelsUsuarios.tokenAuth,
-      },
-    );
-    if (state.statusCode == 400) {
+    ReqDataBase().requisicaoDelete(DeletarDobradica + id.toString());
+    if (ReqDataBase.responseReq.statusCode == 400) {
       mensagemErro =
           'A Dobradiça está sendo usado e portanto não pode ser excluída.';
       _erroDeletarPivotante();
     }
-    if (state.statusCode == 401) {
+    if (ReqDataBase.responseReq.statusCode == 401) {
       Navigator.pushNamed(context, '/Login');
     }
   }
@@ -162,17 +152,18 @@ class _CadDobradicasState extends State<CadDobradicas> {
     MediaQueryData mediaQuery = MediaQuery.of(context);
     Size size = mediaQuery.size;
     return Scaffold(
+      backgroundColor: Color(0xFFCCE9F5),
       body: SingleChildScrollView(
         child: Container(
           width: size.width,
           height: size.height,
-          color: Color(0XFF0099FF),
+          color: Color(0xFFBCE0F0),
           child: Column(
             children: [
               //===============================================
               Padding(
                 padding: EdgeInsets.only(
-                  top: size.height * 0.06,
+                  top: size.height * 0.02,
                   left: size.width * 0.02,
                 ),
                 child: Container(
@@ -180,18 +171,22 @@ class _CadDobradicasState extends State<CadDobradicas> {
                   child: Row(
                     children: [
                       IconButton(
-                        iconSize: 30,
-                        color: Colors.white,
-                        icon: Icon(Icons.arrow_back),
-                        onPressed: () => Navigator.pop(context),
-                      ),
-                      Text(
-                        'Cadastro de Dobradiças',
-                        style: TextStyle(
-                            fontSize: 28,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            decoration: TextDecoration.none),
+                          color: Colors.white,
+                          icon: Icon(Icons.arrow_back),
+                          iconSize: 30,
+                          onPressed: () {
+                            Navigator.pop(context);
+                          }),
+                      Padding(
+                        padding: EdgeInsets.only(left: size.width * 0.05),
+                        child: Text(
+                          'Cadastro de Dobradiças',
+                          style: TextStyle(
+                              fontSize: 30,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              decoration: TextDecoration.none),
+                        ),
                       ),
                     ],
                   ),
@@ -201,7 +196,7 @@ class _CadDobradicasState extends State<CadDobradicas> {
               Container(
                 // Configurações do primeiro widget que faz o cadastro
                 width: size.width,
-                height: size.height * 0.37,
+                height: size.height * 0.345,
                 child: Padding(
                   padding: EdgeInsets.only(
                     top: size.width * 0.02,
@@ -224,7 +219,7 @@ class _CadDobradicasState extends State<CadDobradicas> {
                           padding: EdgeInsets.only(
                             right: size.width * 0.02,
                             left: size.width * 0.02,
-                            top: size.height * 0.02,
+                            top: size.height * 0.015,
                           ),
                           child: CampoText().textField(
                               controllDobradicas, 'Dobradiça:',
@@ -236,10 +231,10 @@ class _CadDobradicasState extends State<CadDobradicas> {
                           padding: EdgeInsets.only(
                               right: size.width * 0.02,
                               left: size.width * 0.02,
-                              top: size.height * 0.01),
+                              top: size.height * 0.0),
                           child: CampoText().textField(
                             controllDescricao,
-                            'Descricao:',
+                            'descricao:',
                             altura: size.height * 0.10,
                             icone: Icons.home,
                             raioBorda: 10,
@@ -250,7 +245,7 @@ class _CadDobradicasState extends State<CadDobradicas> {
                             padding: EdgeInsets.only(
                               right: size.width * 0.02,
                               left: size.width * 0.02,
-                              top: size.width * 0.025,
+                              top: size.width * 0.03,
                             ),
                             child: Botao().botaoPadrao('Salvar',
                                 () => {verificarDados()}, Color(0XFFD1D6DC)),
@@ -270,7 +265,7 @@ class _CadDobradicasState extends State<CadDobradicas> {
                 ),
                 child: Container(
                   width: size.width,
-                  height: size.height * 0.49,
+                  height: size.height * 0.56,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.white,
@@ -297,6 +292,8 @@ class _CadDobradicasState extends State<CadDobradicas> {
                               },
                               child: Icon(
                                 Icons.delete_forever,
+                                size: 27,
+                                // color: Colors.red,
                               ),
                             ),
                           );

@@ -10,7 +10,7 @@ import 'package:projeto_aberturas/Models/Models_Usuario.dart';
 import 'package:projeto_aberturas/Models/constantes.dart';
 import 'package:projeto_aberturas/Static/Static_Usuario.dart';
 
-class Empresa {
+class FieldsEmpresa {
   static int idEmpresa;
   static String nome;
   static String cnpj;
@@ -23,12 +23,11 @@ class Empresa {
 class DadosEmpresa {
   var listaDadosEmpresa = new List<ModelsEmpresa>();
 
-  Future<BuildContext> capturaDadosEmpresa(idUsuarioEmpresa) async {
+  Future<BuildContext> capturaDadosEmpresa() async {
     var result = await http.get(
         Uri.encodeFull(
-          UrlServidor.toString() +
               BuscarEmpresaPorId.toString() +
-              idUsuarioEmpresa.toString(),//Usuario?.idEmpresa.toString(),
+              usuario.idEmpresa.toString(),
         ),
         headers: {
           'Content-Type': 'application/json',
@@ -40,15 +39,12 @@ class DadosEmpresa {
     listaDadosEmpresa =
         lista.map((model) => ModelsEmpresa.fromJson(model)).toList();
 
-    var index = 0;
-
-    Empresa.idEmpresa = listaDadosEmpresa[index].idEmpresa;
-    Empresa.nome = listaDadosEmpresa[index].nome;
-    Empresa.email = listaDadosEmpresa[index].email;
-    Empresa.senha = listaDadosEmpresa[index].senha;
-    Empresa.codAcesso = listaDadosEmpresa[index].codAcesso;
-    Empresa.codAdm = listaDadosEmpresa[index].codAdm;
-
+    FieldsEmpresa.idEmpresa = listaDadosEmpresa[0].idEmpresa;
+    FieldsEmpresa.nome = listaDadosEmpresa[0].nome;
+    FieldsEmpresa.email = listaDadosEmpresa[0].email;
+    FieldsEmpresa.senha = listaDadosEmpresa[0].senha;
+    FieldsEmpresa.codAcesso = listaDadosEmpresa[0].codAcesso;
+    FieldsEmpresa.codAdm = listaDadosEmpresa[0].codAdm;
     json.encoder;
   }
 }

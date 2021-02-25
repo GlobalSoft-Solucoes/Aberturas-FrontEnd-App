@@ -7,7 +7,10 @@ class ModelsUsuarios {
   String senha;
   String cpf;
   String token;
+  String dataCadastro;
   static String tokenAuth;
+  static int iddoUsuario;
+
   ModelsUsuarios(
       {this.idUsuario,
       this.idEmpresa,
@@ -16,15 +19,19 @@ class ModelsUsuarios {
       this.email,
       this.senha,
       this.cpf,
-      this.token});
+      this.token,
+      this.dataCadastro,});
+
   ModelsUsuarios.fromJson(Map<String, dynamic> json) {
-    idUsuario = json['IdUsuario'];
-    idEmpresa = json['IdEmpresa'];
-    name = json['Nome'];
-    email = json['Email'];
-    senha = json['Senha'];
-    cpf = json['Cpf'];
-    adm = json['Adm'];
+    idUsuario = json['idusuario'];
+    idEmpresa = json['idempresa'];
+    name = json['nome'];
+    email = json['email'];
+    senha = json['senha'];
+    cpf = json['cpf'];
+    adm = json['adm'];
     token = json['token'];
+    dataCadastro = json['data_cadastro'];
   }
+
 }

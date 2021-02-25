@@ -42,7 +42,7 @@ class _EntradaAppState extends State<EntradaApp> {
 
     var result = await http.post(
       Uri.encodeFull(
-          UrlServidor.toString() + BuscarCodigoAcessoEmp + codAcessoEmp),
+         BuscarCodigoAcessoEmp + codAcessoEmp),
       headers: {"Content-Type": "application/json"},
     );
 
@@ -58,7 +58,7 @@ class _EntradaAppState extends State<EntradaApp> {
       // caso haja valor na variável, quer dizer que contém um registro
       if (valorRetorno.length > 0) {
         print(valorRetorno);
-        Empresa.idEmpresa = int.parse(valorRetorno);
+        FieldsEmpresa.idEmpresa = int.parse(valorRetorno);
         // se houver resultado, permite que o cadastro seja feito
         controllerCodEmpresa.text = "";
         Navigator.of(context).pop(); // Apaga o popup anterior
@@ -111,135 +111,138 @@ class _EntradaAppState extends State<EntradaApp> {
       body: Container(
         height: size.height,
         width: size.width,
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              // ========================== NOME DO PROJETO ==========================
-              Container(
-                padding: EdgeInsets.only(
-                  left: size.width * 0.37,
-                  top: 50,
-                ),
-                child: Text(
-                  'Aberturas',
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.w400,
-                    // fontFamily: 'Raleway',
-                  ),
-                ),
-              ),
-
-              // ========================== RETANGULO ==========================
-              Padding(
-                padding: EdgeInsets.only(
-                  top: 30,
-                  left: 20,
-                  right: 20,
-                ),
-                child: Column(
-                  children: <Widget>[
-                    CarouselSlider(
-                      options: CarouselOptions(
-                        autoPlay: true,
-                        aspectRatio: 2.0,
-                        enlargeCenterPage: true,
+        child: Column(
+          children: <Widget>[
+            SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  // ========================== NOME DO PROJETO ==========================
+                  Container(
+                    padding: EdgeInsets.only(
+                      left: size.width * 0.35,
+                      top: size.height * 0.05,
+                    ),
+                    child: Text(
+                      'Aberturas',
+                      style: TextStyle(
+                        fontSize: size.width * 0.065,
+                        fontWeight: FontWeight.w400,
+                        // fontFamily: 'Raleway',
                       ),
-                      items: imageSliders,
-                    ),
-                  ],
-                ),
-              ),
-
-              // ======================= BOTÕES ========================
-
-              Padding(
-                padding: EdgeInsets.only(
-                  top: 110,
-                  left: 20,
-                  right: 20,
-                ),
-                child: FloatingActionButton.extended(
-                  heroTag: 'btn2',
-                  backgroundColor: Color(0XFFD1D6DC),
-                  onPressed: () => Navigator.pushNamed(context, '/Login'),
-                  label: Text(
-                    'Login',
-                    style: TextStyle(
-                      fontSize: 28,
                     ),
                   ),
-                ),
-              ),
-              //-------------------------------------------------------
-              Padding(
-                padding: EdgeInsets.only(
-                  top: 30,
-                  left: 20,
-                  right: 20,
-                ),
-                child: FloatingActionButton.extended(
-                  heroTag: 'btn3',
-                  backgroundColor: Color(0XFFD1D6DC),
-                  onPressed: () {
-                    codEmp();
-                  },
-                  label: Text(
-                    'Cadastre-se',
-                    style: TextStyle(
-                      fontSize: 28,
-                    ),
-                  ),
-                ),
-              ),
-              //-------------------------------------------------------
-              Padding(
-                padding: EdgeInsets.only(
-                  top: 30,
-                  left: 20,
-                  right: 20,
-                ),
-                child: FloatingActionButton.extended(
-                  heroTag: 'btn4',
-                  backgroundColor: Color(0XFFF4485C),
-                  onPressed: () => exit(0),
-                  label: Text(
-                    'Sair',
-                    style: TextStyle(
-                      fontSize: 28,
-                    ),
-                  ),
-                ),
-              ),
 
-              //=================== NOME DO USUÁRIO ======================
-              Container(
-                padding: EdgeInsets.only(top: 40),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(right: size.width * 0.0),
-                      child: Text(
-                        'GlobalSoft',
+                  // ========================== RETANGULO ==========================
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: 30,
+                      left: 20,
+                      right: 20,
+                    ),
+                    child: Column(
+                      children: <Widget>[
+                        CarouselSlider(
+                          options: CarouselOptions(
+                            autoPlay: true,
+                            aspectRatio: 2.0,
+                            enlargeCenterPage: true,
+                          ),
+                          items: imageSliders,
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  // ======================= BOTÕES ========================
+
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: size.height * 0.16,
+                      left: 20,
+                      right: 20,
+                    ),
+                    child: FloatingActionButton.extended(
+                      heroTag: 'btn2',
+                      backgroundColor: Color(0XFFD1D6DC),
+                      onPressed: () => Navigator.pushNamed(context, '/Login'),
+                      label: Text(
+                        'Login',
                         style: TextStyle(
-                            fontSize: 22, fontWeight: FontWeight.w300),
-                        // textAlign: TextAlign.center,
+                          fontSize: 28,
+                        ),
                       ),
                     ),
-                    Text(
-                      'Soluções Tecnologicas',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.w300),
-                    )
-                  ],
-                ),
+                  ),
+                  //-------------------------------------------------------
+                  // Padding(
+                  //   padding: EdgeInsets.only(
+                  //     top: 30,
+                  //     left: 20,
+                  //     right: 20,
+                  //   ),
+                  //   child: FloatingActionButton.extended(
+                  //     heroTag: 'btn3',
+                  //     backgroundColor: Color(0XFFD1D6DC),
+                  //     onPressed: () {
+                  //       codEmp();
+                  //     },
+                  //     label: Text(
+                  //       'Cadastre-se',
+                  //       style: TextStyle(
+                  //         fontSize: 28,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                  //-------------------------------------------------------
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: 35,
+                      left: 20,
+                      right: 20,
+                    ),
+                    child: FloatingActionButton.extended(
+                      heroTag: 'btn4',
+                      backgroundColor: Color(0XFFF4485C),
+                      onPressed: () => exit(0),
+                      label: Text(
+                        'Sair',
+                        style: TextStyle(
+                          fontSize: 28,
+                        ),
+                      ),
+                    ),
+                  ),
+                  //-----------------------------------------------------
+                ],
               ),
-            ],
-          ),
+            ),
+            //==================== NOME DA EMRPESA ========================
+            Container(
+              padding: EdgeInsets.only(top: size.height * 0.20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(right: size.width * 0.0),
+                    child: Text(
+                      'GlobalSoft',
+                      style:
+                          TextStyle(fontSize: size.width * 0.05, fontWeight: FontWeight.w300),
+                      // textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Text(
+                    'Soluções Tecnologicas',
+                    style: TextStyle(fontSize: size.width * 0.042, fontWeight: FontWeight.w300),
+                  )
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

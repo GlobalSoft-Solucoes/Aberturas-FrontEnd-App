@@ -5,6 +5,7 @@ import 'package:projeto_aberturas/Models/Models_Imoveis.dart';
 import 'package:projeto_aberturas/Models/Models_Usuario.dart';
 import 'package:projeto_aberturas/Models/constantes.dart';
 import 'package:projeto_aberturas/Widget/Botao.dart';
+import 'package:projeto_aberturas/Widget/Crud_DataBase.dart';
 import 'package:projeto_aberturas/Widget/TextField.dart';
 import 'package:projeto_aberturas/Widget/MsgPopup.dart';
 import 'package:http/http.dart' as http;
@@ -21,7 +22,7 @@ class _CadImoveisState extends State<CadImoveis> {
   var imoveis = new List<Imoveis>();
   Future listaDados() async {
     final response = await http.get(
-      Uri.encodeFull(UrlServidor + ListarTodosImoveis),
+      Uri.encodeFull(ListarTodosImoveis),
       headers: {"authorization": ModelsUsuarios.tokenAuth},
     );
     if (mounted) {
@@ -39,22 +40,16 @@ class _CadImoveisState extends State<CadImoveis> {
     var imovel = controllerCampoImovel.text;
 
     var bodyy = jsonEncode({
-      'Nome': imovel,
+      'nome': imovel,
     });
 
-    http.Response state = await http.post(
-      UrlServidor + CadastrarImovel,
-      headers: {
-        "Content-Type": "application/json",
-        "authorization": ModelsUsuarios.tokenAuth,
-      },
-      body: bodyy,
-    );
-    if (state.statusCode == 200) {
-      popupconfirmacao();
-    } else if (state.statusCode == 400) {
+    ReqDataBase().requisicaoPost(CadastrarImovel, bodyy);
+
+    if (ReqDataBase.responseReq.statusCode == 200) {
+      controllerCampoImovel.text = ' ';
+    } else if (ReqDataBase.responseReq.statusCode == 400) {
       popupConfirmacaoErro();
-    } else if (state.statusCode == 401) {
+    } else if (ReqDataBase.responseReq.statusCode == 401) {
       Navigator.pushNamed(context, '/Login');
     }
   }
@@ -94,15 +89,13 @@ class _CadImoveisState extends State<CadImoveis> {
 
 // ======== FUNÇÃO QUE DELETA O PIVOTANTE DO BANCO DE DADOS ==========
   Future<dynamic> deletar(int id) async {
-    http.Response state = await http.delete(
-        UrlServidor.toString() + DeletarImovel + id.toString(),
-        headers: {"authorization": ModelsUsuarios.tokenAuth});
-    if (state.statusCode == 400) {
+    ReqDataBase().requisicaoDelete(DeletarImovel + id.toString());
+    if (ReqDataBase.responseReq.statusCode == 400) {
       mensagemErro =
           'O Imóvel está sendo usado e portanto não pode ser excluído.';
       _erroDeletarPivotante();
     }
-    if (state.statusCode == 401) {
+    if (ReqDataBase.responseReq.statusCode == 401) {
       Navigator.pushNamed(context, '/Login');
     }
   }
@@ -133,27 +126,23 @@ class _CadImoveisState extends State<CadImoveis> {
     );
   }
 
-  popupconfirmacao() {
-    MsgPopup().msgFeedback(context, 'Imovel cadastrada com Sucesso', 'Imovel',
-        txtButton: 'OK!');
-  }
-
   @override
   Widget build(BuildContext context) {
     MediaQueryData mediaQuery = MediaQuery.of(context);
     Size size = mediaQuery.size;
     return Scaffold(
+      backgroundColor: Color(0xFFCCE9F5),
       body: SingleChildScrollView(
         child: Container(
           width: size.width,
           height: size.height,
-          color: Color(0XFF0099FF),
+          color: Color(0xFFBCE0F0),
           child: Column(
             children: [
               //===========================================
               Padding(
                 padding: EdgeInsets.only(
-                  top: size.height * 0.05,
+                  top: size.height * 0.02,
                   left: size.width * 0.02,
                 ),
                 child: Container(
@@ -161,18 +150,19 @@ class _CadImoveisState extends State<CadImoveis> {
                   child: Row(
                     children: [
                       IconButton(
-                          color: Colors.white,
-                          icon: Icon(Icons.arrow_back),
-                          iconSize: 30,
-                          onPressed: () {
-                            Navigator.pop(context);
-                          }),
+                        color: Colors.white,
+                        icon: Icon(Icons.arrow_back),
+                        iconSize: 33,
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
                       Padding(
-                        padding: EdgeInsets.only(left: size.width * 0.1),
+                        padding: EdgeInsets.only(left: size.width * 0.13),
                         child: Text(
-                          'Cadastrar Imovel',
+                          'Cadastrar imóvel',
                           style: TextStyle(
-                              fontSize: 30,
+                              fontSize: size.width * 0.07,
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                               decoration: TextDecoration.none),
@@ -182,17 +172,16 @@ class _CadImoveisState extends State<CadImoveis> {
                   ),
                 ),
               ),
-
               //============== WIDGET DO CADASTRO =================
               Container(
                 // Configurações do widget do cadastro
-                height: size.height * 0.26,
+                height: size.height * 0.25,
                 child: Padding(
                   padding: EdgeInsets.only(
-                    top: size.width * 0.05,
+                    top: size.width * 0.03,
                     left: size.width * 0.02,
                     right: size.width * 0.02,
-                    bottom: size.height * 0.01,
+                    bottom: size.height * 0.02,
                   ),
                   child: Container(
                     alignment: Alignment.topCenter,
@@ -214,7 +203,7 @@ class _CadImoveisState extends State<CadImoveis> {
                           ),
                           child: CampoText().textField(
                             controllerCampoImovel,
-                            'Imovel:',
+                            'imovel:',
                             altura: size.height * 0.10,
                             icone: Icons.home,
                             raioBorda: 10,
@@ -250,7 +239,7 @@ class _CadImoveisState extends State<CadImoveis> {
                 ),
                 child: Container(
                   width: size.width,
-                  height: size.height * 0.61,
+                  height: size.height * 0.63,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.white,
@@ -275,6 +264,7 @@ class _CadImoveisState extends State<CadImoveis> {
                               },
                               child: Icon(
                                 Icons.delete_forever,
+                                size: 27,
                               ),
                             ),
                           );

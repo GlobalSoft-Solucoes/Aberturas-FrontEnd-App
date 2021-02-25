@@ -36,12 +36,12 @@ class _MenuPrincipalState extends State<MenuPrincipal> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                'GlobalSoft',
-                style: TextStyle(fontSize: 36, fontWeight: FontWeight.w300),
+                'Globalsoft',
+                style: TextStyle(fontSize: size.width * 0.077, fontWeight: FontWeight.w300),
               ),
               Text(
                 'Soluções Tecnologicas',
-                style: TextStyle(fontSize: 36, fontWeight: FontWeight.w300),
+                style: TextStyle(fontSize: size.width * 0.077, fontWeight: FontWeight.w300),
               )
             ],
           ),
@@ -54,7 +54,7 @@ class _MenuPrincipalState extends State<MenuPrincipal> {
             DrawerHeader(
               child: Text(''),
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: Colors.blue[400],
               ),
             ),
             ListTile(
@@ -72,15 +72,42 @@ class _MenuPrincipalState extends State<MenuPrincipal> {
                 Navigator.pushNamed(context, '/PerfilUsuario');
               },
             ),
+             ListTile(
+              title: Text(
+                'Usuários cadastrados',
+                style: TextStyle(fontSize: 18),
+              ),
+              contentPadding: EdgeInsets.only(top: 20, left: 20),
+              dense: true,
+              onTap: () {
+                setState(() {
+                  // Atualiza os dados do usuario no arquivo static onde eles são pegos
+                  DadosUserLogado().capturaDadosUsuarioLogado();
+                });
+                Navigator.pushNamed(context, '/ListaUsuariosEmpresa');
+              },
+            ),
             ListTile(
               title: Text(
-                'Cadastrar Imovel',
+                'Cadastrar imovel',
                 style: TextStyle(fontSize: 18),
               ),
               contentPadding: EdgeInsets.only(top: 20, left: 20),
               dense: true,
               onTap: () {
                 Navigator.pushNamed(context, '/CadImoveis');
+                // Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: Text(
+                'Cadastrar Tipo de porta',
+                style: TextStyle(fontSize: 18),
+              ),
+              contentPadding: EdgeInsets.only(top: 20, left: 20),
+              dense: true,
+              onTap: () {
+                Navigator.pushNamed(context, '/CadTipoPorta');
                 // Navigator.pop(context);
               },
             ),
@@ -126,6 +153,17 @@ class _MenuPrincipalState extends State<MenuPrincipal> {
               dense: true,
               onTap: () {
                 Navigator.pushNamed(context, '/CadPivotante');
+              },
+            ),
+            ListTile(
+              title: Text(
+                'Status',
+                style: TextStyle(fontSize: 18),
+              ),
+              contentPadding: EdgeInsets.only(top: 20, left: 20),
+              dense: true,
+              onTap: () {
+                Navigator.pushNamed(context, '/StatusGrupos');
               },
             ),
             ListTile(

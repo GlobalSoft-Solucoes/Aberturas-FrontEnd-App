@@ -5,6 +5,7 @@ import 'package:projeto_aberturas/Models/Models_Portas.dart';
 import 'package:projeto_aberturas/Models/Models_Usuario.dart';
 import 'package:projeto_aberturas/Models/constantes.dart';
 import 'package:projeto_aberturas/Widget/Botao.dart';
+import 'package:projeto_aberturas/Widget/Crud_DataBase.dart';
 import 'package:projeto_aberturas/Widget/MsgPopup.dart';
 import 'package:projeto_aberturas/Widget/TextField.dart';
 import 'package:http/http.dart' as http;
@@ -22,8 +23,8 @@ class _CadFechadurasState extends State<CadFechaduras> {
   var mensagemErro = '';
 
   Future listaDados() async {
-    final response = await http
-        .get(Uri.encodeFull(UrlServidor + 'Fechadura/ListarTodos'), headers: {
+    final response =
+        await http.get(Uri.encodeFull(ListarTodosFechadura), headers: {
       "authorization": ModelsUsuarios.tokenAuth,
     });
 
@@ -42,7 +43,7 @@ class _CadFechadurasState extends State<CadFechaduras> {
   popupConfirmacao() {
     MsgPopup().msgFeedback(
       context,
-      'Fechadura cadastrada com Sucesso',
+      'fechadura cadastrada com Sucesso',
       '',
       txtButton: 'OK!',
     );
@@ -52,24 +53,18 @@ class _CadFechadurasState extends State<CadFechaduras> {
     var nomefechadura = controllFechaduras.text;
     var descricao = controllDescricao.text;
     var bodyy = jsonEncode({
-      'Nome': nomefechadura,
-      'Descricao': descricao,
+      'nome': nomefechadura,
+      'descricao': descricao,
     });
 
-    print(bodyy);
-    http.Response state = await http.post(
-      UrlServidor + 'Fechadura/Cadastrar',
-      headers: {
-        "Content-Type": "application/json",
-        "authorization": ModelsUsuarios.tokenAuth
-      },
-      body: bodyy,
-    );
-    if (state.statusCode == 201) {
+    ReqDataBase().requisicaoPost(CadastrarFechadura, bodyy);
+    if (ReqDataBase.responseReq.statusCode == 201) {
       popupConfirmacao();
-    } else if (state.statusCode == 400) {
+      controllFechaduras.text = " ";
+      controllDescricao.text = " ";
+    } else if (ReqDataBase.responseReq.statusCode == 400) {
       popupConfirmacaoErro();
-    } else if (state.statusCode == 401) {
+    } else if (ReqDataBase.responseReq.statusCode == 401) {
       Navigator.pushNamed(context, '/Login');
     }
   }
@@ -122,15 +117,13 @@ class _CadFechadurasState extends State<CadFechaduras> {
 
 // ======== FUNÇÃO QUE DELETA O PIVOTANTE DO BANCO DE DADOS ==========
   Future<dynamic> deletar(int id) async {
-    http.Response state = await http.delete(
-        UrlServidor.toString() + DeletarFechadura + id.toString(),
-        headers: {"authorization": ModelsUsuarios.tokenAuth});
-    if (state.statusCode == 400) {
+    ReqDataBase().requisicaoDelete(DeletarFechadura + id.toString());
+    if (ReqDataBase.responseReq.statusCode == 400) {
       mensagemErro =
-          'A Fechadura está sendo usada e portanto não pode ser excluída.';
+          'A fechadura está sendo usada e portanto não pode ser excluída.';
       _erroDeletarPivotante();
     }
-    if (state.statusCode == 401) {
+    if (ReqDataBase.responseReq.statusCode == 401) {
       Navigator.pushNamed(context, '/Login');
     }
   }
@@ -158,35 +151,41 @@ class _CadFechadurasState extends State<CadFechaduras> {
     MediaQueryData mediaQuery = MediaQuery.of(context);
     Size size = mediaQuery.size;
     return Scaffold(
+      backgroundColor: Color(0xFFCCE9F5),
       body: SingleChildScrollView(
         child: Container(
           height: size.height,
           width: size.width,
-          color: Color(0XFF0099FF),
+          color: Color(0xFFBCE0F0),
           child: Column(
             children: [
               //===========================================
               Padding(
                 padding: EdgeInsets.only(
-                  top: size.height * 0.06,
-                  left: size.width * 0.025,
+                  top: size.height * 0.02,
+                  left: size.width * 0.02,
                 ),
                 child: Container(
                   alignment: Alignment.topLeft,
                   child: Row(
                     children: [
                       IconButton(
-                          iconSize: 30,
                           color: Colors.white,
                           icon: Icon(Icons.arrow_back),
-                          onPressed: () => Navigator.pop(context)),
-                      Text(
-                        'Cadastro de Fechaduras',
-                        style: TextStyle(
-                            fontSize: 28,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            decoration: TextDecoration.none),
+                          iconSize: 30,
+                          onPressed: () {
+                            Navigator.pop(context);
+                          }),
+                      Padding(
+                        padding: EdgeInsets.only(left: size.width * 0.05),
+                        child: Text(
+                          'Cadastro de Fechaduras',
+                          style: TextStyle(
+                              fontSize: 30,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              decoration: TextDecoration.none),
+                        ),
                       ),
                     ],
                   ),
@@ -220,7 +219,7 @@ class _CadFechadurasState extends State<CadFechaduras> {
                               left: size.width * 0.02,
                               top: size.height * 0.015),
                           child: CampoText().textField(
-                              controllFechaduras, 'Nome da Fechadura:',
+                              controllFechaduras, 'nome da fechadura:',
                               altura: size.height * 0.10,
                               icone: Icons.home,
                               raioBorda: 10),
@@ -231,7 +230,7 @@ class _CadFechadurasState extends State<CadFechaduras> {
                               left: size.width * 0.02,
                               top: size.height * 0.005),
                           child: CampoText().textField(
-                              controllDescricao, 'Descricao:',
+                              controllDescricao, 'descricao:',
                               altura: size.height * 0.10,
                               icone: Icons.home,
                               raioBorda: 10),
@@ -241,7 +240,7 @@ class _CadFechadurasState extends State<CadFechaduras> {
                             padding: EdgeInsets.only(
                               right: size.width * 0.02,
                               left: size.width * 0.02,
-                              top: size.width * 0.02,
+                              top: size.width * 0.03,
                             ),
                             child: Botao().botaoPadrao(
                               'Salvar',
@@ -263,7 +262,7 @@ class _CadFechadurasState extends State<CadFechaduras> {
                     left: size.width * 0.02, right: size.width * 0.02),
                 child: Container(
                   width: size.width,
-                  height: size.height * 0.50,
+                  height: size.height * 0.54,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.white,

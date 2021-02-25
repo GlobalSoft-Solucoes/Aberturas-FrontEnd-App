@@ -1,8 +1,9 @@
-import 'package:projeto_aberturas/Screens/HistoricoMedidas/RelatorioGrupoMedidas/ListaGrupoFinalizados.dart';
-import 'package:projeto_aberturas/Screens/NovaMedida/TelaMenuMedidas.dart';
 import 'package:projeto_aberturas/Screens/Home/MenuPrincipal.dart';
 import 'package:flutter/material.dart';
-import 'package:projeto_aberturas/Screens/Configuracoes/Configuracoes.dart';
+import 'package:projeto_aberturas/Widget/bottom_navy_bar.dart';
+import 'BarraHorizontal/Configuracoes/Configuracoes.dart';
+import 'BarraHorizontal/GrupoMedidasPronto/ListaGrupoFinalizados.dart';
+import 'BarraHorizontal/NovaMedida/TelaMenuMedidas.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -13,35 +14,62 @@ class _HomeState extends State<Home> {
   int _indiceatual = 0;
   @override
   Widget build(BuildContext context) {
+    MediaQueryData mediaQuery = MediaQuery.of(context);
+    Size size = mediaQuery.size;
     List<Widget> telas = [
       MenuPrincipal(),
       MenuMedidas(),
       ListaGruposFinalizados(),
-      // ListaGrupoMedidas(),
       Configuracoes()
     ];
-    return Scaffold(
-      backgroundColor: Colors.grey[200],
-      body: telas[_indiceatual],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _indiceatual,
-        onTap: (indice) {
-          setState(() {
-            _indiceatual = indice;
-          });
-        },
-        type: BottomNavigationBarType.fixed,
-        fixedColor: Colors.black,
-        backgroundColor: Colors.white,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home), title: Text('Home')),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.new_releases), title: Text('Nova medida')),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.create), title: Text('Historico de medidas')),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.history), title: Text('Configurações')),
-        ],
+    return Padding(
+      padding: EdgeInsets.only(bottom: size.height*0.05),
+      child: Container(
+        width: size.width,
+        height: size.height,
+        child: Scaffold(
+          backgroundColor: Colors.grey[200],
+          body: 
+          telas[_indiceatual],
+          bottomNavigationBar: BottomNavyBar(
+            selectedIndex: _indiceatual,
+            showElevation: true,
+            itemCornerRadius: 8,
+            curve: Curves.easeInBack,
+            onItemSelected: (index) => setState(() {
+              _indiceatual = index;
+
+            }),
+            items: [
+              BottomNavyBarItem(
+                icon: Icon(Icons.apps),
+                title: Text('Home'),
+                activeColor: Colors.grey[600],
+                textAlign: TextAlign.center,
+              ),
+              BottomNavyBarItem(
+                icon: Icon(Icons.add),
+                title: Text('Nova Medida'),
+                activeColor: Colors.grey[600],
+                textAlign: TextAlign.center,
+              ),
+              BottomNavyBarItem(
+                icon: Icon(Icons.list),
+                title: Text(
+                  'Historico ',
+                ),
+                activeColor: Colors.grey[600],
+                textAlign: TextAlign.center,
+              ),
+              BottomNavyBarItem(
+                icon: Icon(Icons.settings),
+                title: Text('Configurações',style: TextStyle(fontSize: 10),),
+                activeColor: Colors.grey[600],
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

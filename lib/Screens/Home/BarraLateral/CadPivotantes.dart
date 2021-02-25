@@ -5,6 +5,7 @@ import 'package:projeto_aberturas/Models/Models_Portas.dart';
 import 'package:projeto_aberturas/Models/Models_Usuario.dart';
 import 'package:projeto_aberturas/Models/constantes.dart';
 import 'package:projeto_aberturas/Widget/Botao.dart';
+import 'package:projeto_aberturas/Widget/Crud_DataBase.dart';
 import 'package:projeto_aberturas/Widget/MsgPopup.dart';
 import 'package:projeto_aberturas/Widget/TextField.dart';
 
@@ -21,8 +22,12 @@ class _CadPivotantesState extends State<CadPivotantes> {
   var mensagemErro = '';
 
   Future listarDados() async {
+    // ReqDataBase().requisicaoGet(
+    //   context,
+    //   ListarTodosPivotante,
+    // );
     final response = await http.get(
-        Uri.encodeFull(UrlServidor + ListarTodosPivotante),
+        Uri.encodeFull(ListarTodosPivotante),
         headers: {"authorization": ModelsUsuarios.tokenAuth});
     if (mounted) {
       setState(() {
@@ -39,7 +44,7 @@ class _CadPivotantesState extends State<CadPivotantes> {
   popupMsgCadastroSucesso() {
     MsgPopup().msgFeedback(
       context,
-      'Pivotante cadastrado com Sucesso!',
+      'pivotante cadastrado com Sucesso!',
       '',
       txtButton: 'OK!',
       corMsg: Colors.green[600],
@@ -51,28 +56,21 @@ class _CadPivotantesState extends State<CadPivotantes> {
     var nomerolete = controllPivotantes.text;
     var descricao = controllDescricao.text;
     var bodyy = jsonEncode({
-      'Nome': nomerolete,
-      'Descricao': descricao,
+      'nome': nomerolete,
+      'descricao': descricao,
     });
 
-    print(bodyy);
-    http.Response state = await http.post(
-      UrlServidor + CadastrarPivotante,
-      headers: {
-        "Content-Type": "application/json",
-        "authorization": ModelsUsuarios.tokenAuth
-      },
-      body: bodyy,
-    );
+    ReqDataBase().requisicaoPost(CadastrarPivotante, bodyy);
 
-    if (state.statusCode == 201) {
+    if (ReqDataBase.responseReq.statusCode == 200) {
       popupMsgCadastroSucesso();
-      controllPivotantes.text = "";
-    } else if (state.statusCode == 400) {
+      controllPivotantes.text = " ";
+      controllDescricao.text = " ";
+    } else if (ReqDataBase.responseReq.statusCode == 400) {
       mensagemErro = 'Ocorreu um erro ao cadastrar o pivotante.';
       _mensagemErroCadastro();
     }
-    if (state.statusCode == 401) {
+    if (ReqDataBase.responseReq.statusCode == 401) {
       Navigator.pushNamed(context, '/Login');
     }
   }
@@ -110,16 +108,15 @@ class _CadPivotantesState extends State<CadPivotantes> {
 
 // ======== FUNÇÃO QUE DELETA O PIVOTANTE DO BANCO DE DADOS ==========
   Future<dynamic> deletar(int id) async {
-    http.Response state = await http.delete(
-      UrlServidor.toString() + DeletarPivotante + id.toString(),
-      headers: {"authorization": ModelsUsuarios.tokenAuth},
-    );
-    if (state.statusCode == 400) {
+
+    ReqDataBase().requisicaoDelete(DeletarPivotante + id.toString());
+    
+    if (ReqDataBase.responseReq.statusCode == 400) {
       mensagemErro =
-          'O Pivotante está sendo usado e portanto não pode ser excluído.';
+          'O pivotante está sendo usado e portanto não pode ser excluído.';
       _erroDeletarPivotante();
     }
-    if (state.statusCode == 401) {
+    if (ReqDataBase.responseReq.statusCode == 401) {
       Navigator.pushNamed(context, '/Login');
     }
   }
@@ -128,7 +125,7 @@ class _CadPivotantesState extends State<CadPivotantes> {
   _deletarReg(int index) {
     MsgPopup().msgComDoisBotoes(
       context,
-      'Confirmar exclusão do Rolete Pivotante?',
+      'Confirmar exclusão do Rolete pivotante?',
       'Não',
       'Sim',
       () => {Navigator.of(context).pop()},
@@ -146,16 +143,18 @@ class _CadPivotantesState extends State<CadPivotantes> {
     MediaQueryData mediaQuery = MediaQuery.of(context);
     Size size = mediaQuery.size;
     return Scaffold(
+      backgroundColor: Color(0xFFCCE9F5),
       body: SingleChildScrollView(
         child: Container(
           width: size.width,
           height: size.height,
-          color: Color(0XFF0099FF),
+          color: Color(0xFFBCE0F0),
           child: Column(
             children: [
+              //===========================================
               Padding(
                 padding: EdgeInsets.only(
-                  top: size.height * 0.06,
+                  top: size.height * 0.02,
                   left: size.width * 0.02,
                 ),
                 child: Container(
@@ -163,25 +162,32 @@ class _CadPivotantesState extends State<CadPivotantes> {
                   child: Row(
                     children: [
                       IconButton(
-                          iconSize: 30,
-                          color: Colors.white,
-                          icon: Icon(Icons.arrow_back),
-                          onPressed: () => Navigator.pop(context)),
-                      Text(
-                        'Cadastro de Rol. Pivotantes',
-                        style: TextStyle(
-                            fontSize: 28,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            decoration: TextDecoration.none),
+                        color: Colors.white,
+                        icon: Icon(Icons.arrow_back),
+                        iconSize: 30,
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: size.width * 0.03),
+                        child: Text(
+                          'Cadastro de Rol. Pivotantes',
+                          style: TextStyle(
+                              fontSize: 28,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              decoration: TextDecoration.none),
+                        ),
                       ),
                     ],
                   ),
                 ),
               ),
+              //================= WIDGET DO CADASTRO ===================
               Container(
                   width: size.width,
-                  height: size.height * 0.36,
+                  height: size.height * 0.34,
                   child: Padding(
                     padding: EdgeInsets.only(
                       top: size.width * 0.02,
@@ -204,20 +210,20 @@ class _CadPivotantesState extends State<CadPivotantes> {
                             padding: EdgeInsets.only(
                                 right: size.width * 0.02,
                                 left: size.width * 0.02,
-                                top: size.height * 0.02),
+                                top: size.height * 0.015),
                             child: CampoText().textField(
-                                controllPivotantes, 'Rol. Pivotante:',
+                                controllPivotantes, 'Rol. pivotante:',
                                 altura: size.height * 0.10,
                                 icone: Icons.home,
                                 raioBorda: 10),
                           ),
                           Padding(
                             padding: EdgeInsets.only(
-                                right: size.width * 0.02,
-                                left: size.width * 0.02,
-                                top: size.height * 0.01),
+                              right: size.width * 0.02,
+                              left: size.width * 0.02,
+                            ),
                             child: CampoText().textField(
-                                controllDescricao, 'Descricao:',
+                                controllDescricao, 'descricao:',
                                 altura: size.height * 0.10,
                                 icone: Icons.home,
                                 raioBorda: 10),
@@ -242,7 +248,7 @@ class _CadPivotantesState extends State<CadPivotantes> {
                     left: size.width * 0.02, right: size.width * 0.02),
                 child: Container(
                   width: size.width,
-                  height: size.height * 0.48,
+                  height: size.height * 0.56,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.white,

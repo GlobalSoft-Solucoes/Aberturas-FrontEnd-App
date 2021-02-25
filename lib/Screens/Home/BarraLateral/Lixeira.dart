@@ -18,9 +18,9 @@ class _LixeiraState extends State<Lixeira> {
   var grupoMedidas = new List<ModelGrupoMedidas>();
   Future listarDados() async {
     final response = await http.get(
-      Uri.encodeFull(UrlServidor +
+      Uri.encodeFull(
           ListarGrupoComStatusRemovido +
-          Usuario.idUsuario.toString()),
+          usuario.idUsuario.toString()),
       headers: {"authorization": ModelsUsuarios.tokenAuth},
     );
     if (mounted) {
@@ -50,7 +50,7 @@ class _LixeiraState extends State<Lixeira> {
   // altera o STATUS PROCESSO do registro para CADASTRADO
   Future<dynamic> alterarStatus(idGrupo) async {
     var response = await http.put(
-      UrlServidor + AlterarStatusParaCadastrado + idGrupo.toString(),
+      AlterarStatusParaCadastrado + idGrupo.toString(),
       headers: {"authorization": ModelsUsuarios.tokenAuth},
     );
     if (response.statusCode == 401) {
@@ -79,9 +79,8 @@ class _LixeiraState extends State<Lixeira> {
 
 //MUDA O STATUS PARA RESTAURADO
   restaurarReg(id) async {
-    print(id);
     http.Response state = await http.put(
-      UrlServidor + 'GrupoMedidas/StatusNullGrupo/' + id.toString(),
+      StatusNullGrupo + id.toString(),
       headers: {"authorization": ModelsUsuarios.tokenAuth},
     );
     if (state.statusCode == 201) {
@@ -98,7 +97,7 @@ class _LixeiraState extends State<Lixeira> {
   _deletarReg(id) async {
     print(id);
     http.Response state = await http.put(
-      UrlServidor + StatusExcluirGrupo + id.toString(),
+      StatusExcluirGrupo + id.toString(),
       headers: {"authorization": ModelsUsuarios.tokenAuth},
     );
     if (state.statusCode == 201) {
@@ -124,25 +123,26 @@ class _LixeiraState extends State<Lixeira> {
           children: [
             Padding(
               padding: EdgeInsets.only(
-                left: size.width * 0.03,
-                top: size.height * 0.04,
+                left: size.width * 0.02,
+                top: size.height * 0.035,
               ),
               child: Row(
                 children: [
                   IconButton(
-                      icon: Icon(
-                        Icons.arrow_back,
-                        color: Colors.white,
-                        size: 30,
-                      ),
-                      onPressed: () => Navigator.pop(context)),
+                    icon: Icon(
+                      Icons.arrow_back,
+                      color: Colors.white,
+                      size: 35,
+                    ),
+                    onPressed: () => Navigator.pop(context),
+                  ),
                   Padding(
-                    padding: EdgeInsets.only(left: size.width * 0.07),
+                    padding: EdgeInsets.only(left: size.width * 0.02),
                     child: Container(
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'Grupo de medidas excluídos',
-                        style: TextStyle(color: Colors.white, fontSize: 24),
+                        style: TextStyle(color: Colors.white, fontSize: 28),
                       ),
                     ),
                   ),
@@ -151,12 +151,11 @@ class _LixeiraState extends State<Lixeira> {
             ),
             Padding(
               padding: EdgeInsets.only(
-                top: size.height * 0.01,
-                left: size.width * 0.01,
-                right: size.width * 0.01,
-              ),
+                  top: size.height * 0.02,
+                  left: size.width * 0.02,
+                  right: size.width * 0.02),
               child: Container(
-                height: size.height * 0.87,
+                height: size.height * 0.82,
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(15)),
@@ -183,11 +182,10 @@ class _LixeiraState extends State<Lixeira> {
                                 color: Color(0XFFD1D6DC),
                               ),
                               child: Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 0, right: 10, top: 10),
+                                padding:
+                                    const EdgeInsets.only(left: 0, right: 10),
                                 child: SingleChildScrollView(
                                   child: Container(
-                                    alignment: Alignment.center,
                                     decoration: BoxDecoration(
                                       color: Color(0XFFD1D6DC),
                                       borderRadius: BorderRadius.circular(
@@ -196,15 +194,15 @@ class _LixeiraState extends State<Lixeira> {
                                     ),
                                     child: ListTile(
                                       title: Text(
-                                        'Proprietario: ${grupoMedidas[index].proprietario}',
+                                        'proprietario: ${grupoMedidas[index].proprietario}',
                                         style: TextStyle(
                                           fontSize: 20,
                                         ),
                                       ),
                                       subtitle: Text(
-                                        'Cidade: ${grupoMedidas[index].cidade}' +
+                                        'cidade: ${grupoMedidas[index].cidade}' +
                                             '\n'
-                                                'Bairro: ${grupoMedidas[index].bairro}' +
+                                                'bairro: ${grupoMedidas[index].bairro}' +
                                             '\n'
                                                 'Endereço: ${grupoMedidas[index].endereco}' +
                                             '\n' +
@@ -221,10 +219,6 @@ class _LixeiraState extends State<Lixeira> {
                                         onPressed: () => restaurar(
                                           grupoMedidas[index].idGrupoMedidas,
                                         ),
-                                        alignment: Alignment.center,
-                                        padding: EdgeInsets.only(
-                                          top: size.height * 0.035,
-                                        ),
                                       ),
                                       // ====== Icone da direira ======
                                       trailing: IconButton(
@@ -233,10 +227,13 @@ class _LixeiraState extends State<Lixeira> {
                                           color: Colors.red,
                                           size: 30,
                                         ),
+
                                         padding: EdgeInsets.only(
                                           left: 25,
-                                          top: size.height * 0.035,
+                                          top: 30,
                                         ),
+
+                                        // alignment: Alignment(20, 25), //centerRight,
                                         onPressed: () => {
                                           excluir(grupoMedidas[index]
                                               .idGrupoMedidas)

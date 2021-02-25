@@ -186,7 +186,7 @@ class RecuperarSenha {
               fontWeight: FontWeight.w600,
             ),
           ),
-          // ======= Email =========
+          // ======= email =========
           actions: <Widget>[
             new Container(
               padding: EdgeInsets.only(
@@ -322,12 +322,12 @@ class RecuperarSenha {
 
   // ===========  VALIDAÇÃO PARA VER SE O E-MAIL JÁ ESTÁ CADASTRADO =============
   _verificaSeEmailInseridoExiste() async {
-    var email = jsonEncode({'Email': controllerInfoEmail.text});
+    var email = jsonEncode({'email': controllerInfoEmail.text});
 
     var result = await http.post(
       Uri.encodeFull(
-          // 'http://globalsoft-st-com-br.umbler.net/Usuario/ValidarEmail/'),
-          UrlServidor.toString() + VerficarSeEmailEstaDisponivel.toString()),
+          // 'http://globalsoft-st-com-br.umbler.net/usuario/ValidarEmail/'),
+          VerficarSeEmailEstaDisponivel.toString()),
       headers: {"Content-Type": "application/json"},
       body: email,
     );
@@ -396,7 +396,7 @@ class RecuperarSenha {
               fontWeight: FontWeight.w600,
             ),
           ),
-          // ======= Email =========
+          // ======= email =========
           actions: <Widget>[
             new Container(
               alignment: Alignment(0, 0),
@@ -470,12 +470,12 @@ class RecuperarSenha {
     String email = controllerInfoEmail.text.toLowerCase();
     var boddy = jsonEncode(
       {
-        'Senha': controllerNovaSenha.text,
+        'senha': controllerNovaSenha.text,
       },
     );
 
     var result = await http.put(
-        Uri.encodeFull(UrlServidor.toString() +
+        Uri.encodeFull(
             RecuperarSenhaUsuario.toString() +
             email.toString()),
         headers: {"Content-Type": "application/json"},

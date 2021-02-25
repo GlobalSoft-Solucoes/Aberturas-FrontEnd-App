@@ -1,85 +1,93 @@
 // URL DO SERVIDOR DO PROJETO ABERTURAS
 
-final UrlServidor = ('http://globalsoft-st-com-br.umbler.net/');
+const UrlServidor = 
+'http://51.222.32.179:3333/';
+// 'http://198.50.134.117:4321/';
 
 //
 // API'S PARA A TABELA GRUPO_MEDIDAS
-const CadastrarGrupoMedidas = 'GrupoMedidas/cadastrar/';
-const ListarTodosGrupoMedidas = 'GrupoMedidas/listarTodos/';
-const DeletarGrupoMedidas = 'GrupoMedidas/deletar/';
-const EditarGrupoMedidas = 'GrupoMedidas/editar/';
-const ListarGruposFinalizados = 'GrupoMedidas/ListaGruposFinalizados/';
-const ListarUltimoIdGrupoCadastrado = 'GrupoMedidas/ListaUltimoGrupoCadastrado';
-const AlterarStatusParaFinalizado =
+const CadastrarGrupoMedidas = UrlServidor + 'GrupoMedidas/cadastrar/';
+const ListarTodosGrupoMedidas = UrlServidor +  'GrupoMedidas/listarTodos/';
+const DeletarGrupoMedidas = UrlServidor +  'GrupoMedidas/deletar/';
+const EditarGrupoMedidas = UrlServidor + 'GrupoMedidas/editar/';
+const ListarGruposFinalizados = UrlServidor + 'GrupoMedidas/ListaGruposFinalizados/';
+const ListarUltimoIdGrupoCadastrado = UrlServidor +  'GrupoMedidas/ListaUltimoGrupoCadastrado';
+const AlterarStatusParaFinalizado = UrlServidor + 
     'GrupoMedidas/AlteraStatusProcessoParaFinalizado/';
-const AlterarStatusParaEnviado =
+const AlterarStatusParaEnviado = UrlServidor + 
     'GrupoMedidas/AlteraStatusProcessoParaEnviado/';
-const AlterarStatusParaCadastrado =
+const AlterarStatusParaCadastrado = UrlServidor + 
     'GrupoMedidas/AlteraStatusProcessoParaCadastrado/';
-const BuscarGrupoPorId = 'GrupoMedidas/BuscaGrupoPorId/';
-const StatusRemoverGrupo = 'GrupoMedidas/StatusRemoverGrupo/';
-const StatusExcluirGrupo = 'GrupoMedidas/StatusExcluirGrupo/';
-const StatusNullGrupo = 'GrupoMedidas/StatusNullGrupo/';
-const ListarGrupoComStatusRemovido = 'GrupoMedidas/ListarGruposRemovidos/';
+const BuscarGrupoPorId = UrlServidor +  'GrupoMedidas/BuscaGrupoPorId/';
+const StatusRemoverGrupo = UrlServidor +  'GrupoMedidas/StatusRemoverGrupo/';
+const StatusExcluirGrupo = UrlServidor +  'GrupoMedidas/StatusExcluirGrupo/';
+const StatusNullGrupo = UrlServidor + 'GrupoMedidas/StatusNullGrupo/';
+const ListarGrupoComStatusRemovido = UrlServidor + 'GrupoMedidas/ListarGruposRemovidos/';
 
 // API'S PARA A TABELA MEDIDA_UNT
-const CadastrarMedidaUnt = 'MedidaUnt/cadastrar/';
-const EditarMedidaUnt = 'MedidaUnt/editar/';
-const DeletarMedidaUnt = 'MedidaUnt/deletar/';
-const ListarMedidasPorGrupo = 'MedidaUnt/ListarPorGrupoMedidas/';
-const BuscaUnicoRegistro = 'MedidaUnt/BuscarUnicoRegistro/';
+const CadastrarMedidaUnt = UrlServidor + 'MedidaUnt/cadastrar/';
+const EditarMedidaUnt = UrlServidor + 'MedidaUnt/editar/';
+const DeletarMedidaUnt = UrlServidor + 'MedidaUnt/deletar/';
+const ListarMedidasPorGrupo = UrlServidor + 'MedidaUnt/ListarPorGrupoMedidas/';
+const BuscarMedidaUntPorId = UrlServidor + 'MedidaUnt/BuscarUnicoRegistro/';
 
 // API'S PARA A TABELA IMOVEL
-const CadastrarImovel = 'imovel/Cadastrar/';
-const ListarTodosImoveis = 'imovel/ListarTodos/';
-const EditarImovel = 'imovel/editar/';
-const DeletarImovel = 'imovel/deletar/';
-const BuscaImovelPorNome = 'imovel/BuscarUnicoRegistro/';
+const CadastrarImovel = UrlServidor + 'imovel/Cadastrar/';
+const ListarTodosImoveis = UrlServidor + 'imovel/ListarTodos/';
+const EditarImovel = UrlServidor + 'imovel/editar/';
+const DeletarImovel = UrlServidor + 'imovel/deletar/';
+const BuscaImovelPorNome = UrlServidor + 'imovel/BuscarUnicoRegistro/';
 
 // API'S PARA A TABELA USUÁRIO
-const CadastrarUsuario = 'Usuario/Cadastrar/';
-const LoginUsuario = 'Usuario/LogarUsuario/';
-const VerficarSeEmailEstaDisponivel = 'Usuario/ValidarEmail/';
-const DeletarUsuario = 'Usuario/Deletar/';
-const RecuperarSenhaUsuario = 'Usuario/RecuperaSenha/AlterarSenha/';
-const ListarUsuariosPorEmpresa = 'Usuario/ListarUsuariosPorEmpresa/';
-const BuscaIdUsuarioLogado = 'Usuario/BuscarIdUsuarioLogado/';
-const BuscaEmpresaPorUsuario = 'Usuario/BuscaEmpresaPorUsuario/';
-const EditarUsuario = 'Usuario/Editar/';
-const VerificaCodAdm = 'Usuario/VerificaCodAdm/';
-const BuscarDadosUsuarioLogado = 'Usuario/BuscarDadosUsuarioLogado/';
-const BuscarUsuarioPorId = 'usuario/BuscaUsuarioPorId/';
+const CadastrarUsuario = UrlServidor + 'usuario/Cadastrar/';
+const LoginUsuario = UrlServidor + 'usuario/LogarUsuario';
+const VerficarSeEmailEstaDisponivel = UrlServidor + 'usuario/ValidarEmail/';
+const DeletarUsuario = UrlServidor + 'usuario/Deletar/';
+const RecuperarSenhaUsuario = UrlServidor + 'usuario/RecuperaSenha/AlterarSenha/';
+const ListarUsuariosPorEmpresa = UrlServidor + 'usuario/ListarUsuariosPorEmpresa/';
+const BuscaIdUsuarioLogado = UrlServidor + 'usuario/BuscarIdUsuarioLogado/';
+const BuscaEmpresaPorUsuario = UrlServidor + 'usuario/BuscaEmpresaPorUsuario/';
+const EditarUsuario = UrlServidor + 'usuario/Editar/';
+const VerificaCodAdm = UrlServidor + 'usuario/VerificaCodAdm/';
+const BuscarDadosUsuarioLogado = UrlServidor + 'usuario/BuscarDadosUsuarioLogado/';
+const BuscarUsuarioPorId = UrlServidor + 'usuario/BuscaUsuarioPorId/';
 
 // API'S PARA A TABELA EMPRESA
-const BuscarCodigoAdm = 'Empresa/buscarCodigoAdm/';
-const BuscarCodigoAcessoEmp = 'Empresa/buscarCodigoEmp/';
-const BuscarEmpresaPorId = 'Empresa/BuscarEmpresaPorId/';
+const BuscarCodigoAdm = UrlServidor + 'empresa/buscarCodigoAdm/';
+const BuscarCodigoAcessoEmp = UrlServidor + 'empresa/buscarCodigoEmp/';
+const BuscarEmpresaPorId = UrlServidor + 'empresa/BuscarEmpresaPorId/';
 
 // API'S PARA A DOBRADIÇA
-const CadastrarDobradica = 'Dobradica/Cadastrar/';
-const ListarTodosDobradica = 'Dobradica/ListarTodos/';
-const EditarDobradica = 'Dobradica/editar/';
-const DeletarDobradica = 'Dobradica/deletar/';
-const BuscaDobradicaPorNome = 'Dobradica/BuscarUnicoRegistro/';
+const CadastrarDobradica = UrlServidor + 'Dobradica/Cadastrar/';
+const ListarTodosDobradica = UrlServidor + 'Dobradica/ListarTodos/';
+const EditarDobradica = UrlServidor + 'Dobradica/editar/';
+const DeletarDobradica = UrlServidor + 'Dobradica/deletar/';
+const BuscaDobradicaPorNome = UrlServidor + 'Dobradica/BuscarUnicoRegistro/';
 
 // API'S PARA A TABELA FECHADURA
-const CadastrarFechadura = 'Fechadura/Cadastrar';
-const ListarTodosFechadura = 'Fechadura/ListarTodos';
-const EditarFechadura = 'Fechadura/editar/';
-const DeletarFechadura = 'Fechadura/deletar/';
-const BuscaFechaduraPorNome = 'Fechadura/BuscarUnicoRegistro';
+const CadastrarFechadura = UrlServidor + 'fechadura/Cadastrar';
+const ListarTodosFechadura = UrlServidor + 'fechadura/ListarTodos';
+const EditarFechadura = UrlServidor + 'fechadura/editar/';
+const DeletarFechadura = UrlServidor + 'fechadura/deletar/';
+const BuscaFechaduraPorNome = UrlServidor + 'fechadura/BuscarUnicoRegistro';
 
 // API'S PARA A TABELA PIVOTANTE
-const CadastrarPivotante = 'Pivotante/Cadastrar';
-const ListarTodosPivotante = 'Pivotante/ListarTodos';
-const EditarPivotante = 'Pivotante/editar/';
-const DeletarPivotante = 'Pivotante/deletar/';
-const BuscaPivotantePorNome = 'Pivotante/BuscarUnicoRegistro';
+const CadastrarPivotante = UrlServidor + 'pivotante/Cadastrar';
+const ListarTodosPivotante = UrlServidor + 'pivotante/ListarTodos';
+const EditarPivotante = UrlServidor + 'pivotante/editar/';
+const DeletarPivotante = UrlServidor + 'pivotante/deletar/';
+const BuscaPivotantePorNome = UrlServidor + 'pivotante/BuscarUnicoRegistro';
 
-// API'S PARA A TABELA COD_REFERENCIA
-const CadastrarCodReferencia = 'CodReferencia/Cadastrar/';
-const ListarTodosCodReferencias = 'CodReferencia/ListarTodos/';
-const EditarCodReferencia = 'CodReferencia/editar/';
-const DeletarCodReferencia = 'CodReferencia/deletar/';
-const BuscaCodReferenciaPorCodigo = 'CodReferencia/BuscarUnicoRegistro/';
+// API'S PARA A TABELA TIPO_PORTA
+const CadastrarTipoPorta = UrlServidor + 'TipoPorta/Cadastrar';
+const ListarTodosTipoPorta = UrlServidor + 'TipoPorta/ListarTodos/';
+const EditarTipoPorta = UrlServidor + 'TipoPorta/editar/';
+const DeletarTipoPorta = UrlServidor + 'TipoPorta/Deletar/';
+const BuscaTipoPortaPorId = UrlServidor + 'TipoPorta/BuscaTipoPortaPorId/';
 
+// ===== API'S PARA A TABELA COD_REFERENCIA =======
+const CadastrarCodReferencia = UrlServidor + 'CodReferencia/Cadastrar';
+const EditarCodReferencia = UrlServidor + 'CodReferencia/editar/';
+const DeletarCodReferencia = UrlServidor + 'CodReferencia/deletar/';
+const ListarTodosCodReferencia = UrlServidor + 'CodReferencia/ListarTodos';
+const BuscarCodReferenciaPorId = UrlServidor + 'CodReferencia/BuscarUnicoRegistro';

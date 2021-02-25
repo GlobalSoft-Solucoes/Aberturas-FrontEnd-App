@@ -3,8 +3,8 @@ class Referencias {
   String codigo;
   Referencias({this.idCodReferencia, this.codigo});
   Referencias.fromJson(Map<String, dynamic> json) {
-    idCodReferencia = json['IdCod_Referencia'];
-    codigo = json['Codigo'];
+    idCodReferencia = json['idcod_referencia'];
+    codigo = json['codigo'];
   }
 }
 
@@ -14,9 +14,9 @@ class Fechaduras {
   String descricao;
   Fechaduras({this.idFechaduras, this.nome, this.descricao});
   Fechaduras.fromJson(Map<String, dynamic> json) {
-    idFechaduras = json['IdFechadura'];
+    idFechaduras = json['idfechadura'];
     nome = json['nome'];
-    descricao = json['Descricao'];
+    descricao = json['descricao'];
   }
 }
 
@@ -26,9 +26,9 @@ class Dobradicas {
   String descricao;
   Dobradicas({this.descricao, this.idDobradica, this.nome});
   Dobradicas.fromJson(Map<String, dynamic> json) {
-    idDobradica = json['IdDobradica'];
-    nome = json['Nome'];
-    descricao = json['Descricao'];
+    idDobradica = json['iddobradica'];
+    nome = json['nome'];
+    descricao = json['descricao'];
   }
 }
 
@@ -38,9 +38,9 @@ class Pivotantes {
   String descricao;
   Pivotantes({this.descricao, this.idPivotante, this.nome});
   Pivotantes.fromJson(Map<String, dynamic> json) {
-    idPivotante = json['IdPivotante'];
-    nome = json['Nome'];
-    descricao = json['Descricao'];
+    idPivotante = json['idpivotante'];
+    nome = json['nome'];
+    descricao = json['descricao'];
   }
 }
 
