@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_aberturas/Screens/Home/BarraLateral/CadPivotantes.dart';
 import 'package:projeto_aberturas/Screens/Home/BarraLateral/Lixeira.dart';
-import 'package:projeto_aberturas/Screens/Home/BarraLateral/StatusGrupos.dart';
+import 'package:projeto_aberturas/Screens/Home/BarraLateral/StatusGrupos/TelaStatusGrupos.dart';
 import 'package:projeto_aberturas/Screens/Home/BarraLateral/Usuario/ListarUsuarios.dart';
 import 'package:projeto_aberturas/Screens/Login/Login.dart';
 import 'package:projeto_aberturas/Screens/EntradaApp/Entrada.dart';
@@ -13,7 +13,6 @@ import 'package:projeto_aberturas/Screens/Splash/Splash.dart';
 import 'package:projeto_aberturas/Static/Static_GrupoMedidas.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:projeto_aberturas/Screens/Home/BarraLateral/CadReferencias.dart';
-import 'Screens/Home/BarraHorizontal/Configuracoes/LiberarAcesso/CodigoAcesso.dart';
 import 'Screens/Home/BarraHorizontal/GrupoMedidasPronto/ListaGrupoFinalizados.dart';
 import 'Screens/Home/BarraHorizontal/NovaMedida/CadastroGrupoMedidas/CadGrupoMedidas.dart';
 import 'Screens/Home/BarraHorizontal/NovaMedida/ListaGrupoMedidas/EditaGrupoMedidas.dart';
@@ -25,7 +24,10 @@ import 'Screens/Home/BarraHorizontal/NovaMedida/TelaMenuMedidas.dart';
 import 'Screens/Home/BarraLateral/CadDobradicas.dart';
 import 'Screens/Home/BarraLateral/CadFechaduras.dart';
 import 'Screens/Home/BarraLateral/CadTipoPorta.dart';
+import 'Screens/Home/BarraLateral/StatusGrupos/ListaGrupoSelecionado.dart';
 import 'Screens/Home/BarraLateral/Usuario/PerfilUser.dart';
+import 'Screens/Home/BarraLateral/Usuario/teste.dart';
+import 'Screens/Home/BarraLateral/Usuario/EditarUsuario.dart';
 
 void main() {
   runApp(
@@ -58,7 +60,6 @@ void main() {
         '/MenuMedidas': (context) => MenuMedidas(),
         '/CadGrupoMedidas': (context) => CadGrupoMedidas(),
         '/ListaGrupoMedidas': (context) => ListaGrupoMedidas(),
-        '/CodigoAcesso': (context) => CodigoAcesso(),
         '/CadDadosPorta': (context) => CadDadosPorta(),
         '/PerfilUsuario': (context) => PerfilUsuario(),
         '/CadImoveis': (context) => CadImoveis(),
@@ -67,15 +68,17 @@ void main() {
         '/CadFechaduras': (context) => CadFechaduras(),
         '/CadDobradicas': (context) => CadDobradicas(),
         '/CadPivotante': (context) => CadPivotantes(),
-        '/ListaComodosPorImovel': (context) => ListaComodoImoveis(
-              idGrupoMedidas: GrupoMedidas.idGrupoMedidas,
-            ),
+        '/ListaComodosPorImovel': (context) =>
+            ListaComodoImoveis(idGrupoMedidas: FieldsGrupoMedidas.idGrupoMedidas),
         '/Lixeira': (context) => Lixeira(),
         '/EditaGrupoMedidas': (context) => EditaGrupoMedidas(),
         '/ListaGruposFinalizados': (context) => ListaGruposFinalizados(),
         '/CadTipoPorta': (context) => CadastroTipoDaPorta(),
         '/StatusGrupos': (context) => StatusGrupo(),
         '/ListaUsuariosEmpresa': (context) => ListaUsuariosEmpresa(),
+        '/TesteListagem': (context) => TesteListagem(),
+        '/EditarDadosUsuario': (context) => EditarDadosUsuario(),
+         '/ListaGrupoSelecionado': (context) => ListaGrupoSelecionado(),
       },
       home: Splash(),
     ),

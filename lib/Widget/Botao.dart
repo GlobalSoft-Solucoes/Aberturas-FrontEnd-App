@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 
 //BOTAO PADRÃO PARA UTILIZAÇÃO GERAL
 class Botao {
-  
   botaoPadrao(label, ontap(), Color color,
-      {double tamanhoLetra, fontWeight, double altura, double comprimento, Color corFonte, border}) {
+      {double tamanhoLetra,
+      fontWeight,
+      double altura,
+      double comprimento,
+      Color corFonte,
+      border}) {
     return GestureDetector(
       onTap: () {
         ontap();

@@ -8,9 +8,9 @@ import 'package:projeto_aberturas/Funcoes/FuncoesParaDatas.dart';
 import 'package:projeto_aberturas/Models/Models_Usuario.dart';
 import 'package:projeto_aberturas/Models/constantes.dart';
 import 'package:projeto_aberturas/Static/Static_GrupoMedidas.dart';
-import 'package:projeto_aberturas/Static/Static_TipoPorta.dart';
 import 'package:projeto_aberturas/Static/Static_Usuario.dart';
 import 'package:projeto_aberturas/Widget/Botao.dart';
+import 'package:projeto_aberturas/Widget/Cabecalho.dart';
 import 'package:projeto_aberturas/Widget/Crud_DataBase.dart';
 import 'package:projeto_aberturas/Widget/MsgPopup.dart';
 import 'package:projeto_aberturas/Widget/TextField.dart';
@@ -66,11 +66,11 @@ class _CadDadosPortaState extends State<CadDadosPorta> {
   double totalAltura;
   double totalLargura;
 
-  List itensListaFechadura = List();
-  List itensListaCodReferencia = List();
-  List itensListaDobradica = List();
-  List itensListaPivotante = List();
-  List itensListaTipoPorta = List();
+  List itensListaFechadura = [];
+  List itensListaCodReferencia = [];
+  List itensListaDobradica = [];
+  List itensListaPivotante = [];
+  List itensListaTipoPorta = [];
 
   int idCodRef;
   int idFechadura;
@@ -414,8 +414,8 @@ class _CadDadosPortaState extends State<CadDadosPorta> {
 
     var bodyy = jsonEncode(
       {
-        'idusuario': usuario.idUsuario,
-        'idgrupo_medidas': GrupoMedidas.idGrupoMedidas,
+        'idusuario': FieldsUsuario.idUsuario,
+        'idgrupo_medidas': FieldsGrupoMedidas.idGrupoMedidas,
         'idcod_referencia': idCodRef,
         'idpivotante': idRolPivotante,
         'iddobradica': idDobradica,
@@ -441,12 +441,11 @@ class _CadDadosPortaState extends State<CadDadosPorta> {
       },
     );
 
-    ReqDataBase().requisicaoPost(CadastrarMedidaUnt, bodyy);
-    
+   await ReqDataBase().requisicaoPost(CadastrarMedidaUnt, bodyy);
+
     if (ReqDataBase.responseReq.statusCode == 200) {
       Navigator.pop(context);
-    }
-    else if (ReqDataBase.responseReq.statusCode == 401) {
+    } else if (ReqDataBase.responseReq.statusCode == 401) {
       Navigator.pushNamed(context, '/Login');
     }
   }
@@ -461,6 +460,8 @@ class _CadDadosPortaState extends State<CadDadosPorta> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+               Cabecalho().tituloCabecalho(context, 'Porta específica',
+                iconeVoltar: true),
               Padding(
                 padding: EdgeInsets.only(
                     left: size.width * 0.01,
@@ -501,9 +502,10 @@ class _CadDadosPortaState extends State<CadDadosPorta> {
                     CampoText().textField(
                       controllerNumeroPorta,
                       'Número da porta:',
-                      icone: Icons.confirmation_number,//confirmation_number, //confirmation_num,
-                      confPadding: EdgeInsets.only(
-                           left: 10, right: 10, bottom: 5),
+                      icone: Icons
+                          .confirmation_number, //confirmation_number, //confirmation_num,
+                      confPadding:
+                          EdgeInsets.only(left: 10, right: 10, bottom: 5),
                       tipoTexto: TextInputType.number,
                     ),
                     // CAMPO COMODO
@@ -523,7 +525,7 @@ class _CadDadosPortaState extends State<CadDadosPorta> {
                       controllerLarguraFolha,
                       'Largura:',
                       tipoTexto: TextInputType.number,
-                      icone: Icons.horizontal_rule_outlined,//west_outlined,
+                      icone: Icons.horizontal_rule_outlined, //west_outlined,
                       mascara: mascaraLargura,
                     ),
                     CampoText().textFieldComMascara(

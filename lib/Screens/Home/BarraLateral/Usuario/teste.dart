@@ -6,20 +6,18 @@ import 'package:projeto_aberturas/Models/Models_Usuario.dart';
 import 'package:projeto_aberturas/Models/constantes.dart';
 import 'package:http/http.dart' as http;
 import 'package:projeto_aberturas/Static/Static_Empresa.dart';
-import 'package:projeto_aberturas/Static/Static_Usuario.dart';
 import 'package:projeto_aberturas/Widget/Botao.dart';
-import 'package:projeto_aberturas/Widget/Cabecalho.dart';
 import 'package:projeto_aberturas/Widget/Crud_DataBase.dart';
 import 'package:projeto_aberturas/Widget/ListFieldsDataBase.dart';
 import 'package:projeto_aberturas/Widget/MsgPopup.dart';
 import 'package:projeto_aberturas/Screens/Home/BarraLateral/Usuario/ListaDadosUsuario.dart';
 
-class ListaUsuariosEmpresa extends StatefulWidget {
+class TesteListagem extends StatefulWidget {
   @override
-  _ListaUsuariosEmpresaState createState() => _ListaUsuariosEmpresaState();
+  _TesteListagemState createState() => _TesteListagemState();
 }
 
-class _ListaUsuariosEmpresaState extends State<ListaUsuariosEmpresa> {
+class _TesteListagemState extends State<TesteListagem> {
   var mensagemErro = '';
 
   List<ModelsUsuarios> dadosListagem = [];
@@ -46,7 +44,7 @@ class _ListaUsuariosEmpresaState extends State<ListaUsuariosEmpresa> {
   _deletarReg(int index) {
     MsgPopup().msgComDoisBotoes(
       context,
-      'Confirma a exclusão da cargo selecionado?',
+      'Confirma a exclusão do usuário selecionado?',
       'Não',
       'Sim',
       () => {Navigator.of(context).pop()},
@@ -72,7 +70,6 @@ class _ListaUsuariosEmpresaState extends State<ListaUsuariosEmpresa> {
     }
   }
 
-  // Controla para apenas um registro fiquei aberto para excluir ou editar
   final SlidableController slidableController = SlidableController();
   @override
   Widget build(BuildContext context) {
@@ -85,8 +82,38 @@ class _ListaUsuariosEmpresaState extends State<ListaUsuariosEmpresa> {
         color: Color(0xFFBCE0F0),
         child: Column(
           children: [
-            Cabecalho().tituloCabecalho(context, 'Usuários cadastrados',
-                iconeVoltar: true),
+            Padding(
+              padding: EdgeInsets.only(
+                  left: size.width * 0.01,
+                  right: size.width * 0.02,
+                  top: size.height * 0.025,
+                  bottom: size.height * 0.02),
+              child: Container(
+                alignment: Alignment.centerLeft,
+                child: Row(
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.arrow_back),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      iconSize: 33,
+                      color: Colors.white,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: size.width * 0.03),
+                      child: Text(
+                        'Lista de usuários Cadastrados',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: size.width * 0.06,
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
             Padding(
               padding: EdgeInsets.only(
                   left: size.width * 0.015, right: size.width * 0.015),
@@ -118,20 +145,14 @@ class _ListaUsuariosEmpresaState extends State<ListaUsuariosEmpresa> {
                               actions: <Widget>[
                                 IconSlideAction(
                                   caption: 'Editar',
-                                  color: Colors.white,
+                                  color: Colors.white, //(0XFFD1D6DC),
                                   icon: Icons.edit_outlined,
-                                  onTap: () async {
-                                    await FieldsUsuario()
-                                        .capturaDadosUsuariosPorId(
-                                            dadosListagem[index].idUsuario);
-                                    Navigator.pushNamed(
-                                        context, '/EditarDadosUsuario');
-                                  },
+                                  onTap: () => print('Archive'),
                                 ),
                               ],
                               secondaryActions: <Widget>[
                                 IconSlideAction(
-                                  caption: 'Excluir',
+                                  caption: 'Deletar',
                                   color: Colors.red,
                                   icon: Icons.delete_forever,
                                   onTap: () => _deletarReg(
@@ -235,8 +256,8 @@ class _ListaUsuariosEmpresaState extends State<ListaUsuariosEmpresa> {
                 'Cadastrar usuário',
                 () => Navigator.pushNamed(context, '/CadastroUsuario'),
                 Colors.white,
-                border: BorderRadius.circular(25),
-                altura: size.height * 0.065,
+                border:  BorderRadius.circular(25),
+                altura: size.height * 0.07,
                 comprimento: size.height * 0.3,
               ),
             )

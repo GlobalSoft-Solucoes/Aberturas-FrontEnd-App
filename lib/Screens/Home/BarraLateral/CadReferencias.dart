@@ -8,6 +8,7 @@ import 'package:projeto_aberturas/Widget/Crud_DataBase.dart';
 import 'package:projeto_aberturas/Widget/MsgPopup.dart';
 import 'package:projeto_aberturas/Widget/TextField.dart';
 import 'package:http/http.dart' as http;
+import 'package:projeto_aberturas/Widget/Cabecalho.dart';
 
 class CadReferencias extends StatefulWidget {
   @override
@@ -16,7 +17,7 @@ class CadReferencias extends StatefulWidget {
 
 class _CadReferenciasState extends State<CadReferencias> {
   TextEditingController controlerRefs = TextEditingController();
-  var referencias = new List<Referencias>();
+  List<Referencias> referencias = [];
   var mensagemErro = '';
 
   Future listarDados() async {
@@ -130,44 +131,14 @@ class _CadReferenciasState extends State<CadReferencias> {
           child: Column(
             children: [
               //===============================================
-              Padding(
-                padding: EdgeInsets.only(
-                  top: size.height * 0.02,
-                  left: size.width * 0.015,
-                ),
-                child: Container(
-                  alignment: Alignment.topLeft,
-                  child: Row(
-                    children: [
-                      IconButton(
-                          color: Colors.white,
-                          icon: Icon(Icons.arrow_back),
-                          iconSize: 33,
-                          onPressed: () {
-                            Navigator.pop(context);
-                          }),
-                      Padding(
-                        padding: EdgeInsets.only(left: size.width * 0.15),
-                        child: Text(
-                          'Código Referência',
-                          style: TextStyle(
-                              fontSize: 28,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              decoration: TextDecoration.none),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              Cabecalho().tituloCabecalho(context, 'Código referência',
+                  iconeVoltar: true, marginLeft: 0.01),
               //================ WIDGET DO CADASTRO ===================
               Container(
                 width: size.width,
-                height: size.height * 0.25,
+                height: size.height * 0.23,
                 child: Padding(
                   padding: EdgeInsets.only(
-                    top: size.width * 0.02,
                     left: size.width * 0.02,
                     right: size.width * 0.02,
                     bottom: size.height * 0.02,
@@ -185,18 +156,16 @@ class _CadReferenciasState extends State<CadReferencias> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         //------------------------------------------
-                        Padding(
-                          padding: EdgeInsets.only(
+                        CampoText().textField(
+                          controlerRefs,
+                          'Codigo referência:',
+                          altura: size.height * 0.10,
+                          icone: Icons.edit_sharp,
+                          raioBorda: 10,
+                          confPadding: EdgeInsets.only(
                             right: size.width * 0.02,
                             left: size.width * 0.02,
                             top: size.height * 0.02,
-                          ),
-                          child: CampoText().textField(
-                            controlerRefs,
-                            'Cod Ref:',
-                            altura: size.height * 0.10,
-                            icone: Icons.home,
-                            raioBorda: 10,
                           ),
                         ),
                         //-------------------------------------------
@@ -205,14 +174,16 @@ class _CadReferenciasState extends State<CadReferencias> {
                             padding: EdgeInsets.only(
                               right: size.width * 0.02,
                               left: size.width * 0.02,
-                              top: size.width * 0.03,
+                              top: size.width * 0.07,
                             ),
                             child: Botao().botaoPadrao(
-                                'Salvar',
-                                () => {
-                                      verificarDados(),
-                                    },
-                                Color(0XFFD1D6DC)),
+                              'Salvar',
+                              () => {
+                                verificarDados(),
+                              },
+                              Color(0XFFD1D6DC),
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
                         ),
                       ],
@@ -226,7 +197,7 @@ class _CadReferenciasState extends State<CadReferencias> {
                     left: size.width * 0.02, right: size.width * 0.02),
                 child: Container(
                   width: size.width,
-                  height: size.height * 0.63,
+                  height: size.height * 0.61,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.white,

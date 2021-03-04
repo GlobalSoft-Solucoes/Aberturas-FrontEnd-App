@@ -1,13 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:http/http.dart' as http;
 import 'package:projeto_aberturas/Models/Models_Usuario.dart';
 import 'package:projeto_aberturas/Models/constantes.dart';
-import 'package:projeto_aberturas/Models/email/RecuperarSenha.dart';
 import 'package:projeto_aberturas/Static/Static_Empresa.dart';
-import 'package:projeto_aberturas/Widget/Crud_DataBase.dart';
+import 'package:projeto_aberturas/Widget/Botao.dart';
+import 'package:projeto_aberturas/Widget/TextField.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:projeto_aberturas/Stores/Login_Store.dart';
 import 'package:projeto_aberturas/Widget/MsgPopup.dart';
@@ -26,12 +25,12 @@ class _LoginState extends State<Login> {
   TextEditingController controllerSenha = TextEditingController();
   String mensagemErro = "";
   LoginStore loginStore = LoginStore();
-  var dadosUsuarios = new List<ModelsUsuarios>();
+  List<ModelsUsuarios> dadosUsuarios = [];
   var respostajson;
 
 // ========== VERIFICA SE O E-MAIL E SENHA INFORMADOS EXISTEM NO BANCO DE DADOS =============
   var dados;
-  var dadosUsuario = new List<ModelsUsuarios>();
+  List<ModelsUsuarios> dadosUsuario = [];
   validarDadosLogin(String email, senha) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var boddy = jsonEncode(
@@ -63,8 +62,8 @@ class _LoginState extends State<Login> {
         });
 
         //passa o id do usuario para o usuario
-        usuario.idUsuario = dadosUsuario[0].idUsuario;
-        usuario.idEmpresa = dadosUsuario[0].idEmpresa;
+        UserLogado.idUsuario = dadosUsuario[0].idUsuario;
+        UserLogado.idEmpresa = dadosUsuario[0].idEmpresa;
 
         await DadosEmpresa().capturaDadosEmpresa();
         Navigator.push(
@@ -76,11 +75,11 @@ class _LoginState extends State<Login> {
       } else {
         _erroLogin();
       }
-    }else {
-        _erroLogin();
-      }
+    } else {
+      _erroLogin();
+    }
 
-    prefs.setInt('idusuario', usuario.idUsuario);
+    prefs.setInt('idusuario', UserLogado.idUsuario);
     prefs.setString('Token', ModelsUsuarios.tokenAuth);
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => Home()));
@@ -131,215 +130,90 @@ class _LoginState extends State<Login> {
     MediaQueryData mediaQuery = MediaQuery.of(context);
     Size size = mediaQuery.size;
     return new Scaffold(
-      backgroundColor: Color(0xFFCCE9F5),
-      body: new Form(
-        child: new Stack(
-          children: <Widget>[
-            //Panel campos de entrada..
-            new Positioned(
-              child: new SingleChildScrollView(
+      backgroundColor: Colors.grey[600],
+      body: SingleChildScrollView(
+        child: Container(
+          width: size.width * 1,
+          height: size.height * 1,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/login04.png"),
+              fit: BoxFit.fitWidth,
+            ),
+          ),
+          child: Column(
+            children: <Widget>[
+              Container(
+                alignment: Alignment.bottomLeft,
+                padding: EdgeInsets.only(top: size.height * 0.03, left: 10),
+                child: Container(
+                  color: Colors.black38,
+                  width: size.width * 0.13,
+                  height: size.height * 0.06,
+                  child: IconButton(
+                    icon: Icon(Icons.arrow_back),
+                    onPressed: () => Navigator.pop(context),
+                    iconSize: 35,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              new SingleChildScrollView(
                 child: new Container(
-                  height: size.height * 0.800,
+                  alignment: Alignment.topCenter,
                   child: new Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      // ----------------------- SETA PARA VOLTAR ---------------------
-                      Container(
-                        alignment: Alignment.topLeft,
-                        padding: EdgeInsets.only(
-                          left: size.width * 0.025,
-                          bottom: size.height * 0.13,
+                      //----------------------Usuário--------------------//
+                      CampoText().textField(
+                        controllerEmail,
+                        "E-mail:",
+                        raioBorda: 20,
+                        confPadding: EdgeInsets.only(
+                          left: 15,
+                          right: 15,
+                          top: size.height * 0.28,
                         ),
-                        child: Container(
-                          color: Color(0xFFCCE9F5), //Colors.lightBlue[500],
-                          width: size.width * 0.12,
-                          child: Row(
-                            children: [
-                              IconButton(
-                                iconSize: 35,
-                                color: Colors.black,
-                                icon: Icon(Icons.arrow_back),
-                                onPressed: () =>
-                                    Navigator.pushNamed(context, '/EntradaApp'),
-                              ),
-                              // Text(
-                              //   ' Voltar',
-                              //   style: TextStyle(
-                              //     fontSize: 23,
-                              //     color: Colors.black,
-                              //     fontWeight: FontWeight.w400,
-                              //     decoration: TextDecoration.none,
-                              //   ),
-                              // ),
-                            ],
-                          ),
-                        ),
+                        icone: Icons.email,
+                        fontWeigth: FontWeight.w700,
+                        fontLabel: 22,
+                        backgroundColor: Colors.white.withOpacity(0.5),
+                        tipoTexto: TextInputType.emailAddress,
                       ),
-                      new Column(
-                        children: [
-                          // Padding(padding: EdgeInsets.only(top: 240)),
-                          //   width: 150,
-                          //   height: 50,
-                          //   child: FlatButton.icon(
-                          //     onPressed: () =>
-                          //         Navigator.pushNamed(context, '/EntradaApp'),
-                          //     icon: Icon(Icons.arrow_back),
-                          //     label: Text('voltar'),
-                          //     padding: new EdgeInsets.only(bottom: 15, right: 150),
-                          //   ),
-                          // ),
-                          //----------------------Imagem de login--------------------//
-
-                          new Padding(
-                            padding: new EdgeInsets.only(
-                              left: 10,
-                              right: 10,
-                            ),
-                            child: new Image.asset(
-                              'Assets/iconUser.png',
-                              height: 100,
-                              width: 100,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          new Padding(
-                            padding: EdgeInsets.only(
-                              top: 10,
-                              bottom: 5,
-                            ),
-                            child: Center(
-                              child: Text(
-                                mensagemErro,
-                                style:
-                                    TextStyle(color: Colors.red, fontSize: 20),
-                              ),
-                            ),
-                          ),
-
-                          //----------------------E-mail Usuário--------------------//
-
-                          new Padding(
-                            padding: new EdgeInsets.only(
-                              left: 15,
-                              right: 15,
-                            ),
-                            child: Observer(
-                              builder: (_) {
-                                return new TextFormField(
-                                  keyboardType: TextInputType.emailAddress,
-                                  controller: controllerEmail,
-                                  style: new TextStyle(
-                                    fontSize: 18,
-                                  ),
-                                  decoration: new InputDecoration(
-                                      prefixIcon: new Icon(Icons.email),
-                                      labelText: 'E-mail:',
-                                      border: new OutlineInputBorder(
-                                        borderRadius: new BorderRadius.circular(
-                                          90,
-                                        ),
-                                      ),
-                                      helperText:
-                                          "seuemail@seuprovedor.com.br"),
-                                );
-                              },
-                            ),
-                          ),
-
-                          //---------------------senha---------------------//
-
-                          new Padding(
-                            padding: new EdgeInsets.only(
-                              top: size.height * 0.03,
-                              left: 15,
-                              right: 15,
-                            ),
-                            child: Observer(builder: (_) {
-                              return new TextFormField(
-                                controller: controllerSenha,
-                                style: new TextStyle(
-                                  fontSize: 18,
-                                ),
-                                obscureText: loginStore.senhamostrar,
-                                decoration: new InputDecoration(
-                                  suffixIcon: InkWell(
-                                    child: loginStore.senhamostrar
-                                        ? Icon(Icons.visibility)
-                                        : Icon(Icons.visibility_off),
-                                    onTap: () {
-                                      loginStore.mostrarSenha();
-                                    },
-                                  ),
-                                  prefixIcon: new Icon(Icons.vpn_key),
-                                  labelText: 'Senha:',
-                                  border: new OutlineInputBorder(
-                                    borderRadius: new BorderRadius.circular(
-                                      32,
-                                    ),
-                                  ),
-                                ),
-                              );
-                            }),
-                          ),
-                          // new Padding(
-                          //   padding: new EdgeInsets.only(
-                          //     top: 10,
-                          //     right: 0,
-                          //   ),
-                          //   child: GestureDetector(
-                          //     onTap: () => RecuperarSenha().inserirEmailEnvio(
-                          //         context), //inserirCodigoRecebino(context),
-                          //     child: Padding(
-                          //       padding: const EdgeInsets.all(8.0),
-                          //       child: Text(
-                          //         'Esqueci minha senha',
-                          //         style: TextStyle(
-                          //           fontSize: 15,
-                          //           color: Colors.black,
-                          //         ),
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
-
-                          //--------------------Botão Conectar----------------------//
-
-                          new Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              new Padding(
-                                padding: new EdgeInsets.only(
-                                  top: size.height * 0.07,
-                                  left: 30,
-                                  right: 30,
-                                  bottom: 50,
-                                ),
-                                child: new FloatingActionButton.extended(
-                                  heroTag: "btn1",
-                                  backgroundColor: Color(0XFFD1D6DC),
-                                  onPressed: () {
-                                    _validarCampos();
-                                  },
-                                  // Navigator.pushNamed(context, '/Home'),
-                                  label: new Text(
-                                    'Entrar',
-                                    style: new TextStyle(
-                                      fontSize: 25,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+                      //---------------------senha---------------------//
+                      CampoText().textField(
+                        controllerSenha,
+                        "Senha:",
+                        raioBorda: 20,
+                        confPadding:
+                            EdgeInsets.only(left: 15, right: 15, top: 25),
+                        icone: Icons.vpn_key,
+                        fontWeigth: FontWeight.w700,
+                        campoSenha: true,
+                        fontLabel: 22,
+                        backgroundColor: Colors.white.withOpacity(0.5),
+                      ),
+                      // --------------------Botão Conectar----------------------//
+                      new Container(
+                        padding: new EdgeInsets.only(
+                          top: size.height * 0.12,
+                        ),
+                        child: Botao().botaoPadrao(
+                          'Conectar',
+                          () => _validarCampos(),
+                          Colors.blue.withOpacity(0.7),
+                          corFonte: Colors.white,
+                          tamanhoLetra: size.width * 0.06,
+                          comprimento: 270,
+                          altura: 55,
+                        ),
                       ),
                     ],
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -24,13 +24,11 @@ class _MenuMedidasState extends State<MenuMedidas> {
               Padding(
                 padding: EdgeInsets.only(
                   top: size.height * 0.04,
-                  left: size.width * 0.15,
                 ),
-                child: Container(
-                  alignment: Alignment.topLeft,
+                child: Center(
                   child: Text(
                     'Cadastrar nova medida',
-                    style: TextStyle(
+                     style: TextStyle(
                         fontSize: size.width * 0.07,
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -58,22 +56,21 @@ class _MenuMedidasState extends State<MenuMedidas> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Botao().botaoPadrao(
-                        'Cadastrar endereço',
-                        () => Navigator.pushNamed(context, '/CadGrupoMedidas'),
-                        Color(0XFFD1D6DC),
-                        tamanhoLetra: size.width * 0.06,
-                        corFonte: Colors.black,
-                        fontWeight: FontWeight.w400
-                      ),
+                          'Cadastrar endereço',
+                          () =>
+                              Navigator.pushNamed(context, '/CadGrupoMedidas'),
+                          Color(0XFFD1D6DC),
+                          tamanhoLetra: size.width * 0.06,
+                          corFonte: Colors.black,
+                          fontWeight: FontWeight.w400),
                       Botao().botaoPadrao(
-                        'Lista de endereços',
-                        () =>
-                            Navigator.pushNamed(context, '/ListaGrupoMedidas'),
-                        Color(0XFFD1D6DC), //Color(0XFFD1D6DC),
-                        tamanhoLetra: size.width * 0.06,
-                        corFonte: Colors.black,
-                        fontWeight: FontWeight.w400
-                      ),
+                          'Lista de endereços',
+                          () => Navigator.pushNamed(
+                              context, '/ListaGrupoMedidas'),
+                          Color(0XFFD1D6DC), //Color(0XFFD1D6DC),
+                          tamanhoLetra: size.width * 0.06,
+                          corFonte: Colors.black,
+                          fontWeight: FontWeight.w400),
                     ],
                   ),
                 ),

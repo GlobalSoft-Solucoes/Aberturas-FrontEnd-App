@@ -9,6 +9,8 @@ import 'package:projeto_aberturas/Models/constantes.dart';
 import 'package:projeto_aberturas/Static/Static_Usuario.dart';
 import 'package:projeto_aberturas/Widget/ListFieldsDataBase.dart';
 import 'package:projeto_aberturas/Widget/MsgPopup.dart';
+import 'package:projeto_aberturas/Widget/Cabecalho.dart';
+import 'package:projeto_aberturas/Widget/Botao.dart';
 
 // NESTA TELA, E MOSTRADO TODOS OS DADOS DO IMOVEL SELECIONADO NA TELA ANTERIOR
 class RelatorioMedidaUnt extends StatefulWidget {
@@ -42,10 +44,11 @@ class _RelatorioMedidaUntState extends State<RelatorioMedidaUnt> {
   bool result = false;
   var i = 0;
 
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
-  var dadosListagem = new List<ModelsMedidasUnt>();
-  var end = new List<ModelGrupoMedidas>();
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+  List<ModelsMedidasUnt> dadosListagem = [];
+  List<ModelGrupoMedidas> end = [];
   final int idGrupoMedidas;
+  
   //BUSCA OS DADOS NO BANCO
   Future<dynamic> listarDados(int id) async {
     final response = await http.get(
@@ -82,7 +85,7 @@ class _RelatorioMedidaUntState extends State<RelatorioMedidaUnt> {
     controllerfechadura.text = dadosListagem[i].nomeFechadura;
     controllerpivotante.text = dadosListagem[i].nomePivotante;
     controllernumeroCodRef.text = dadosListagem[i].codigoReferenciaNum;
-    controllerusuario.text = usuario.nome;
+    controllerusuario.text = FieldsUsuario.nome;
   }
 
   // _mostrarSnackBar(String mensagem) {
@@ -139,36 +142,9 @@ class _RelatorioMedidaUntState extends State<RelatorioMedidaUnt> {
           height: size.height,
           child: Column(
             children: [
-              Padding(
-                padding: EdgeInsets.only(top: size.height * 0.02),
-                child: Container(
-                  width: size.width,
-                  height: size.height * 0.10,
-                  child: Row(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.all(3),
-                        child: IconButton(
-                          icon: Icon(Icons.arrow_back),
-                          onPressed: () => Navigator.pop(context),
-                          iconSize: 33,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: size.width * 0.09),
-                        child: Text(
-                          'Relatório das medidas',
-                          style: TextStyle(
-                              fontSize: size.width * 0.065,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              Cabecalho().tituloCabecalho(context, 'Relatório das medidas',
+                  iconeVoltar: true),
+              // ----------------------------------------------------------
               Padding(
                 padding: EdgeInsets.only(
                   left: size.width * 0.02,
@@ -190,7 +166,7 @@ class _RelatorioMedidaUntState extends State<RelatorioMedidaUnt> {
                             itemBuilder: (context, index) {
                               return Padding(
                                 padding: const EdgeInsets.only(
-                                   bottom: 10, top: 5, left: 10, right: 10),
+                                    bottom: 10, top: 5, left: 10, right: 10),
                                 child: Container(
                                   decoration: BoxDecoration(
                                     border: Border.all(
@@ -423,31 +399,18 @@ class _RelatorioMedidaUntState extends State<RelatorioMedidaUnt> {
                       ),
                     ),
                     // ============ BOTÃO PARA ENVIAR OS DADOS PARA A EMPRESA ============
-                    Container(
-                      width: size.width,
-                      height: size.height * 0.14,
-                      padding: EdgeInsets.only(
-                          bottom: size.height * 0.04, left: 4, right: 4),
-                      color: Colors.transparent, //.withOpacity(1.0),
-                      child: Column(
-                        verticalDirection: VerticalDirection.down,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          new Container(
-                            child: new FloatingActionButton.extended(
-                              heroTag: "btn1",
-                              onPressed: () async {
-                                _popopConfirmarEnvio();
-                              },
-                              label: new Text(
-                                'Enviar medidas',
-                                style: new TextStyle(
-                                  fontSize: 24,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
+                    Padding(
+                      padding:
+                          EdgeInsets.only(top: size.height * 0.04, bottom: 5),
+                      child: Botao().botaoPadrao(
+                        'Enviar medidas',
+                        () async {
+                          await _popopConfirmarEnvio();
+                        },
+                        Color(0XFFD1D6DC),
+                        fontWeight: FontWeight.w400,
+                        comprimento: 250,
+                        altura: 50,
                       ),
                     ),
                   ],

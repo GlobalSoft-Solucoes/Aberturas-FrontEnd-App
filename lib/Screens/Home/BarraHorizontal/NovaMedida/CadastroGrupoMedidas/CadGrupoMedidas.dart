@@ -11,6 +11,7 @@ import 'package:projeto_aberturas/Static/Static_Usuario.dart';
 import 'package:projeto_aberturas/Widget/Crud_DataBase.dart';
 import 'package:projeto_aberturas/Widget/MsgPopup.dart';
 import 'package:projeto_aberturas/Widget/TextField.dart';
+import 'package:projeto_aberturas/Widget/Cabecalho.dart';
 
 //NESTA TELA E FEITO O CADASTRO DE ENDEREÇOS
 class CadGrupoMedidas extends StatefulWidget {
@@ -25,7 +26,7 @@ class _CadGrupoMedidasState extends State<CadGrupoMedidas> {
   TextEditingController controllerPropEnd = TextEditingController();
   TextEditingController controllerCidade = TextEditingController();
   TextEditingController controllerBairro = TextEditingController();
-  List itensLista = List();
+  List itensLista = [];
   int _selectedField;
 //ESTA FUNÇÃO BUSCA A LISTA DOS TIPOS DE IMOVEIS
   Future fetchPost() async {
@@ -63,8 +64,8 @@ class _CadGrupoMedidasState extends State<CadGrupoMedidas> {
             .pop(); // Fecha o popup de do cadastro de grupo de medidas
         Navigator.pushNamed(context, '/CadPortaPadrao');
       },
-      corBotaoDir: Color(0XFF0099FF),
-      corBotaoEsq: Color(0XFF0099FF),
+      corBotaoDir: Colors.blue[400], //Colors.blue[400],
+      corBotaoEsq: Colors.blue[400], //Colors.blueAccent[400],
       sairAoPressionar: true,
     );
   }
@@ -126,7 +127,7 @@ class _CadGrupoMedidasState extends State<CadGrupoMedidas> {
     var bairro = controllerBairro.text;
     var imovelSelecionado = _selectedField;
     var bodyy = jsonEncode({
-      'idusuario': usuario.idUsuario,
+      'idusuario': UserLogado.idUsuario,
       'idimovel': imovelSelecionado,
       'data_cadastro': DataAtual().pegardata() as String,
       'hora_cadastro': DataAtual().pegarHora() as String,
@@ -138,14 +139,13 @@ class _CadGrupoMedidasState extends State<CadGrupoMedidas> {
       'status_processo': "Cadastrado"
     });
 
-    ReqDataBase().requisicaoPost(CadastrarGrupoMedidas, bodyy);
+    await ReqDataBase().requisicaoPost(CadastrarGrupoMedidas, bodyy);
 
-    print(bodyy);
-
-    if (ReqDataBase.responseReq.statusCode == 200) {
-      Navigator.pop(context);
+    if (ReqDataBase.responseReq.statusCode == 400) {
+       mensagemErro = 'Um erro aconteceu ao tentar salvar o registro!';
+      _msgErroCadastro();
     }
-    if (ReqDataBase.responseReq.statusCode == 401) {
+    else if (ReqDataBase.responseReq.statusCode == 401) {
       Navigator.pushNamed(context, '/Login');
     }
   }
@@ -154,32 +154,37 @@ class _CadGrupoMedidasState extends State<CadGrupoMedidas> {
   Future<dynamic> buscarIdUltimoGrupoCadastrado() async {
     final response = await http.get(
       Uri.encodeFull(ListarUltimoIdGrupoCadastrado),
-      headers: {"authorization": ModelsUsuarios.tokenAuth},
+      headers: {
+        "Content-Type": "application/json",
+        "authorization": ModelsUsuarios.tokenAuth
+      },
     );
-    if (response.statusCode == 401) {
+    if (response.statusCode == 200) {
+      //IF(MOUNTED) É nescessario para não recarregar a arvore apos retornar das outras listas
+      if (mounted)
+        setState(
+          () {
+            var lista = json.decode(response.body);
+            String retorno = lista.toString();
+            // caso o retorno do Body for diferente de vazio("[]"), continua a execução
+            if (retorno != "[]") {
+              // Repara para mostra apenas o valor da chave primária
+              String valorRetorno = retorno
+                  .substring(retorno.indexOf(':'), retorno.indexOf('}'))
+                  .replaceAll(':', '');
+
+              // caso haja valor na variável, quer dizer que contém um registro
+              if (valorRetorno.length > 0) {
+                print(valorRetorno);
+                FieldsGrupoMedidas.idGrupoMedidas = int.parse(valorRetorno);
+                escolhaTelaNovaMedida();
+              }
+            }
+          },
+        );
+    } else if (response.statusCode == 401) {
       Navigator.pushNamed(context, '/Login');
     }
-    //IF(MOUNTED) É nescessario para não recarregar a arvore apos retornar das outras listas
-    if (mounted)
-      setState(
-        () {
-          var lista = json.decode(response.body);
-          String retorno = lista.toString();
-          // caso o retorno do Body for diferente de vazio("[]"), continua a execução
-          if (retorno != "[]") {
-            // Repara para mostra apenas o valor da chave primária
-            String valorRetorno = retorno
-                .substring(retorno.indexOf(':'), retorno.indexOf('}'))
-                .replaceAll(':', '');
-
-            // caso haja valor na variável, quer dizer que contém um registro
-            if (valorRetorno.length > 0) {
-              GrupoMedidas.idGrupoMedidas = int.parse(valorRetorno);
-              escolhaTelaNovaMedida();
-            }
-          }
-        },
-      );
   }
 
   @override
@@ -191,39 +196,16 @@ class _CadGrupoMedidasState extends State<CadGrupoMedidas> {
         child: Container(
           height: size.height,
           width: size.width,
-          color: Color(0xFFBCE0F0), //Colors.green[200],
+          color: Color(0xFFBCE0F0),
           child: Column(
             children: [
-              Padding(
-                padding: EdgeInsets.only(top: size.height * 0.01),
-                child: Container(
-                  width: size.width,
-                  height: size.height * 0.08,
-                  child: Row(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(top: size.height * 0.00),
-                        child: IconButton(
-                          icon: Icon(Icons.arrow_back),
-                          onPressed: () => Navigator.pop(context),
-                          iconSize: 33,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: size.width * 0.01),
-                        child: Text(
-                          'Cadastro do Grupo de Medidas',
-                          style: TextStyle(
-                            fontSize: size.width * 0.06,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+              Cabecalho().tituloCabecalho(
+                context,
+                'Cadastro do grupo de medidas',
+                iconeVoltar: true,
+                sizeTextTitulo: 0.059,
+                tituloMarginLeft: 0.04,
+                marginBottom: 0.01,
               ),
               Padding(
                 padding: EdgeInsets.only(
@@ -270,8 +252,9 @@ class _CadGrupoMedidasState extends State<CadGrupoMedidas> {
                         Padding(
                           padding: EdgeInsets.only(top: size.height * 0.01),
                           child: CampoText().textField(
-                              controllerPropEnd, 'Proprietário: ',
-                              tipoTexto: TextInputType.number),
+                            controllerPropEnd,
+                            'Proprietário: ',
+                          ),
                         ),
                         // =================== TIPO DE IMÓVEL ====================
                         new Padding(
@@ -294,65 +277,62 @@ class _CadGrupoMedidasState extends State<CadGrupoMedidas> {
                                 border:
                                     Border.all(color: Colors.black, width: 1)),
                             child: DropdownButton(
-                                hint: Text(
-                                  'Tipo de imovel',
-                                  style: TextStyle(fontSize: 18),
-                                ),
-                                value: _selectedField,
-                                items: itensLista.map((categoria) {
+                              hint: Text(
+                                'Tipo de imovel',
+                                style: TextStyle(fontSize: 18),
+                              ),
+                              value: _selectedField,
+                              items: itensLista.map(
+                                (categoria) {
                                   return DropdownMenuItem(
-                                      value: (categoria['idimovel']),
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            categoria['idimovel'].toString(),
-                                            style: TextStyle(fontSize: 18),
-                                          ),
-                                          Text(
-                                            ' - ',
-                                            style: TextStyle(fontSize: 18),
-                                          ),
-                                          Text(
-                                            categoria['nome'],
-                                            style: TextStyle(fontSize: 18),
-                                          )
-                                        ],
-                                      ));
-                                }).toList(),
-                                onChanged: (value) {
-                                  setState(() {
+                                    value: (categoria['idimovel']),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          categoria['idimovel'].toString(),
+                                          style: TextStyle(fontSize: 18),
+                                        ),
+                                        Text(
+                                          ' - ',
+                                          style: TextStyle(fontSize: 18),
+                                        ),
+                                        Text(
+                                          categoria['nome'],
+                                          style: TextStyle(fontSize: 18),
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ).toList(),
+                              onChanged: (value) {
+                                setState(
+                                  () {
                                     _selectedField = value;
-                                  });
-                                }),
+                                  },
+                                );
+                              },
+                            ),
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(top: size.height * 0.04, bottom: 0),
-                          child: Botao().botaoPadrao(
-                            'Iniciar medição',
-                            () async {
-                              Navigator.pop(context);
-                              await validarCampos();
-                              buscarIdUltimoGrupoCadastrado();
-                            },
-                            Color(0XFFD1D6DC),
-                            fontWeight: FontWeight.w400
-                          ),
+                          padding: EdgeInsets.only(
+                              top: size.height * 0.04, bottom: 0),
+                          child:
+                              Botao().botaoPadrao('Iniciar medição', () async {
+                            await validarCampos();
+                            await buscarIdUltimoGrupoCadastrado();
+                          }, Color(0XFFD1D6DC), fontWeight: FontWeight.w400),
                         ),
 
                         Padding(
                           padding: EdgeInsets.only(top: 5, bottom: 5),
-                          child: Botao().botaoPadrao(
-                            'Salvar endereço',
-                            () async {
-                              await validarCampos();
-                              Navigator.pop(context);
-                              Navigator.pushNamed(
-                                  context, '/ListaGrupoMedidas');
-                            },
-                            Color(0XFFD1D6DC),
-                            fontWeight: FontWeight.w400
-                          ),
+                          child:
+                              Botao().botaoPadrao('Salvar endereço', () async {
+                            await validarCampos();
+                            Navigator.pop(context);
+                            Navigator.pushNamed(context, '/ListaGrupoMedidas');
+                          }, Color(0XFFD1D6DC), fontWeight: FontWeight.w400),
                         )
                       ],
                     ),

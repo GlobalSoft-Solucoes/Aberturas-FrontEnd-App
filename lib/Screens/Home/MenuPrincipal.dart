@@ -67,7 +67,7 @@ class _MenuPrincipalState extends State<MenuPrincipal> {
               onTap: () {
                 setState(() {
                   // Atualiza os dados do usuario no arquivo static onde eles são pegos
-                  DadosUserLogado().capturaDadosUsuarioLogado();
+                  UserLogado().capturaDadosUsuarioLogado();
                 });
                 Navigator.pushNamed(context, '/PerfilUsuario');
               },
@@ -82,14 +82,14 @@ class _MenuPrincipalState extends State<MenuPrincipal> {
               onTap: () {
                 setState(() {
                   // Atualiza os dados do usuario no arquivo static onde eles são pegos
-                  DadosUserLogado().capturaDadosUsuarioLogado();
+                  UserLogado().capturaDadosUsuarioLogado();
                 });
-                Navigator.pushNamed(context, '/ListaUsuariosEmpresa');
+                Navigator.pushNamed(context, '/ListaUsuariosEmpresa'); //TesteListagem
               },
             ),
             ListTile(
               title: Text(
-                'Cadastrar imovel',
+                'Imovel',
                 style: TextStyle(fontSize: 18),
               ),
               contentPadding: EdgeInsets.only(top: 20, left: 20),
@@ -101,7 +101,7 @@ class _MenuPrincipalState extends State<MenuPrincipal> {
             ),
             ListTile(
               title: Text(
-                'Cadastrar Tipo de porta',
+                'Tipo de porta',
                 style: TextStyle(fontSize: 18),
               ),
               contentPadding: EdgeInsets.only(top: 20, left: 20),
@@ -113,7 +113,7 @@ class _MenuPrincipalState extends State<MenuPrincipal> {
             ),
             ListTile(
               title: Text(
-                'Cadastrar Referências',
+                'Referência',
                 style: TextStyle(fontSize: 18),
               ),
               contentPadding: EdgeInsets.only(top: 20, left: 20),
@@ -124,7 +124,7 @@ class _MenuPrincipalState extends State<MenuPrincipal> {
             ),
             ListTile(
               title: Text(
-                'Cadastrar Fechaduras',
+                'Fechadura',
                 style: TextStyle(fontSize: 18),
               ),
               contentPadding: EdgeInsets.only(top: 20, left: 20),
@@ -135,7 +135,7 @@ class _MenuPrincipalState extends State<MenuPrincipal> {
             ),
             ListTile(
               title: Text(
-                'Cadastrar Dobradiças',
+                'Dobradiça',
                 style: TextStyle(fontSize: 18),
               ),
               contentPadding: EdgeInsets.only(top: 20, left: 20),
@@ -146,7 +146,7 @@ class _MenuPrincipalState extends State<MenuPrincipal> {
             ),
             ListTile(
               title: Text(
-                'Cadastrar RolPivotante',
+                'RolPivotante',
                 style: TextStyle(fontSize: 18),
               ),
               contentPadding: EdgeInsets.only(top: 20, left: 20),
@@ -171,7 +171,7 @@ class _MenuPrincipalState extends State<MenuPrincipal> {
                 'Lixeira',
                 style: TextStyle(fontSize: 18),
               ),
-              contentPadding: EdgeInsets.only(top: 20, left: 20),
+              contentPadding: EdgeInsets.only(top: 20, left: 20, bottom: 30),
               dense: true,
               onTap: () {
                 Navigator.pushNamed(context, '/Lixeira');

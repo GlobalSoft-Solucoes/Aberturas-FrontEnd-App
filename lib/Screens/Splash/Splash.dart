@@ -21,7 +21,7 @@ class _SplashState extends State<Splash> {
   //faz a validação e busca dos dados do usuario para manter ele logado
   capturaIdUsuarioLogado() async {
     bool validou = false;
-    var dadosUsuario = List<ModelsUsuarios>();
+    List<ModelsUsuarios> dadosUsuario = [];
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var id = prefs.getInt(
@@ -37,7 +37,7 @@ class _SplashState extends State<Splash> {
         },
       );
     }
-    var result = await http.get(
+    final result = await http.get(
         Uri.encodeFull(
           BuscarUsuarioPorId + id.toString(),
         ),
@@ -72,13 +72,13 @@ class _SplashState extends State<Splash> {
         Iterable lista = json.decode(result.body);
         dadosUsuario =
             lista.map((model) => ModelsUsuarios.fromJson(model)).toList();
-        usuario.idUsuario = dadosUsuario[0].idUsuario;
+        UserLogado.idUsuario = dadosUsuario[0].idUsuario;
         ModelsUsuarios.tokenAuth = token;
-        usuario.idEmpresa = dadosUsuario[0].idEmpresa;
+        UserLogado.idEmpresa = dadosUsuario[0].idEmpresa;
         await DadosEmpresa().capturaDadosEmpresa();
         setState(
           () {
-            DadosUserLogado().capturaDadosUsuarioLogado();
+            UserLogado().capturaDadosUsuarioLogado();
             home = true;
             login = false;
           },

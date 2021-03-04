@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:projeto_aberturas/Funcoes/FuncoesParaDatas.dart';
-import 'package:projeto_aberturas/Models/Models_Usuario.dart';
 import 'package:projeto_aberturas/Models/constantes.dart';
 import 'package:projeto_aberturas/Widget/Botao.dart';
 import 'package:projeto_aberturas/Widget/Crud_DataBase.dart';
@@ -36,7 +34,7 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
 
     if (nome.isNotEmpty) {
       if (email.isNotEmpty && email.contains("@")) {
-        if (senha.isNotEmpty && senha.length > 6) {
+        if (senha.isNotEmpty && senha.length >= 6) {
           if (confSenha == senha) {
             if (controllerConfSenha.text == senha) {
               setState(
@@ -98,13 +96,10 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
       'email': controllerEmail.text,
     });
 
-    ReqDataBase().requisicaoPost(VerficarSeEmailEstaDisponivel, validaEmail);
-
+  await  ReqDataBase().requisicaoPost(VerficarSeEmailEstaDisponivel, validaEmail);
     if (ReqDataBase.responseReq.statusCode == 200) {
-      // respostajson = jsonDecode(result.body);
-      // ModelsUsuarios.tokenAuth = 'Bearer ' + (respostajson['token']);
       _cadastrarUsuario();
-    } else {
+    } else if (ReqDataBase.responseReq.statusCode == 400) {
       emailJaEmUso();
     }
     if (ReqDataBase.responseReq.statusCode == 401) {
@@ -120,14 +115,14 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
         'nome': controllerNome.text,
         'email': controllerEmail.text.trim(),
         'senha': controllerSenha.text,
-        'adm': 0, 
+        'adm': 0,
         'data_cadastro': DataAtual().pegardata() as String,
       },
     );
 
-    ReqDataBase().requisicaoPost(CadastrarUsuario, bodyy);
-
+    await ReqDataBase().requisicaoPost(CadastrarUsuario, bodyy);
     if (ReqDataBase.responseReq.statusCode == 200) {
+      print(bodyy);
       cadSucesso();
     } else {
       erroCadastro();
@@ -242,8 +237,8 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
                         CampoText().textField(
                           controllerNome,
                           "Nome completo:",
-                          confPadding:
-                              EdgeInsets.only(left: 15, right: 15, top: size.height * 0.13),
+                          confPadding: EdgeInsets.only(
+                              left: 15, right: 15, top: size.height * 0.13),
                           raioBorda: 28,
                           tipoTexto: TextInputType.text,
                           icone: Icons.person,
@@ -252,8 +247,8 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
                         CampoText().textField(
                           controllerEmail,
                           "E-mail:",
-                          confPadding:
-                              EdgeInsets.only(left: 15, right: 15, top: size.height * 0.03),
+                          confPadding: EdgeInsets.only(
+                              left: 15, right: 15, top: size.height * 0.03),
                           raioBorda: 28,
                           tipoTexto: TextInputType.emailAddress,
                           icone: Icons.email,
@@ -262,8 +257,8 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
                         CampoText().textField(
                           controllerSenha,
                           "Senha:",
-                          confPadding:
-                              EdgeInsets.only(left: 15, right: 15, top: size.height * 0.03),
+                          confPadding: EdgeInsets.only(
+                              left: 15, right: 15, top: size.height * 0.03),
                           raioBorda: 28,
                           campoSenha: true,
                           icone: Icons.vpn_key,
@@ -273,7 +268,10 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
                           controllerConfSenha,
                           "Confirmar senha karin:",
                           confPadding: EdgeInsets.only(
-                              left: 15, right: 15, top: size.height * 0.03, bottom: size.height * 0.12),
+                              left: 15,
+                              right: 15,
+                              top: size.height * 0.03,
+                              bottom: size.height * 0.12),
                           raioBorda: 28,
                           campoSenha: true,
                           icone: Icons.vpn_key,

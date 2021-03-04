@@ -5,6 +5,7 @@ import 'package:projeto_aberturas/Models/Models_Imoveis.dart';
 import 'package:projeto_aberturas/Models/Models_Usuario.dart';
 import 'package:projeto_aberturas/Models/constantes.dart';
 import 'package:projeto_aberturas/Widget/Botao.dart';
+import 'package:projeto_aberturas/Widget/Cabecalho.dart';
 import 'package:projeto_aberturas/Widget/Crud_DataBase.dart';
 import 'package:projeto_aberturas/Widget/TextField.dart';
 import 'package:projeto_aberturas/Widget/MsgPopup.dart';
@@ -19,7 +20,8 @@ class _CadImoveisState extends State<CadImoveis> {
   var mensagemErro = '';
   TextEditingController controllerCampoImovel = TextEditingController();
 
-  var imoveis = new List<Imoveis>();
+  List<Imoveis> imoveis = [];
+
   Future listaDados() async {
     final response = await http.get(
       Uri.encodeFull(ListarTodosImoveis),
@@ -140,45 +142,14 @@ class _CadImoveisState extends State<CadImoveis> {
           child: Column(
             children: [
               //===========================================
-              Padding(
-                padding: EdgeInsets.only(
-                  top: size.height * 0.02,
-                  left: size.width * 0.02,
-                ),
-                child: Container(
-                  alignment: Alignment.topLeft,
-                  child: Row(
-                    children: [
-                      IconButton(
-                        color: Colors.white,
-                        icon: Icon(Icons.arrow_back),
-                        iconSize: 33,
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: size.width * 0.13),
-                        child: Text(
-                          'Cadastrar imóvel',
-                          style: TextStyle(
-                              fontSize: size.width * 0.07,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              decoration: TextDecoration.none),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              Cabecalho().tituloCabecalho(context, 'Cadastrar imóvel',
+                  iconeVoltar: true),
               //============== WIDGET DO CADASTRO =================
               Container(
                 // Configurações do widget do cadastro
-                height: size.height * 0.25,
+                height: size.height * 0.23,
                 child: Padding(
                   padding: EdgeInsets.only(
-                    top: size.width * 0.03,
                     left: size.width * 0.02,
                     right: size.width * 0.02,
                     bottom: size.height * 0.02,
@@ -195,18 +166,16 @@ class _CadImoveisState extends State<CadImoveis> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         //=======================================
-                        Padding(
-                          padding: EdgeInsets.only(
+                        CampoText().textField(
+                          controllerCampoImovel,
+                          'imovel:',
+                          altura: size.height * 0.10,
+                          icone: Icons.home,
+                          raioBorda: 10,
+                          confPadding: EdgeInsets.only(
                             right: size.width * 0.02,
                             left: size.width * 0.02,
                             top: size.height * 0.02,
-                          ),
-                          child: CampoText().textField(
-                            controllerCampoImovel,
-                            'imovel:',
-                            altura: size.height * 0.10,
-                            icone: Icons.home,
-                            raioBorda: 10,
                           ),
                         ),
                         //=======================================
@@ -215,11 +184,12 @@ class _CadImoveisState extends State<CadImoveis> {
                             padding: EdgeInsets.only(
                                 right: size.width * 0.02,
                                 left: size.width * 0.02,
-                                top: size.height * 0.01),
+                                top: size.height * 0.03),
                             child: Botao().botaoPadrao(
                               'Salvar',
                               () => {verificarDados(), print('enviou')},
                               Color(0XFFD1D6DC),
+                              fontWeight: FontWeight.w400,
                             ),
                           ),
                         ),
@@ -239,7 +209,7 @@ class _CadImoveisState extends State<CadImoveis> {
                 ),
                 child: Container(
                   width: size.width,
-                  height: size.height * 0.63,
+                  height: size.height * 0.61,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.white,

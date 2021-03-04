@@ -8,6 +8,7 @@ import 'package:projeto_aberturas/Models/constantes.dart';
 import 'package:projeto_aberturas/Widget/Crud_DataBase.dart';
 import 'package:projeto_aberturas/Widget/ListFieldsDataBase.dart';
 import 'package:projeto_aberturas/Widget/MsgPopup.dart';
+import 'package:projeto_aberturas/Widget/Cabecalho.dart';
 
 class ListaDadosComodo extends StatefulWidget {
   final int idMedidaUnt;
@@ -18,7 +19,7 @@ class ListaDadosComodo extends StatefulWidget {
 }
 
 class _ListaDadosComodoState extends State<ListaDadosComodo> {
-  var dadosListagem = new List<ModelsMedidasUnt>();
+  List<ModelsMedidasUnt> dadosListagem = [];
   TextEditingController controllerEditDados = TextEditingController();
   final int idMedidaUnt;
 
@@ -80,41 +81,13 @@ class _ListaDadosComodoState extends State<ListaDadosComodo> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          color: Color(0xFFBCE0F0), 
+          color: Color(0xFFBCE0F0),
           width: size.width,
           height: size.height,
           child: Column(
             children: [
-              Padding(
-                padding: EdgeInsets.only(top: size.height * 0.02),
-                child: Container(
-                  width: size.width,
-                  height: size.height * 0.10,
-                  child: Row(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.all(1),
-                        child: IconButton(
-                          icon: Icon(Icons.arrow_back),
-                          onPressed: () => Navigator.pop(context),
-                          iconSize: 40,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: size.width * 0.09),
-                        child: Text(
-                          'Detalhes do pedido',
-                          style: TextStyle(
-                              fontSize: size.width * 0.07,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              Cabecalho().tituloCabecalho(context, 'Detalhes da medida',
+                  iconeVoltar: true),
               Padding(
                 padding: EdgeInsets.only(
                   left: size.width * 0.02,
@@ -146,10 +119,7 @@ class _ListaDadosComodoState extends State<ListaDadosComodo> {
                                   ),
                                   child: Container(
                                     alignment: Alignment.center,
-                                    // padding: const EdgeInsets.only(
-                                    //     left: 0, right: 10),
                                     child: Container(
-                                      // alignment: Alignment.center,
                                       padding: EdgeInsets.only(left: 5),
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(
@@ -160,7 +130,6 @@ class _ListaDadosComodoState extends State<ListaDadosComodo> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          // SizedBox(height: 15),
                                           Row(
                                             children: [
                                               FieldsDatabase().listaDadosBanco(

@@ -2,7 +2,6 @@
 //  =========== ARQUIVO QUE CAPTURA OS DADOS DA EMPRESA REFERENTE AO USU�RIO LOGADO =============
 
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:projeto_aberturas/Models/Models_Empresa.dart';
@@ -21,13 +20,13 @@ class FieldsEmpresa {
 }
 
 class DadosEmpresa {
-  var listaDadosEmpresa = new List<ModelsEmpresa>();
+  List<ModelsEmpresa> listaDadosEmpresa = [];
 
   Future<BuildContext> capturaDadosEmpresa() async {
     var result = await http.get(
         Uri.encodeFull(
               BuscarEmpresaPorId.toString() +
-              usuario.idEmpresa.toString(),
+              UserLogado.idEmpresa.toString(),
         ),
         headers: {
           'Content-Type': 'application/json',

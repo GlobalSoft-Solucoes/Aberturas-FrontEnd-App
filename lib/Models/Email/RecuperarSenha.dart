@@ -363,7 +363,7 @@ class RecuperarSenha {
               fontSize: 18, color: Colors.red, fontWeight: FontWeight.w800),
         ),
         actions: <Widget>[
-          FlatButton(
+          FloatingActionButton(
             child: Text('Ok',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
             onPressed: () {

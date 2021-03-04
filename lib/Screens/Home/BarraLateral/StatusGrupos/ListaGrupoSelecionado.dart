@@ -5,26 +5,48 @@ import 'package:projeto_aberturas/Models/Models_GrupoMedidas.dart';
 import 'package:http/http.dart' as http;
 import 'package:projeto_aberturas/Models/Models_Usuario.dart';
 import 'package:projeto_aberturas/Models/constantes.dart';
+import 'package:projeto_aberturas/Screens/Home/BarraHorizontal/NovaMedida/ListaGrupoMedidas/ListadeComodosImovel.dart';
 import 'package:projeto_aberturas/Static/Static_GrupoMedidas.dart';
+import 'package:projeto_aberturas/Static/Static_StatusGrupo.dart';
 import 'package:projeto_aberturas/Static/Static_Usuario.dart';
 import 'package:projeto_aberturas/Widget/Crud_DataBase.dart';
 import 'package:projeto_aberturas/Widget/MsgPopup.dart';
 import 'package:projeto_aberturas/Widget/ListFieldsDataBase.dart';
-import 'ListadeComodosImovel.dart';
 import 'package:projeto_aberturas/Widget/Cabecalho.dart';
 
 //TELA PARA LISTAR TODOS OS ENDEREÇOS CADASTRADOS
-class ListaGrupoMedidas extends StatefulWidget {
+class ListaGrupoSelecionado extends StatefulWidget {
   @override
-  _ListaGrupoMedidasState createState() => _ListaGrupoMedidasState();
+  _ListaGrupoSelecionadoState createState() => _ListaGrupoSelecionadoState();
 
   static fromJson(model) {}
 }
 
-class _ListaGrupoMedidasState extends State<ListaGrupoMedidas> {
+class _ListaGrupoSelecionadoState extends State<ListaGrupoSelecionado> {
   TextEditingController controllerExcluirGrupo = TextEditingController();
-
   List<ModelGrupoMedidas> dadosListagem = [];
+
+  Future<dynamic> listarDados() async {
+    final response = await http.get(
+      Uri.encodeFull(
+        StatusGrupos.escolhaStatus + UserLogado.idUsuario.toString(),
+      ),
+      headers: {"authorization": ModelsUsuarios.tokenAuth},
+    );
+
+    if (response.statusCode == 401) {
+      Navigator.pushNamed(context, '/Login');
+    }
+    //IF(MOUNTED) É nescessario para não recarregar a arvore apos retornar das outras listas
+    if (mounted)
+      setState(
+        () {
+          Iterable lista = json.decode(response.body);
+          dadosListagem =
+              lista.map((model) => ModelGrupoMedidas.fromJson(model)).toList();
+        },
+      );
+  }
 
 
 // ==== MENSAGEM QUE DISPARA PARA EDITAR O GRUPO DE MEDIDAS =====
@@ -79,29 +101,6 @@ class _ListaGrupoMedidasState extends State<ListaGrupoMedidas> {
     }
   }
 
-  //FUNÇÃO PARA BUSCAR OS DADOS NA DB
-  Future<dynamic> listarDados() async {
-    final response = await http.get(
-      Uri.encodeFull(
-        ListarTodosGrupoMedidas + UserLogado.idUsuario.toString(),
-      ),
-      headers: {"authorization": ModelsUsuarios.tokenAuth},
-    );
-
-    if (response.statusCode == 401) {
-      Navigator.pushNamed(context, '/Login');
-    }
-    //IF(MOUNTED) É nescessario para não recarregar a arvore apos retornar das outras listas
-    if (mounted)
-      setState(
-        () {
-          Iterable lista = json.decode(response.body);
-          dadosListagem =
-              lista.map((model) => ModelGrupoMedidas.fromJson(model)).toList();
-        },
-      );
-  }
-
 //FUNÇÃO PARA DELETAR OS DADOS DA DATABASE
   Future<dynamic> delete(int id) async {
     var response = await http.delete(
@@ -113,7 +112,7 @@ class _ListaGrupoMedidasState extends State<ListaGrupoMedidas> {
     }
   }
 
-  _ListaGrupoMedidasState() {
+  void listaGrupoMedidasState() {
     listarDados();
   }
 
@@ -133,7 +132,7 @@ class _ListaGrupoMedidasState extends State<ListaGrupoMedidas> {
             children: [
                Cabecalho().tituloCabecalho(
                 context,
-                'Endereços cadastrados',
+               StatusGrupos.tituloTela,
                 iconeVoltar: true,
                 sizeTextTitulo: 0.065,
               ),
@@ -144,7 +143,7 @@ class _ListaGrupoMedidasState extends State<ListaGrupoMedidas> {
                     bottom: size.height * 0.01),
                 child: Container(
                   width: size.width,
-                  height: size.height * 0.88,
+                  height: size.height * 0.83,
                   decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.6),
                     borderRadius: BorderRadius.circular(10),
@@ -188,7 +187,7 @@ class _ListaGrupoMedidasState extends State<ListaGrupoMedidas> {
                                 ],
                                 child: GestureDetector(
                                   onDoubleTap: () async{
-                                     await FieldsGrupoMedidas().capturaDadosGrupoPorId(dadosListagem[index].idGrupoMedidas);
+                                    await FieldsGrupoMedidas().capturaDadosGrupoPorId(dadosListagem[index].idGrupoMedidas);
                                     FieldsGrupoMedidas.idGrupoMedidas =
                                         dadosListagem[index].idGrupoMedidas;
                                     Navigator.push(

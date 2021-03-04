@@ -8,7 +8,7 @@ import 'package:projeto_aberturas/Models/Models_GrupoMedidas.dart';
 import 'package:projeto_aberturas/Models/Models_Usuario.dart';
 import 'package:projeto_aberturas/Models/constantes.dart';
 
-class GrupoMedidas {
+class FieldsGrupoMedidas {
   static int idGrupoMedidas;
   static int idImovel;
   static String endereco;
@@ -16,16 +16,15 @@ class GrupoMedidas {
   static int numEndereco;
   static String cidade;
   static String bairro;
-}
+  static String statusGProcesso;
 
-class DadosGrupoSelecionado {
-  var listaDadosGrupo = new List<ModelGrupoMedidas>();
+  List<ModelGrupoMedidas> listaDadosGrupo = [];
 
-  Future<BuildContext> capturaDadosGrupoSelecionado() async {
+  // Future<BuildContext> capturaDadosGrupoPorId(
+  void capturaDadosGrupoPorId(idGrupoMedidasSelecionado) async {
     var result = await http.get(
       Uri.encodeFull(
-            BuscarGrupoPorId +
-            GrupoMedidas.idGrupoMedidas.toString(),
+        BuscarGrupoPorId + idGrupoMedidasSelecionado.toString(),
         // usuario.idUsuario.toString(),
       ),
       headers: {
@@ -38,11 +37,13 @@ class DadosGrupoSelecionado {
     listaDadosGrupo =
         lista.map((model) => ModelGrupoMedidas.fromJson(model)).toList();
     // usuario.nome = 'testeusuario';
-    GrupoMedidas.endereco = listaDadosGrupo[0]?.endereco;
-    GrupoMedidas.proprietario = listaDadosGrupo[0]?.proprietario;
-    GrupoMedidas.numEndereco = listaDadosGrupo[0]?.numEndereco;
-    GrupoMedidas.cidade = listaDadosGrupo[0]?.cidade;
-    GrupoMedidas.bairro = listaDadosGrupo[0]?.bairro;
-    GrupoMedidas.idImovel = listaDadosGrupo[0]?.idImovel;
+    idGrupoMedidas = listaDadosGrupo[0]?.idGrupoMedidas;
+    endereco = listaDadosGrupo[0]?.endereco;
+    proprietario = listaDadosGrupo[0]?.proprietario;
+    numEndereco = listaDadosGrupo[0]?.numEndereco;
+    cidade = listaDadosGrupo[0]?.cidade;
+    bairro = listaDadosGrupo[0]?.bairro;
+    idImovel = listaDadosGrupo[0]?.idImovel;
+    statusGProcesso = listaDadosGrupo[0].statusProcesso;
   }
 }

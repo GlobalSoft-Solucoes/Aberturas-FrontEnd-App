@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -23,7 +22,7 @@ class _CadastroTipoDaPortaState extends State<CadastroTipoDaPorta> {
   TextEditingController controllerDescontoLargura = TextEditingController();
   TextEditingController controllerDescontoAltura = TextEditingController();
 
-  var dadosListagem = List<ModelsTipoPorta>();
+  List<ModelsTipoPorta> dadosListagem = [];
   Future<dynamic> listarDados() async {
     final response = await http.get(
       Uri.encodeFull(ListarTodosTipoPorta),

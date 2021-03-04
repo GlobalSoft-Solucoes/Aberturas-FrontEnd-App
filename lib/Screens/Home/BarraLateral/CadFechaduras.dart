@@ -5,6 +5,7 @@ import 'package:projeto_aberturas/Models/Models_Portas.dart';
 import 'package:projeto_aberturas/Models/Models_Usuario.dart';
 import 'package:projeto_aberturas/Models/constantes.dart';
 import 'package:projeto_aberturas/Widget/Botao.dart';
+import 'package:projeto_aberturas/Widget/Cabecalho.dart';
 import 'package:projeto_aberturas/Widget/Crud_DataBase.dart';
 import 'package:projeto_aberturas/Widget/MsgPopup.dart';
 import 'package:projeto_aberturas/Widget/TextField.dart';
@@ -19,7 +20,7 @@ class _CadFechadurasState extends State<CadFechaduras> {
   TextEditingController controllFechaduras = TextEditingController();
   TextEditingController controllDescricao = TextEditingController();
 
-  var fechaduras = new List<Fechaduras>();
+  List<Fechaduras> fechaduras = [];
   var mensagemErro = '';
 
   Future listaDados() async {
@@ -160,44 +161,14 @@ class _CadFechadurasState extends State<CadFechaduras> {
           child: Column(
             children: [
               //===========================================
-              Padding(
-                padding: EdgeInsets.only(
-                  top: size.height * 0.02,
-                  left: size.width * 0.02,
-                ),
-                child: Container(
-                  alignment: Alignment.topLeft,
-                  child: Row(
-                    children: [
-                      IconButton(
-                          color: Colors.white,
-                          icon: Icon(Icons.arrow_back),
-                          iconSize: 30,
-                          onPressed: () {
-                            Navigator.pop(context);
-                          }),
-                      Padding(
-                        padding: EdgeInsets.only(left: size.width * 0.05),
-                        child: Text(
-                          'Cadastro de Fechaduras',
-                          style: TextStyle(
-                              fontSize: 30,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              decoration: TextDecoration.none),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              Cabecalho().tituloCabecalho(context, 'Cadastro de fechaduras',
+                  iconeVoltar: true),
               //============== WIDGET DO CADASTRO =================
               Container(
                 width: size.width,
-                height: size.height * 0.36,
+                height: size.height * 0.33,
                 child: Padding(
                   padding: EdgeInsets.only(
-                    top: size.width * 0.017,
                     left: size.width * 0.02,
                     right: size.width * 0.02,
                     bottom: size.height * 0.02,
@@ -213,34 +184,34 @@ class _CadFechadurasState extends State<CadFechaduras> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: EdgeInsets.only(
-                              right: size.width * 0.02,
-                              left: size.width * 0.02,
-                              top: size.height * 0.015),
-                          child: CampoText().textField(
-                              controllFechaduras, 'nome da fechadura:',
-                              altura: size.height * 0.10,
-                              icone: Icons.home,
-                              raioBorda: 10),
+                        CampoText().textField(
+                          controllFechaduras,
+                          'Nome da fechadura:',
+                          altura: size.height * 0.10,
+                          icone: Icons.edit_sharp,
+                          raioBorda: 10,
+                          confPadding: EdgeInsets.only(
+                              right: size.width * 0.03,
+                              left: size.width * 0.03,
+                              top: size.height * 0.01),
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                              right: size.width * 0.02,
-                              left: size.width * 0.02,
-                              top: size.height * 0.005),
-                          child: CampoText().textField(
-                              controllDescricao, 'descricao:',
-                              altura: size.height * 0.10,
-                              icone: Icons.home,
-                              raioBorda: 10),
+                        CampoText().textField(
+                          controllDescricao,
+                          'Descricao:',
+                          altura: size.height * 0.10,
+                          icone: Icons.comment_sharp,
+                          raioBorda: 10,
+                          confPadding: EdgeInsets.only(
+                              right: size.width * 0.03,
+                              left: size.width * 0.03,
+                              top: size.height * 0.01),
                         ),
                         Container(
                           child: Padding(
                             padding: EdgeInsets.only(
                               right: size.width * 0.02,
                               left: size.width * 0.02,
-                              top: size.width * 0.03,
+                              top: size.width * 0.05,
                             ),
                             child: Botao().botaoPadrao(
                               'Salvar',
@@ -248,6 +219,7 @@ class _CadFechadurasState extends State<CadFechaduras> {
                                 verificarDados(),
                               },
                               Color(0XFFD1D6DC),
+                              fontWeight: FontWeight.w400,
                             ),
                           ),
                         ),

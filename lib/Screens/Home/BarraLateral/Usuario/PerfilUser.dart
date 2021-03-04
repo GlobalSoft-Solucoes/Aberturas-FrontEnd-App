@@ -8,6 +8,7 @@ import 'package:projeto_aberturas/Screens/Home/Home.Dart';
 import 'package:projeto_aberturas/Static/Static_Usuario.dart';
 import 'package:projeto_aberturas/Stores/Login_Store.dart';
 import 'package:projeto_aberturas/Widget/Botao.dart';
+import 'package:projeto_aberturas/Widget/Cabecalho.dart';
 import 'package:projeto_aberturas/Widget/Crud_DataBase.dart';
 import 'package:projeto_aberturas/Widget/MsgPopup.dart';
 import 'package:projeto_aberturas/Widget/TextField.dart';
@@ -25,14 +26,14 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
   // ========  ATRIBUI DIRETAMENTE PARA O CAMPO TEXTO, OS DADOS CAPTURADOS DO USUÁRIO ===========
   //
   TextEditingController controllerNome =
-      TextEditingController(text: usuario.nome);
+      TextEditingController(text: UserLogado.nome);
   TextEditingController controllerEmail =
-      TextEditingController(text: usuario.email);
+      TextEditingController(text: UserLogado.email);
   TextEditingController controllerSenha =
-      TextEditingController(text: usuario.senha);
+      TextEditingController(text: UserLogado.senha);
   TextEditingController controllerCodigoAdm = TextEditingController();
 
-  bool checklCodAdm = usuario.adm == '1' ? true : false; //false;
+  bool checklCodAdm = UserLogado.adm == '1' ? true : false; //false;
   bool valorcheck; //= usuario.adm == '1' ? true : false;
 
   String mensagemErro;
@@ -40,15 +41,15 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
   String valorRetornoCodAdm;
   String valorField;
   String valorAdm;
-  String valorCampoAdmUser = usuario.adm;
+  String valorCampoAdmUser = UserLogado.adm;
 
   LoginStore loginStore = LoginStore();
 
 // ============= VERIFICA SE HOUVE ALTERAÇÕES NO CADASTRO DO USUARIO ==============
   _verificaSeHouveAlteracoes() {
-    if (controllerNome.text != usuario.nome ||
-        controllerEmail.text != usuario.email ||
-        controllerSenha.text != usuario.senha ||
+    if (controllerNome.text != UserLogado.nome ||
+        controllerEmail.text != UserLogado.email ||
+        controllerSenha.text != UserLogado.senha ||
         (valorAdm == '1' && checklCodAdm == false)) {
       _confirmarAlteracoes();
     } else {
@@ -68,7 +69,7 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
 // ==== caso o usuario desmarcar o ckeck, confirmar a alterações e clicar em cancelar as alterações,
 // marca novamente o checkbox. =======
   _marcaDesmarcaCheckBox() {
-    if (usuario.adm == '1' && checklCodAdm == false) {
+    if (UserLogado.adm == '1' && checklCodAdm == false) {
       valorcheck = true;
       checklCodAdm = valorcheck;
     } else {
@@ -76,6 +77,7 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
       checklCodAdm = valorcheck;
     }
   }
+  
 // ======== POPUP DE CONFIRMAÇÃO PARA ALTERAÇÃO DAS INFORMAÇÕES DO USUÁRIO =========
 
   _confirmarAlteracoes() {
@@ -177,7 +179,7 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
   _capturaIdEmpresa() async {
     var result = await http.get(
       Uri.encodeFull(
-        BuscaEmpresaPorUsuario + usuario.idUsuario.toString(),
+        BuscaEmpresaPorUsuario + UserLogado.idUsuario.toString(),
       ),
       headers: {"authorization": ModelsUsuarios.tokenAuth},
     );
@@ -192,7 +194,7 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
   _verificaCodAdmUsuario() async {
     var result = await http.get(
       Uri.encodeFull(
-        VerificaCodAdm.toString() + usuario.idUsuario.toString(),
+        VerificaCodAdm.toString() + UserLogado.idUsuario.toString(),
       ),
       headers: {"Content-Type": "application/json"},
     );
@@ -265,19 +267,12 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
       "senha": controllerSenha.text,
       "adm": valorAdm,
     });
-    ReqDataBase().requisicaoPut(EditarUsuario + usuario.idUsuario.toString(),
+    ReqDataBase().requisicaoPut(
+        EditarUsuario + UserLogado.idUsuario.toString(),
         body: bodyy);
 
-    // http.Response response = await http.put(
-    //   EditarUsuario + usuario.idUsuario.toString(),
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     "authorization": ModelsUsuarios.tokenAuth
-    //   },
-    //   body: bodyy,
-    // );
     // atualiza a lista com os dados alterados do usuário logado
-    DadosUserLogado().capturaDadosUsuarioLogado();
+    UserLogado().capturaDadosUsuarioLogado();
     print(bodyy);
     print(ReqDataBase.responseReq.statusCode);
   }
@@ -288,7 +283,7 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
     });
 
     http.put(
-      EditarUsuario + usuario.idUsuario.toString(),
+      EditarUsuario + UserLogado.idUsuario.toString(),
       headers: {"authorization": ModelsUsuarios.tokenAuth},
       body: bodyy,
     );
@@ -300,11 +295,6 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
     MediaQueryData mediaQuery = MediaQuery.of(context);
     Size size = mediaQuery.size;
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('Perfil do usuário'),
-      //   centerTitle: true,
-      //   backgroundColor: Colors.blue,
-      // ),
       body: Material(
         child: Container(
           alignment: Alignment.topCenter,
@@ -316,37 +306,9 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  Padding(
-                    padding: EdgeInsets.only(top: size.height * 0.02),
-                    child: Container(
-                      width: size.width,
-                      height: size.height * 0.08,
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.all(1),
-                            child: IconButton(
-                              icon: Icon(Icons.arrow_back),
-                              onPressed: () => Navigator.pop(context),
-                              iconSize: 35,
-                              color: Colors.white,
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: size.width * 0.16),
-                            child: Text(
-                              'Perfil do usuário',
-                              style: TextStyle(
-                                  fontSize: size.width * 0.07,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  //=================== NOME DO USUÁRIO ======================
+                  Cabecalho().tituloCabecalho(context, 'Perfil do usuário',
+                      iconeVoltar: true),
+                  //==============================================================
                   Container(
                     child: Text(
                       'Nome do usuário:',
@@ -482,7 +444,7 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
                       _verificaValorAdmUser();
                       setState(() {
                         // Atualiza os dados do usuario no arquivo static onde eles são pegos
-                        DadosUserLogado().capturaDadosUsuarioLogado();
+                        UserLogado().capturaDadosUsuarioLogado();
                       });
                     },
                     Color(0XFFD1D6DC),

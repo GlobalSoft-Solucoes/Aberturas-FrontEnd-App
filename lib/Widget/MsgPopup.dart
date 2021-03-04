@@ -30,7 +30,7 @@ class MsgPopup {
           ),
         ),
         actions: [
-          FlatButton(
+          FloatingActionButton(
             child: Text(
               txtButton ?? 'Ok',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
@@ -75,7 +75,7 @@ class MsgPopup {
           ),
         ),
         actions: <Widget>[
-          FlatButton(
+          FloatingActionButton(
             child: Text(
               txtButton ?? "Ok",
               style: new TextStyle(

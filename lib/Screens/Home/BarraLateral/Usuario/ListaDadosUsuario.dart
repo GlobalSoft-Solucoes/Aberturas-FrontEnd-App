@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:projeto_aberturas/Models/Models_Usuario.dart';
 import 'package:projeto_aberturas/Models/constantes.dart';
 import 'package:http/http.dart' as http;
+import 'package:projeto_aberturas/Widget/Cabecalho.dart';
 import 'package:projeto_aberturas/Widget/Crud_DataBase.dart';
 import 'package:projeto_aberturas/Widget/MsgPopup.dart';
 import 'package:projeto_aberturas/Widget/ListFieldsDataBase.dart';
@@ -16,7 +17,7 @@ class ListaDadosUsuario extends StatefulWidget {
 
 class _ListaDetUsuState extends State<ListaDadosUsuario> {
   final int id;
-  var dadosListagem = new List<ModelsUsuarios>();
+  List<ModelsUsuarios> dadosListagem = [];
   _ListaDetUsuState({@required this.id}) {
     listaDadosUser(id);
   }
@@ -51,15 +52,14 @@ class _ListaDetUsuState extends State<ListaDadosUsuario> {
   }
 
   Future<dynamic> delete(index) async {
-        ReqDataBase().requisicaoDelete(DeletarUsuario + id.toString());
+    ReqDataBase().requisicaoDelete(DeletarUsuario + id.toString());
     // var response = await http.delete(
     //   DeletarUsuario + index.toString(),
     //   headers: {"authorization": ModelsUsuarios.tokenAuth},
     // );
-     if (ReqDataBase.responseReq.statusCode == 200) {
+    if (ReqDataBase.responseReq.statusCode == 200) {
       Navigator.pop(context);
-    }
-    else if (ReqDataBase.responseReq.statusCode == 401) {
+    } else if (ReqDataBase.responseReq.statusCode == 401) {
       Navigator.pushNamed(context, '/Login');
     }
   }
@@ -76,38 +76,8 @@ class _ListaDetUsuState extends State<ListaDadosUsuario> {
         child: Column(
           children: [
             // ================================================
-            Padding(
-              padding: EdgeInsets.only(
-                  left: size.width * 0.02,
-                  right: size.width * 0.02,
-                  top: size.height * 0.025,
-                  bottom: size.height * 0.02),
-              child: Container(
-                child: Row(
-                  children: [
-                    IconButton(
-                      icon: Icon(Icons.arrow_back),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      iconSize: 33,
-                      color: Colors.white,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: size.width * 0.14),
-                      child: Text(
-                        'Dados do usuário',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: size.width * 0.07,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
+            Cabecalho().tituloCabecalho(context, 'Dados do usuário',
+                iconeVoltar: true),
             // ==================================================
             Padding(
               padding: EdgeInsets.only(
@@ -116,7 +86,7 @@ class _ListaDetUsuState extends State<ListaDadosUsuario> {
                   bottom: size.height * 0.02),
               child: Container(
                 width: size.width,
-                height: size.height * 0.84,
+                height: size.height * 0.82,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.white),

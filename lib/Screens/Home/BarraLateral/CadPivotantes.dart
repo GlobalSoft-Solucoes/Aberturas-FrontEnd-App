@@ -5,6 +5,7 @@ import 'package:projeto_aberturas/Models/Models_Portas.dart';
 import 'package:projeto_aberturas/Models/Models_Usuario.dart';
 import 'package:projeto_aberturas/Models/constantes.dart';
 import 'package:projeto_aberturas/Widget/Botao.dart';
+import 'package:projeto_aberturas/Widget/Cabecalho.dart';
 import 'package:projeto_aberturas/Widget/Crud_DataBase.dart';
 import 'package:projeto_aberturas/Widget/MsgPopup.dart';
 import 'package:projeto_aberturas/Widget/TextField.dart';
@@ -18,7 +19,7 @@ class _CadPivotantesState extends State<CadPivotantes> {
   TextEditingController controllPivotantes = TextEditingController();
   TextEditingController controllDescricao = TextEditingController();
 
-  var pivotantes = new List<Pivotantes>();
+  List<Pivotantes> pivotantes = [];
   var mensagemErro = '';
 
   Future listarDados() async {
@@ -26,8 +27,7 @@ class _CadPivotantesState extends State<CadPivotantes> {
     //   context,
     //   ListarTodosPivotante,
     // );
-    final response = await http.get(
-        Uri.encodeFull(ListarTodosPivotante),
+    final response = await http.get(Uri.encodeFull(ListarTodosPivotante),
         headers: {"authorization": ModelsUsuarios.tokenAuth});
     if (mounted) {
       setState(() {
@@ -108,9 +108,8 @@ class _CadPivotantesState extends State<CadPivotantes> {
 
 // ======== FUNÇÃO QUE DELETA O PIVOTANTE DO BANCO DE DADOS ==========
   Future<dynamic> deletar(int id) async {
-
     ReqDataBase().requisicaoDelete(DeletarPivotante + id.toString());
-    
+
     if (ReqDataBase.responseReq.statusCode == 400) {
       mensagemErro =
           'O pivotante está sendo usado e portanto não pode ser excluído.';
@@ -152,97 +151,75 @@ class _CadPivotantesState extends State<CadPivotantes> {
           child: Column(
             children: [
               //===========================================
-              Padding(
-                padding: EdgeInsets.only(
-                  top: size.height * 0.02,
-                  left: size.width * 0.02,
-                ),
-                child: Container(
-                  alignment: Alignment.topLeft,
-                  child: Row(
-                    children: [
-                      IconButton(
-                        color: Colors.white,
-                        icon: Icon(Icons.arrow_back),
-                        iconSize: 30,
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: size.width * 0.03),
-                        child: Text(
-                          'Cadastro de Rol. Pivotantes',
-                          style: TextStyle(
-                              fontSize: 28,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              decoration: TextDecoration.none),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+              Cabecalho().tituloCabecalho(
+                context,
+                'Cadastro de Rol. Pivotantes',
+                iconeVoltar: true,
+                sizeTextTitulo: 0.06,
               ),
               //================= WIDGET DO CADASTRO ===================
               Container(
-                  width: size.width,
-                  height: size.height * 0.34,
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      top: size.width * 0.02,
-                      left: size.width * 0.02,
-                      right: size.width * 0.02,
-                      bottom: size.height * 0.02,
+                width: size.width,
+                height: size.height * 0.32,
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    left: size.width * 0.02,
+                    right: size.width * 0.02,
+                    bottom: size.height * 0.02,
+                  ),
+                  child: Container(
+                    alignment: Alignment.topCenter,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
                     ),
-                    child: Container(
-                      alignment: Alignment.topCenter,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white,
-                      ),
-                      width: size.width,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(
-                                right: size.width * 0.02,
-                                left: size.width * 0.02,
-                                top: size.height * 0.015),
-                            child: CampoText().textField(
-                                controllPivotantes, 'Rol. pivotante:',
-                                altura: size.height * 0.10,
-                                icone: Icons.home,
-                                raioBorda: 10),
+                    width: size.width,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        CampoText().textField(
+                          controllPivotantes,
+                          'Rol. pivotante:',
+                          altura: size.height * 0.10,
+                          icone: Icons.edit_sharp,
+                          raioBorda: 10,
+                          confPadding: EdgeInsets.only(
+                              right: size.width * 0.02,
+                              left: size.width * 0.02,
+                              top: size.height * 0.015),
+                        ),
+                        CampoText().textField(
+                          controllDescricao,
+                          'Descricao:',
+                          altura: size.height * 0.10,
+                          icone: Icons.comment_sharp,
+                          raioBorda: 10,
+                          confPadding: EdgeInsets.only(
+                            right: size.width * 0.02,
+                            left: size.width * 0.02,
                           ),
-                          Padding(
+                        ),
+                        Container(
+                          child: Padding(
                             padding: EdgeInsets.only(
                               right: size.width * 0.02,
                               left: size.width * 0.02,
+                              top: size.height * 0.02,
                             ),
-                            child: CampoText().textField(
-                                controllDescricao, 'descricao:',
-                                altura: size.height * 0.10,
-                                icone: Icons.home,
-                                raioBorda: 10),
-                          ),
-                          Container(
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                right: size.width * 0.02,
-                                left: size.width * 0.02,
-                                top: size.height * 0.011,
-                              ),
-                              child: Botao().botaoPadrao('Salvar',
-                                  () => {verificarDados()}, Color(0XFFD1D6DC)),
+                            child: Botao().botaoPadrao(
+                              'Salvar',
+                              () => {verificarDados()},
+                              Color(0XFFD1D6DC),
+                              fontWeight: FontWeight.w400,
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  )),
+                  ),
+                ),
+              ),
               Padding(
                 padding: EdgeInsets.only(
                     left: size.width * 0.02, right: size.width * 0.02),

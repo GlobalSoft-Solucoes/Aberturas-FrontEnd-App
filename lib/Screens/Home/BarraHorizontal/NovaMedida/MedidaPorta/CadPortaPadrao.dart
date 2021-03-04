@@ -53,10 +53,10 @@ class _CadPortaPadraoState extends State<CadPortaPadrao> {
   double larguraFolha;
   double larguraExterna;
 
-  List itensListaFechadura = List();
-  List itensListaCodReferencia = List();
-  List itensListaDobradica = List();
-  List itensListaPivotante = List();
+  List itensListaFechadura = [];
+  List itensListaCodReferencia = [];
+  List itensListaDobradica = [];
+  List itensListaPivotante = [];
 
   int idCodRef;
   int idFechadura;
@@ -79,8 +79,8 @@ class _CadPortaPadraoState extends State<CadPortaPadrao> {
 
   Future<dynamic> salvarDadosBanco() async {
     var bodyy = jsonEncode({
-      'idusuario': usuario.idUsuario,
-      'idgrupo_medidas': GrupoMedidas.idGrupoMedidas,
+      'idusuario': UserLogado.idUsuario,
+      'idgrupo_medidas': FieldsGrupoMedidas.idGrupoMedidas,
       'idcod_referencia': idCodRef,
       'idpivotante': idRolPivotante,
       'iddobradica': idDobradica,
@@ -101,9 +101,9 @@ class _CadPortaPadraoState extends State<CadPortaPadrao> {
       'data_cadastro': DataAtual().pegardata() as String,
       'hora_cadastro': DataAtual().pegarHora() as String,
     });
-    ReqDataBase().requisicaoPost(CadastrarMedidaUnt, bodyy);
+    
+   await ReqDataBase().requisicaoPost(CadastrarMedidaUnt, bodyy);
 
-    print(ReqDataBase.responseReq.statusCode);
     if (ReqDataBase.responseReq.statusCode == 200) {
       Navigator.pop(context);
     } else if (ReqDataBase.responseReq.statusCode == 401) {
@@ -119,7 +119,7 @@ class _CadPortaPadraoState extends State<CadPortaPadrao> {
     } else if ((giro == true || vaiEVem == true) && idDobradica == null) {
       mensagemErro = 'A dobradiça não foi selecionada';
       _mensagemErroCadastro();
-    } else if (alturaExterna == 0) {
+    } else if (alturaExterna == null) {
       mensagemErro = 'A altura não foi selecionada';
       _mensagemErroCadastro();
     } else if (aberturaPorta == '') {
@@ -137,7 +137,7 @@ class _CadPortaPadraoState extends State<CadPortaPadrao> {
     } else if (estruturaPorta == '') {
       mensagemErro = 'O tipo de estrutura da porta não foi selecionado!';
       _mensagemErroCadastro();
-    } else if (larguraExterna == 0) {
+    } else if (larguraExterna == null) {
       mensagemErro = 'A largura da porta não foi selecionada!';
       _mensagemErroCadastro();
     } else if (localizacao == '') {
@@ -146,7 +146,7 @@ class _CadPortaPadraoState extends State<CadPortaPadrao> {
     } else if (cor == '') {
       mensagemErro = 'A cor não foi selecionada!';
       _mensagemErroCadastro();
-    } else if (marco == 0) {
+    } else if (marco == null) {
       mensagemErro = 'o marco não foi selecionado!';
       _mensagemErroCadastro();
     } else if (controllerComodo.text.length < 3) {
@@ -154,7 +154,6 @@ class _CadPortaPadraoState extends State<CadPortaPadrao> {
       _mensagemErroCadastro();
     } else {
       salvarDadosBanco();
-      Navigator.pop(context);
     }
   }
 

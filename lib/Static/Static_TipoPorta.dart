@@ -25,7 +25,7 @@ class DadosTipoPortaPorId {
   static double descontoAltura;
   static double descontoLargura;
 
-  var listaDadosTipoPorta = new List<ModelsTipoPorta>();
+  List<ModelsTipoPorta> listaDadosTipoPorta = [];
 
   Future<BuildContext> capturaDadosTipoPortaPorId(idTipoPorta) async {
     var result = await http.get(
